@@ -43,11 +43,38 @@ export const spacing = {
   96: '384px',
 } as const;
 
+/**
+ * Semantic Spacing Scale
+ *
+ * Use these for component gaps, padding, margins
+ * Follows the same pattern as typography sizes
+ */
+export const semanticSpacing = {
+  none: '0px',     // 0
+  '2xs': '2px',    // 0.5
+  xs: '4px',       // 1
+  sm: '8px',       // 2
+  md: '12px',      // 3
+  lg: '16px',      // 4
+  xl: '24px',      // 6
+  '2xl': '32px',   // 8
+  '3xl': '48px',   // 12
+  '4xl': '64px',   // 16
+} as const;
+
 export type SpacingKey = keyof typeof spacing;
+export type SemanticSpacingKey = keyof typeof semanticSpacing;
 
 /**
  * Get spacing value
  */
 export function getSpacing(key: SpacingKey): string {
   return spacing[key];
+}
+
+/**
+ * Get semantic spacing value
+ */
+export function getSemanticSpacing(key: SemanticSpacingKey): string {
+  return semanticSpacing[key];
 }

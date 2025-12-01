@@ -167,7 +167,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
       <div
         ref={ref}
         className={cn(
-          'relative inline-flex items-center justify-center overflow-hidden font-medium',
+          'relative inline-flex items-center justify-center font-medium',
           sizeStyles[size],
           radiusStyles[radius],
           !showImage && colorStyles[color],
@@ -179,7 +179,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
           <img
             src={src}
             alt={alt || name || 'Avatar'}
-            className="h-full w-full object-cover"
+            className={cn('h-full w-full object-cover', radiusStyles[radius])}
             onError={() => setImageError(true)}
           />
         )}

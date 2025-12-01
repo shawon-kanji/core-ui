@@ -5,12 +5,15 @@ import { cn } from '../lib/utils';
 // STACK TYPES
 // =============================================
 
+/** Gap values - semantic sizing like typography */
+export type GapValue = 'none' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+
 export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Direction */
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
 
-  /** Gap between items (in Tailwind spacing units) */
-  gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16;
+  /** Gap between items - uses semantic spacing (none, xs, sm, md, lg, xl, 2xl, 3xl, 4xl) */
+  gap?: GapValue;
 
   /** Align items on cross axis */
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
@@ -39,18 +42,44 @@ const directionStyles = {
   'column-reverse': 'flex-col-reverse',
 };
 
-const gapStyles = {
-  0: 'gap-0',
-  1: 'gap-1',
-  2: 'gap-2',
-  3: 'gap-3',
-  4: 'gap-4',
-  5: 'gap-5',
-  6: 'gap-6',
-  8: 'gap-8',
-  10: 'gap-10',
-  12: 'gap-12',
-  16: 'gap-16',
+const gapStyles: Record<GapValue, string> = {
+  none: 'gap-0',     // 0px
+  '2xs': 'gap-0.5',  // 2px
+  xs: 'gap-1',       // 4px
+  sm: 'gap-2',       // 8px
+  md: 'gap-3',       // 12px
+  lg: 'gap-4',       // 16px
+  xl: 'gap-6',       // 24px
+  '2xl': 'gap-8',    // 32px
+  '3xl': 'gap-12',   // 48px
+  '4xl': 'gap-16',   // 64px
+};
+
+// Padding for dividers (half the gap on each side)
+const dividerPaddingX: Record<GapValue, string> = {
+  none: 'px-0',
+  '2xs': 'px-0.5',
+  xs: 'px-1',
+  sm: 'px-2',
+  md: 'px-3',
+  lg: 'px-4',
+  xl: 'px-6',
+  '2xl': 'px-8',
+  '3xl': 'px-12',
+  '4xl': 'px-16',
+};
+
+const dividerPaddingY: Record<GapValue, string> = {
+  none: 'py-0',
+  '2xs': 'py-0.5',
+  xs: 'py-1',
+  sm: 'py-2',
+  md: 'py-3',
+  lg: 'py-4',
+  xl: 'py-6',
+  '2xl': 'py-8',
+  '3xl': 'py-12',
+  '4xl': 'py-16',
 };
 
 const alignStyles = {
@@ -87,7 +116,7 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
     {
       className,
       direction = 'column',
-      gap = 4,
+      gap = 'md',
       align = 'stretch',
       justify = 'start',
       wrap = false,
@@ -121,11 +150,11 @@ const Stack = React.forwardRef<HTMLDivElement, StackProps>(
           ? childArray.map((child, index) => (
               <React.Fragment key={index}>
                 {index > 0 && (
-                  <div className={cn(
+                  <div className={
                     direction === 'row' || direction === 'row-reverse'
-                      ? `px-${gap / 2}`
-                      : `py-${gap / 2}`
-                  )}>
+                      ? dividerPaddingX[gap]
+                      : dividerPaddingY[gap]
+                  }>
                     {divider}
                   </div>
                 )}
