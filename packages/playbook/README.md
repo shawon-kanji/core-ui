@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Core UI Playbook
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive documentation and component playground for Core UI.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Playbook is a live documentation site showcasing all Core UI components with:
 
-## React Compiler
+- 📖 **Usage Examples** - Real working code for every component
+- 🎨 **Color Palette** - Full visualization of all available colors
+- 📐 **Props Documentation** - All variants, sizes, and options
+- 📋 **Copy Code** - One-click code copying for quick implementation
+- 🔍 **Icon Gallery** - Browse and search 70+ icons
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Development
 
-## Expanding the ESLint configuration
+```bash
+# Start dev server
+pnpm run dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Build for production
+pnpm run build
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Preview production build
+pnpm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Component Categories
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Getting Started
+- **Colors** - Brand colors, semantic colors, and full palette
+- **Typography** - Headings, text, labels, and code styles
+- **Icons** - Complete icon gallery with click-to-copy
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Layout
+- **Box** - Width, height, padding, margin, borders
+- **Stack** - Horizontal and vertical layouts
+- **Divider** - Content separators
+
+### Form
+- **Button** - Variants, sizes, colors, loading states
+- **Input** - Variants, addons, icons, validation states
+
+### Data Display
+- **Card** - Containers with header/body/footer
+- **Badge** - Status indicators and labels
+- **Avatar** - User images with groups and status
+
+### Feedback
+- **Alert** - Contextual messages
+- **Spinner** - Loading indicators
+- **Skeleton** - Content placeholders
+
+## Tech Stack
+
+- React 19
+- TypeScript 5.9
+- Vite 7
+- Tailwind CSS 3

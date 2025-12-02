@@ -18,8 +18,8 @@ This project is organized as a monorepo using `pnpm` workspaces:
 
 ### Prerequisites
 
-- Node.js (v18+ recommended)
-- pnpm (v8+)
+- Node.js (v22+ recommended)
+- pnpm (v22+)
 
 ### Installation
 
