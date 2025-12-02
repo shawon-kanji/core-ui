@@ -240,16 +240,16 @@ function TypographyPage() {
       <Showcase
         title="Headings"
         description="Semantic headings with automatic sizing."
-        code={`import { Heading } from 'core-ui';
-
-<Heading as="h1">Heading 1</Heading>
-<Heading as="h2">Heading 2</Heading>
-<Heading as="h3">Heading 3</Heading>
-<Heading as="h4">Heading 4</Heading>
-<Heading as="h5">Heading 5</Heading>
-<Heading as="h6">Heading 6</Heading>`}
+        code={`<VStack align="start" gap="lg">
+  <Heading as="h1">Heading 1</Heading>
+  <Heading as="h2">Heading 2</Heading>
+  <Heading as="h3">Heading 3</Heading>
+  <Heading as="h4">Heading 4</Heading>
+  <Heading as="h5">Heading 5</Heading>
+  <Heading as="h6">Heading 6</Heading>
+</VStack>`}
       >
-        <VStack align="start" gap={4}>
+        <VStack align="start" gap="lg">
           <Heading as="h1">Heading 1</Heading>
           <Heading as="h2">Heading 2</Heading>
           <Heading as="h3">Heading 3</Heading>
@@ -261,16 +261,16 @@ function TypographyPage() {
 
       <Showcase
         title="Text Sizes"
-        code={`import { Text } from 'core-ui';
-
-<Text size="xs">Extra Small (xs)</Text>
-<Text size="sm">Small (sm)</Text>
-<Text size="base">Base</Text>
-<Text size="lg">Large (lg)</Text>
-<Text size="xl">Extra Large (xl)</Text>
-<Text size="2xl">2XL</Text>`}
+        code={`<VStack align="start" gap="sm">
+  <Text size="xs">Extra Small (xs) - 12px</Text>
+  <Text size="sm">Small (sm) - 14px</Text>
+  <Text size="base">Base - 16px</Text>
+  <Text size="lg">Large (lg) - 18px</Text>
+  <Text size="xl">Extra Large (xl) - 20px</Text>
+  <Text size="2xl">2XL - 24px</Text>
+</VStack>`}
       >
-        <VStack align="start" gap={2}>
+        <VStack align="start" gap="sm">
           <Text size="xs">Extra Small (xs) - 12px</Text>
           <Text size="sm">Small (sm) - 14px</Text>
           <Text size="base">Base - 16px</Text>
@@ -282,14 +282,18 @@ function TypographyPage() {
 
       <Showcase
         title="Text Colors"
-        code={`<Text color="default">Default</Text>
-<Text color="muted">Muted</Text>
-<Text color="subtle">Subtle</Text>
-<Text color="primary">Primary</Text>
-<Text color="success">Success</Text>
-<Text color="error">Error</Text>`}
+        code={`<HStack gap="xl" wrap>
+  <Text color="default">Default</Text>
+  <Text color="muted">Muted</Text>
+  <Text color="subtle">Subtle</Text>
+  <Text color="primary">Primary</Text>
+  <Text color="secondary">Secondary</Text>
+  <Text color="success">Success</Text>
+  <Text color="warning">Warning</Text>
+  <Text color="error">Error</Text>
+</HStack>`}
       >
-        <HStack gap={6} wrap>
+        <HStack gap="xl" wrap>
           <Text color="default">Default</Text>
           <Text color="muted">Muted</Text>
           <Text color="subtle">Subtle</Text>
@@ -303,14 +307,17 @@ function TypographyPage() {
 
       <Showcase
         title="Font Weights"
-        code={`<Text weight="thin">Thin weight</Text>
-<Text weight="light">Light weight</Text>
-<Text weight="normal">Normal weight</Text>
-<Text weight="medium">Medium weight</Text>
-<Text weight="semibold">Semibold weight</Text>
-<Text weight="bold">Bold weight</Text>`}
+        code={`<VStack align="start" gap="sm">
+  <Text weight="thin">Thin weight</Text>
+  <Text weight="light">Light weight</Text>
+  <Text weight="normal">Normal weight</Text>
+  <Text weight="medium">Medium weight</Text>
+  <Text weight="semibold">Semibold weight</Text>
+  <Text weight="bold">Bold weight</Text>
+  <Text weight="extrabold">Extrabold weight</Text>
+</VStack>`}
       >
-        <VStack align="start" gap={2}>
+        <VStack align="start" gap="sm">
           <Text weight="thin">Thin weight</Text>
           <Text weight="light">Light weight</Text>
           <Text weight="normal">Normal weight</Text>
@@ -323,13 +330,13 @@ function TypographyPage() {
 
       <Showcase
         title="Labels"
-        code={`import { Label } from 'core-ui';
-
-<Label>Default Label</Label>
-<Label isRequired>Required Label</Label>
-<Label isDisabled>Disabled Label</Label>`}
+        code={`<HStack gap="2xl">
+  <Label>Default Label</Label>
+  <Label isRequired>Required Label</Label>
+  <Label isDisabled>Disabled Label</Label>
+</HStack>`}
       >
-        <HStack gap={8}>
+        <HStack gap="2xl">
           <Label>Default Label</Label>
           <Label isRequired>Required Label</Label>
           <Label isDisabled>Disabled Label</Label>
@@ -338,14 +345,14 @@ function TypographyPage() {
 
       <Showcase
         title="Code"
-        code={`import { Code } from 'core-ui';
-
-<Code>const x = 42;</Code>
-<Code color="primary">primary</Code>
-<Code color="success">success</Code>
-<Code color="error">error</Code>`}
+        code={`<HStack gap="lg" wrap>
+  <Code>const x = 42;</Code>
+  <Code color="primary">primary</Code>
+  <Code color="success">success</Code>
+  <Code color="error">error</Code>
+</HStack>`}
       >
-        <HStack gap={4} wrap>
+        <HStack gap="lg" wrap>
           <Code>const x = 42;</Code>
           <Code color="primary">primary</Code>
           <Code color="success">success</Code>
@@ -379,15 +386,15 @@ function ButtonPage() {
       <Showcase
         title="Variants"
         description="Different visual styles for different contexts."
-        code={`import { Button } from 'core-ui';
-
-<Button variant="solid">Solid</Button>
-<Button variant="outline">Outline</Button>
-<Button variant="soft">Soft</Button>
-<Button variant="ghost">Ghost</Button>
-<Button variant="link">Link</Button>`}
+        code={`<HStack gap="lg" wrap>
+  <Button variant="solid">Solid</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="soft">Soft</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="link">Link</Button>
+</HStack>`}
       >
-        <HStack gap={4} wrap>
+        <HStack gap="lg" wrap>
           <Button variant="solid">Solid</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="soft">Soft</Button>
@@ -398,13 +405,15 @@ function ButtonPage() {
 
       <Showcase
         title="Sizes"
-        code={`<Button size="xs">Extra Small</Button>
-<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
-<Button size="xl">Extra Large</Button>`}
+        code={`<HStack gap="lg" align="center" wrap>
+  <Button size="xs">Extra Small</Button>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+  <Button size="xl">Extra Large</Button>
+</HStack>`}
       >
-        <HStack gap={4} align="center" wrap>
+        <HStack gap="lg" align="center" wrap>
           <Button size="xs">Extra Small</Button>
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
@@ -416,14 +425,16 @@ function ButtonPage() {
       <Showcase
         title="Semantic Colors"
         description="Use these for primary actions and feedback."
-        code={`<Button color="primary">Primary</Button>
-<Button color="secondary">Secondary</Button>
-<Button color="success">Success</Button>
-<Button color="warning">Warning</Button>
-<Button color="error">Error</Button>
-<Button color="info">Info</Button>`}
+        code={`<HStack gap="md" wrap>
+  <Button color="primary">Primary</Button>
+  <Button color="secondary">Secondary</Button>
+  <Button color="success">Success</Button>
+  <Button color="warning">Warning</Button>
+  <Button color="error">Error</Button>
+  <Button color="info">Info</Button>
+</HStack>`}
       >
-        <HStack gap={3} wrap>
+        <HStack gap="md" wrap>
           <Button color="primary">Primary</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="success">Success</Button>
@@ -436,12 +447,25 @@ function ButtonPage() {
       <Showcase
         title="Palette Colors"
         description="Full color palette available via props."
-        code={`// Any Tailwind color can be used
-<Button color="red">Red</Button>
-<Button color="orange">Orange</Button>
-<Button color="purple">Purple</Button>
-<Button color="pink">Pink</Button>
-<Button color="teal">Teal</Button>`}
+        code={`<div className="flex flex-wrap gap-2">
+  <Button color="red" size="sm">red</Button>
+  <Button color="orange" size="sm">orange</Button>
+  <Button color="amber" size="sm">amber</Button>
+  <Button color="yellow" size="sm">yellow</Button>
+  <Button color="lime" size="sm">lime</Button>
+  <Button color="green" size="sm">green</Button>
+  <Button color="emerald" size="sm">emerald</Button>
+  <Button color="teal" size="sm">teal</Button>
+  <Button color="cyan" size="sm">cyan</Button>
+  <Button color="sky" size="sm">sky</Button>
+  <Button color="blue" size="sm">blue</Button>
+  <Button color="indigo" size="sm">indigo</Button>
+  <Button color="violet" size="sm">violet</Button>
+  <Button color="purple" size="sm">purple</Button>
+  <Button color="fuchsia" size="sm">fuchsia</Button>
+  <Button color="pink" size="sm">pink</Button>
+  <Button color="rose" size="sm">rose</Button>
+</div>`}
       >
         <div className="flex flex-wrap gap-2">
           {['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal',
@@ -456,9 +480,15 @@ function ButtonPage() {
 
       <Showcase
         title="Outline Variant with Colors"
-        code={`<Button variant="outline" color="primary">Primary</Button>
-<Button variant="outline" color="success">Success</Button>
-<Button variant="outline" color="purple">Purple</Button>`}
+        code={`<div className="flex flex-wrap gap-2">
+  <Button variant="outline" color="primary" size="sm">primary</Button>
+  <Button variant="outline" color="success" size="sm">success</Button>
+  <Button variant="outline" color="warning" size="sm">warning</Button>
+  <Button variant="outline" color="error" size="sm">error</Button>
+  <Button variant="outline" color="purple" size="sm">purple</Button>
+  <Button variant="outline" color="pink" size="sm">pink</Button>
+  <Button variant="outline" color="teal" size="sm">teal</Button>
+</div>`}
       >
         <div className="flex flex-wrap gap-2">
           {['primary', 'success', 'warning', 'error', 'purple', 'pink', 'teal'].map((color) => (
@@ -471,9 +501,15 @@ function ButtonPage() {
 
       <Showcase
         title="Soft Variant with Colors"
-        code={`<Button variant="soft" color="primary">Primary</Button>
-<Button variant="soft" color="success">Success</Button>
-<Button variant="soft" color="indigo">Indigo</Button>`}
+        code={`<div className="flex flex-wrap gap-2">
+  <Button variant="soft" color="primary" size="sm">primary</Button>
+  <Button variant="soft" color="success" size="sm">success</Button>
+  <Button variant="soft" color="warning" size="sm">warning</Button>
+  <Button variant="soft" color="error" size="sm">error</Button>
+  <Button variant="soft" color="indigo" size="sm">indigo</Button>
+  <Button variant="soft" color="rose" size="sm">rose</Button>
+  <Button variant="soft" color="cyan" size="sm">cyan</Button>
+</div>`}
       >
         <div className="flex flex-wrap gap-2">
           {['primary', 'success', 'warning', 'error', 'indigo', 'rose', 'cyan'].map((color) => (
@@ -486,24 +522,23 @@ function ButtonPage() {
 
       <Showcase
         title="Loading State"
-        code={`<Button loading>Loading</Button>
-<Button loading loadingText="Saving...">Save</Button>
-
-// With state management
-const [loading, setLoading] = useState(false);
-
-<Button
-  loading={loading}
-  loadingText="Processing..."
-  onClick={() => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
-  }}
->
-  Click to Load
-</Button>`}
+        code={`<HStack gap="lg" wrap>
+  <Button disabled>Disabled</Button>
+  <Button loading>Loading</Button>
+  <Button loading loadingText="Saving...">Save</Button>
+  <Button
+    loading={loading}
+    loadingText="Processing..."
+    onClick={() => {
+      setLoading(true);
+      setTimeout(() => setLoading(false), 2000);
+    }}
+  >
+    Click to Load
+  </Button>
+</HStack>`}
       >
-        <HStack gap={4} wrap>
+        <HStack gap="lg" wrap>
           <Button disabled>Disabled</Button>
           <Button loading>Loading</Button>
           <Button loading loadingText="Saving...">Save</Button>
@@ -522,13 +557,16 @@ const [loading, setLoading] = useState(false);
 
       <Showcase
         title="Rounded Styles"
-        code={`<Button rounded="none">None</Button>
-<Button rounded="sm">Small</Button>
-<Button rounded="md">Medium</Button>
-<Button rounded="lg">Large</Button>
-<Button rounded="full">Full</Button>`}
+        code={`<HStack gap="lg">
+  <Button rounded="none">None</Button>
+  <Button rounded="sm">Small</Button>
+  <Button rounded="md">Medium</Button>
+  <Button rounded="lg">Large</Button>
+  <Button rounded="xl">XL</Button>
+  <Button rounded="full">Full</Button>
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Button rounded="none">None</Button>
           <Button rounded="sm">Small</Button>
           <Button rounded="md">Medium</Button>
@@ -540,10 +578,12 @@ const [loading, setLoading] = useState(false);
 
       <Showcase
         title="Full Width"
-        code={`<Button fullWidth>Full Width Button</Button>
-<Button fullWidth variant="outline">Full Width Outline</Button>`}
+        code={`<VStack gap="md">
+  <Button fullWidth>Full Width Button</Button>
+  <Button fullWidth variant="outline">Full Width Outline</Button>
+</VStack>`}
       >
-        <VStack gap={3}>
+        <VStack gap="md">
           <Button fullWidth>Full Width Button</Button>
           <Button fullWidth variant="outline">Full Width Outline</Button>
         </VStack>
@@ -568,18 +608,22 @@ function InputPage() {
 
       <Showcase
         title="Variants"
-        code={`import { Input, Label } from 'core-ui';
-
-<Label>Outline (default)</Label>
-<Input variant="outline" placeholder="Enter text..." />
-
-<Label>Filled</Label>
-<Input variant="filled" placeholder="Enter text..." />
-
-<Label>Flushed</Label>
-<Input variant="flushed" placeholder="Enter text..." />`}
+        code={`<VStack gap="lg" className="max-w-md">
+  <div>
+    <Label className="mb-1.5">Outline (default)</Label>
+    <Input variant="outline" placeholder="Enter text..." />
+  </div>
+  <div>
+    <Label className="mb-1.5">Filled</Label>
+    <Input variant="filled" placeholder="Enter text..." />
+  </div>
+  <div>
+    <Label className="mb-1.5">Flushed</Label>
+    <Input variant="flushed" placeholder="Enter text..." />
+  </div>
+</VStack>`}
       >
-        <VStack gap={4} className="max-w-md">
+        <VStack gap="lg" className="max-w-md">
           <div>
             <Label className="mb-1.5">Outline (default)</Label>
             <Input variant="outline" placeholder="Enter text..." />
@@ -597,11 +641,13 @@ function InputPage() {
 
       <Showcase
         title="Sizes"
-        code={`<Input size="sm" placeholder="Small input" />
-<Input size="md" placeholder="Medium input" />
-<Input size="lg" placeholder="Large input" />`}
+        code={`<VStack gap="lg" className="max-w-md">
+  <Input size="sm" placeholder="Small input" />
+  <Input size="md" placeholder="Medium input (default)" />
+  <Input size="lg" placeholder="Large input" />
+</VStack>`}
       >
-        <VStack gap={4} className="max-w-md">
+        <VStack gap="lg" className="max-w-md">
           <Input size="sm" placeholder="Small input" />
           <Input size="md" placeholder="Medium input (default)" />
           <Input size="lg" placeholder="Large input" />
@@ -610,12 +656,14 @@ function InputPage() {
 
       <Showcase
         title="States"
-        code={`<Input placeholder="Normal input" />
-<Input placeholder="Disabled" isDisabled />
-<Input placeholder="Read only" isReadOnly value="Read only value" />
-<Input placeholder="Invalid" isInvalid />`}
+        code={`<VStack gap="lg" className="max-w-md">
+  <Input placeholder="Normal input" />
+  <Input placeholder="Disabled input" isDisabled />
+  <Input placeholder="Read only input" isReadOnly value="Read only value" />
+  <Input placeholder="Invalid input" isInvalid />
+</VStack>`}
       >
-        <VStack gap={4} className="max-w-md">
+        <VStack gap="lg" className="max-w-md">
           <Input placeholder="Normal input" />
           <Input placeholder="Disabled input" isDisabled />
           <Input placeholder="Read only input" isReadOnly value="Read only value" />
@@ -625,11 +673,13 @@ function InputPage() {
 
       <Showcase
         title="With Addons"
-        code={`<Input leftAddon="https://" placeholder="website.com" />
-<Input rightAddon=".com" placeholder="domain" />
-<Input leftAddon="$" rightAddon=".00" placeholder="Amount" />`}
+        code={`<VStack gap="lg" className="max-w-md">
+  <Input leftAddon="https://" placeholder="website.com" />
+  <Input rightAddon=".com" placeholder="domain" />
+  <Input leftAddon="$" rightAddon=".00" placeholder="Amount" />
+</VStack>`}
       >
-        <VStack gap={4} className="max-w-md">
+        <VStack gap="lg" className="max-w-md">
           <Input leftAddon="https://" placeholder="website.com" />
           <Input rightAddon=".com" placeholder="domain" />
           <Input leftAddon="$" rightAddon=".00" placeholder="Amount" />
@@ -638,24 +688,13 @@ function InputPage() {
 
       <Showcase
         title="With Icons/Elements"
-        code={`<Input
-  leftElement={<span>🔍</span>}
-  placeholder="Search..."
-/>
-
-<Input
-  type="email"
-  rightElement={<span>📧</span>}
-  placeholder="Enter email..."
-/>
-
-<Input
-  leftElement={<span>💵</span>}
-  rightElement={<span>USD</span>}
-  placeholder="0.00"
-/>`}
+        code={`<VStack gap="lg" className="max-w-md">
+  <Input leftElement={<span>🔍</span>} placeholder="Search..." />
+  <Input type="email" rightElement={<span>📧</span>} placeholder="Enter email..." />
+  <Input leftElement={<span>💵</span>} rightElement={<span>USD</span>} placeholder="0.00" />
+</VStack>`}
       >
-        <VStack gap={4} className="max-w-md">
+        <VStack gap="lg" className="max-w-md">
           <Input
             leftElement={<span>🔍</span>}
             placeholder="Search..."
@@ -692,18 +731,32 @@ function CardPage() {
 
       <Showcase
         title="Variants"
-        code={`import { Card, CardBody, Heading, Text } from 'core-ui';
-
-<Card variant="elevated">
-  <CardBody>
-    <Heading as="h4">Elevated</Heading>
-    <Text color="muted">Default with shadow</Text>
-  </CardBody>
-</Card>
-
-<Card variant="outline">...</Card>
-<Card variant="filled">...</Card>
-<Card variant="ghost">...</Card>`}
+        code={`<div className="grid grid-cols-2 gap-4">
+  <Card variant="elevated">
+    <CardBody>
+      <Heading as="h4" size="lg">Elevated</Heading>
+      <Text color="muted" size="sm">Default with shadow</Text>
+    </CardBody>
+  </Card>
+  <Card variant="outline">
+    <CardBody>
+      <Heading as="h4" size="lg">Outline</Heading>
+      <Text color="muted" size="sm">With border</Text>
+    </CardBody>
+  </Card>
+  <Card variant="filled">
+    <CardBody>
+      <Heading as="h4" size="lg">Filled</Heading>
+      <Text color="muted" size="sm">Gray background</Text>
+    </CardBody>
+  </Card>
+  <Card variant="ghost">
+    <CardBody>
+      <Heading as="h4" size="lg">Ghost</Heading>
+      <Text color="muted" size="sm">Transparent</Text>
+    </CardBody>
+  </Card>
+</div>`}
       >
         <div className="grid grid-cols-2 gap-4">
           <Card variant="elevated">
@@ -735,19 +788,19 @@ function CardPage() {
 
       <Showcase
         title="With Header and Footer"
-        code={`import { Card, CardHeader, CardBody, CardFooter, Button, HStack } from 'core-ui';
-
-<Card variant="outline">
+        code={`<Card variant="outline" className="max-w-md">
   <CardHeader>
-    <Heading as="h4">Card Title</Heading>
-    <Text color="muted" size="sm">Card subtitle</Text>
+    <Heading as="h4" size="lg">Card Title</Heading>
+    <Text color="muted" size="sm">Card subtitle or description</Text>
   </CardHeader>
   <CardBody>
-    <Text>Main content area.</Text>
+    <Text>
+      This is the main content area of the card. You can put any content here.
+    </Text>
   </CardBody>
   <CardFooter>
-    <HStack justify="end" gap={3}>
-      <Button variant="ghost">Cancel</Button>
+    <HStack justify="end" gap="md">
+      <Button variant="ghost" color="gray">Cancel</Button>
       <Button>Submit</Button>
     </HStack>
   </CardFooter>
@@ -764,7 +817,7 @@ function CardPage() {
             </Text>
           </CardBody>
           <CardFooter>
-            <HStack justify="end" gap={3}>
+            <HStack justify="end" gap="md">
               <Button variant="ghost" color="gray">Cancel</Button>
               <Button>Submit</Button>
             </HStack>
@@ -774,25 +827,27 @@ function CardPage() {
 
       <Showcase
         title="Hoverable & Pressable"
-        code={`<Card variant="outline" isHoverable>
-  <CardBody>
-    <Text weight="medium">Hoverable</Text>
-    <Text color="muted" size="sm">Hover to see effect</Text>
-  </CardBody>
-</Card>
-
-<Card
-  variant="outline"
-  isPressable
-  onClick={() => alert('Card clicked!')}
->
-  <CardBody>
-    <Text weight="medium">Pressable</Text>
-    <Text color="muted" size="sm">Click me!</Text>
-  </CardBody>
-</Card>`}
+        code={`<HStack gap="lg">
+  <Card variant="outline" isHoverable className="w-48">
+    <CardBody>
+      <Text weight="medium">Hoverable</Text>
+      <Text color="muted" size="sm">Hover to see effect</Text>
+    </CardBody>
+  </Card>
+  <Card
+    variant="outline"
+    isPressable
+    onClick={() => alert('Card clicked!')}
+    className="w-48"
+  >
+    <CardBody>
+      <Text weight="medium">Pressable</Text>
+      <Text color="muted" size="sm">Click me!</Text>
+    </CardBody>
+  </Card>
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Card variant="outline" isHoverable className="w-48">
             <CardBody>
               <Text weight="medium">Hoverable</Text>
@@ -832,13 +887,13 @@ function BadgePage() {
 
       <Showcase
         title="Variants"
-        code={`import { Badge } from 'core-ui';
-
-<Badge variant="solid">Solid</Badge>
-<Badge variant="soft">Soft</Badge>
-<Badge variant="outline">Outline</Badge>`}
+        code={`<HStack gap="lg">
+  <Badge variant="solid">Solid</Badge>
+  <Badge variant="soft">Soft</Badge>
+  <Badge variant="outline">Outline</Badge>
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Badge variant="solid">Solid</Badge>
           <Badge variant="soft">Soft</Badge>
           <Badge variant="outline">Outline</Badge>
@@ -847,18 +902,30 @@ function BadgePage() {
 
       <Showcase
         title="Semantic Colors"
-        code={`<Badge color="primary">Primary</Badge>
-<Badge color="secondary">Secondary</Badge>
-<Badge color="success">Success</Badge>
-<Badge color="warning">Warning</Badge>
-<Badge color="error">Error</Badge>
-<Badge color="info">Info</Badge>
-
-// With solid variant
-<Badge color="success" variant="solid">Success</Badge>`}
+        code={`<VStack gap="md" align="start">
+  <HStack gap="sm">
+    <Badge color="primary">Primary</Badge>
+    <Badge color="secondary">Secondary</Badge>
+    <Badge color="success">Success</Badge>
+    <Badge color="warning">Warning</Badge>
+    <Badge color="error">Error</Badge>
+    <Badge color="info">Info</Badge>
+  </HStack>
+  <HStack gap="sm">
+    <Badge color="primary" variant="solid">Primary</Badge>
+    <Badge color="success" variant="solid">Success</Badge>
+    <Badge color="warning" variant="solid">Warning</Badge>
+    <Badge color="error" variant="solid">Error</Badge>
+  </HStack>
+  <HStack gap="sm">
+    <Badge color="primary" variant="outline">Primary</Badge>
+    <Badge color="success" variant="outline">Success</Badge>
+    <Badge color="error" variant="outline">Error</Badge>
+  </HStack>
+</VStack>`}
       >
-        <VStack gap={3} align="start">
-          <HStack gap={2}>
+        <VStack gap="md" align="start">
+          <HStack gap="sm">
             <Badge color="primary">Primary</Badge>
             <Badge color="secondary">Secondary</Badge>
             <Badge color="success">Success</Badge>
@@ -866,13 +933,13 @@ function BadgePage() {
             <Badge color="error">Error</Badge>
             <Badge color="info">Info</Badge>
           </HStack>
-          <HStack gap={2}>
+          <HStack gap="sm">
             <Badge color="primary" variant="solid">Primary</Badge>
             <Badge color="success" variant="solid">Success</Badge>
             <Badge color="warning" variant="solid">Warning</Badge>
             <Badge color="error" variant="solid">Error</Badge>
           </HStack>
-          <HStack gap={2}>
+          <HStack gap="sm">
             <Badge color="primary" variant="outline">Primary</Badge>
             <Badge color="success" variant="outline">Success</Badge>
             <Badge color="error" variant="outline">Error</Badge>
@@ -882,10 +949,25 @@ function BadgePage() {
 
       <Showcase
         title="Palette Colors"
-        code={`<Badge color="red">red</Badge>
-<Badge color="purple">purple</Badge>
-<Badge color="teal">teal</Badge>
-<Badge color="pink">pink</Badge>`}
+        code={`<div className="flex flex-wrap gap-2">
+  <Badge color="red">red</Badge>
+  <Badge color="orange">orange</Badge>
+  <Badge color="amber">amber</Badge>
+  <Badge color="yellow">yellow</Badge>
+  <Badge color="lime">lime</Badge>
+  <Badge color="green">green</Badge>
+  <Badge color="emerald">emerald</Badge>
+  <Badge color="teal">teal</Badge>
+  <Badge color="cyan">cyan</Badge>
+  <Badge color="sky">sky</Badge>
+  <Badge color="blue">blue</Badge>
+  <Badge color="indigo">indigo</Badge>
+  <Badge color="violet">violet</Badge>
+  <Badge color="purple">purple</Badge>
+  <Badge color="fuchsia">fuchsia</Badge>
+  <Badge color="pink">pink</Badge>
+  <Badge color="rose">rose</Badge>
+</div>`}
       >
         <div className="flex flex-wrap gap-2">
           {['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal',
@@ -900,11 +982,13 @@ function BadgePage() {
 
       <Showcase
         title="Sizes"
-        code={`<Badge size="sm">Small</Badge>
-<Badge size="md">Medium</Badge>
-<Badge size="lg">Large</Badge>`}
+        code={`<HStack gap="md" align="center">
+  <Badge size="sm">Small</Badge>
+  <Badge size="md">Medium</Badge>
+  <Badge size="lg">Large</Badge>
+</HStack>`}
       >
-        <HStack gap={3} align="center">
+        <HStack gap="md" align="center">
           <Badge size="sm">Small</Badge>
           <Badge size="md">Medium</Badge>
           <Badge size="lg">Large</Badge>
@@ -914,12 +998,15 @@ function BadgePage() {
       <Showcase
         title="Dot Badges"
         description="Status indicators without text."
-        code={`<Badge dot color="success" />
-<Badge dot color="warning" />
-<Badge dot color="error" />
-<Badge dot color="info" />`}
+        code={`<HStack gap="lg">
+  <Badge dot color="success" />
+  <Badge dot color="warning" />
+  <Badge dot color="error" />
+  <Badge dot color="info" />
+  <Badge dot color="purple" />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Badge dot color="success" />
           <Badge dot color="warning" />
           <Badge dot color="error" />
@@ -930,12 +1017,15 @@ function BadgePage() {
 
       <Showcase
         title="Rounded Styles"
-        code={`<Badge radius="none">Square</Badge>
-<Badge radius="sm">SM</Badge>
-<Badge radius="md">MD</Badge>
-<Badge radius="full">Pill</Badge>`}
+        code={`<HStack gap="md">
+  <Badge radius="none">Square</Badge>
+  <Badge radius="sm">SM</Badge>
+  <Badge radius="md">MD</Badge>
+  <Badge radius="lg">LG</Badge>
+  <Badge radius="full">Pill</Badge>
+</HStack>`}
       >
-        <HStack gap={3}>
+        <HStack gap="md">
           <Badge radius="none">Square</Badge>
           <Badge radius="sm">SM</Badge>
           <Badge radius="md">MD</Badge>
@@ -963,16 +1053,16 @@ function AvatarPage() {
 
       <Showcase
         title="Sizes"
-        code={`import { Avatar } from 'core-ui';
-
-<Avatar size="xs" name="John Doe" />
-<Avatar size="sm" name="John Doe" />
-<Avatar size="md" name="John Doe" />
-<Avatar size="lg" name="John Doe" />
-<Avatar size="xl" name="John Doe" />
-<Avatar size="2xl" name="John Doe" />`}
+        code={`<HStack gap="lg" align="center">
+  <Avatar size="xs" name="John Doe" />
+  <Avatar size="sm" name="John Doe" />
+  <Avatar size="md" name="John Doe" />
+  <Avatar size="lg" name="John Doe" />
+  <Avatar size="xl" name="John Doe" />
+  <Avatar size="2xl" name="John Doe" />
+</HStack>`}
       >
-        <HStack gap={4} align="center">
+        <HStack gap="lg" align="center">
           <Avatar size="xs" name="John Doe" />
           <Avatar size="sm" name="John Doe" />
           <Avatar size="md" name="John Doe" />
@@ -984,17 +1074,13 @@ function AvatarPage() {
 
       <Showcase
         title="With Images"
-        code={`<Avatar
-  src="https://i.pravatar.cc/150?img=1"
-  name="John Doe"
-/>
-
-<Avatar
-  src="https://i.pravatar.cc/150?img=2"
-  name="Jane Doe"
-/>`}
+        code={`<HStack gap="lg">
+  <Avatar src="https://i.pravatar.cc/150?img=1" name="John Doe" />
+  <Avatar src="https://i.pravatar.cc/150?img=2" name="Jane Doe" />
+  <Avatar src="https://i.pravatar.cc/150?img=3" name="Bob Smith" />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Avatar src="https://i.pravatar.cc/150?img=1" name="John Doe" />
           <Avatar src="https://i.pravatar.cc/150?img=2" name="Jane Doe" />
           <Avatar src="https://i.pravatar.cc/150?img=3" name="Bob Smith" />
@@ -1004,12 +1090,14 @@ function AvatarPage() {
       <Showcase
         title="Fallback Initials"
         description="Automatically generates initials from name."
-        code={`<Avatar name="John Doe" color="blue" />
-<Avatar name="Jane Smith" color="purple" />
-<Avatar name="Bob" color="green" />
-<Avatar name="Alice Johnson" color="rose" />`}
+        code={`<HStack gap="lg">
+  <Avatar name="John Doe" color="blue" />
+  <Avatar name="Jane Smith" color="purple" />
+  <Avatar name="Bob" color="green" />
+  <Avatar name="Alice Johnson" color="rose" />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Avatar name="John Doe" color="blue" />
           <Avatar name="Jane Smith" color="purple" />
           <Avatar name="Bob" color="green" />
@@ -1019,10 +1107,20 @@ function AvatarPage() {
 
       <Showcase
         title="Colors"
-        code={`<Avatar name="User" color="primary" />
-<Avatar name="User" color="success" />
-<Avatar name="User" color="purple" />
-<Avatar name="User" color="pink" />`}
+        code={`<div className="flex flex-wrap gap-2">
+  <Avatar name="primary" color="primary" />
+  <Avatar name="secondary" color="secondary" />
+  <Avatar name="success" color="success" />
+  <Avatar name="warning" color="warning" />
+  <Avatar name="error" color="error" />
+  <Avatar name="blue" color="blue" />
+  <Avatar name="purple" color="purple" />
+  <Avatar name="pink" color="pink" />
+  <Avatar name="red" color="red" />
+  <Avatar name="orange" color="orange" />
+  <Avatar name="teal" color="teal" />
+  <Avatar name="cyan" color="cyan" />
+</div>`}
       >
         <div className="flex flex-wrap gap-2">
           {['primary', 'secondary', 'success', 'warning', 'error',
@@ -1035,23 +1133,14 @@ function AvatarPage() {
 
       <Showcase
         title="With Status"
-        code={`<Avatar
-  name="Online User"
-  showStatus
-  status="online"
-  color="blue"
-/>
-
-<Avatar
-  name="Busy User"
-  showStatus
-  status="busy"
-  color="purple"
-/>
-
-// Status options: "online" | "offline" | "busy" | "away"`}
+        code={`<HStack gap="lg">
+  <Avatar name="Online User" showStatus status="online" color="blue" />
+  <Avatar name="Offline User" showStatus status="offline" color="gray" />
+  <Avatar name="Busy User" showStatus status="busy" color="purple" />
+  <Avatar name="Away User" showStatus status="away" color="teal" />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Avatar name="Online User" showStatus status="online" color="blue" />
           <Avatar name="Offline User" showStatus status="offline" color="gray" />
           <Avatar name="Busy User" showStatus status="busy" color="purple" />
@@ -1061,13 +1150,15 @@ function AvatarPage() {
 
       <Showcase
         title="Radius"
-        code={`<Avatar name="JD" radius="none" color="blue" />
-<Avatar name="JD" radius="sm" color="purple" />
-<Avatar name="JD" radius="md" color="pink" />
-<Avatar name="JD" radius="lg" color="teal" />
-<Avatar name="JD" radius="full" color="green" />`}
+        code={`<HStack gap="lg">
+  <Avatar name="JD" radius="none" color="blue" />
+  <Avatar name="JD" radius="sm" color="purple" />
+  <Avatar name="JD" radius="md" color="pink" />
+  <Avatar name="JD" radius="lg" color="teal" />
+  <Avatar name="JD" radius="full" color="green" />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <Avatar name="JD" radius="none" color="blue" />
           <Avatar name="JD" radius="sm" color="purple" />
           <Avatar name="JD" radius="md" color="pink" />
@@ -1078,20 +1169,25 @@ function AvatarPage() {
 
       <Showcase
         title="Avatar Group"
-        code={`import { AvatarGroup, Avatar } from 'core-ui';
-
-<AvatarGroup max={4}>
-  <Avatar src="https://i.pravatar.cc/150?img=1" name="User 1" />
-  <Avatar src="https://i.pravatar.cc/150?img=2" name="User 2" />
-  <Avatar src="https://i.pravatar.cc/150?img=3" name="User 3" />
-  <Avatar src="https://i.pravatar.cc/150?img=4" name="User 4" />
-  <Avatar src="https://i.pravatar.cc/150?img=5" name="User 5" />
-  <Avatar src="https://i.pravatar.cc/150?img=6" name="User 6" />
-</AvatarGroup>
-
-// Shows +2 indicator for extra avatars`}
+        code={`<VStack gap="lg" align="start">
+  <AvatarGroup max={4}>
+    <Avatar src="https://i.pravatar.cc/150?img=1" name="User 1" />
+    <Avatar src="https://i.pravatar.cc/150?img=2" name="User 2" />
+    <Avatar src="https://i.pravatar.cc/150?img=3" name="User 3" />
+    <Avatar src="https://i.pravatar.cc/150?img=4" name="User 4" />
+    <Avatar src="https://i.pravatar.cc/150?img=5" name="User 5" />
+    <Avatar src="https://i.pravatar.cc/150?img=6" name="User 6" />
+  </AvatarGroup>
+  <AvatarGroup max={3} size="lg">
+    <Avatar name="Alice" color="blue" />
+    <Avatar name="Bob" color="purple" />
+    <Avatar name="Charlie" color="pink" />
+    <Avatar name="David" color="teal" />
+    <Avatar name="Eve" color="rose" />
+  </AvatarGroup>
+</VStack>`}
       >
-        <VStack gap={4} align="start">
+        <VStack gap="lg" align="start">
           <AvatarGroup max={4}>
             <Avatar src="https://i.pravatar.cc/150?img=1" name="User 1" />
             <Avatar src="https://i.pravatar.cc/150?img=2" name="User 2" />
@@ -1421,12 +1517,10 @@ function StackPage() {
 
       <Showcase
         title="VStack (Vertical)"
-        code={`import { VStack } from 'core-ui';
-
-<VStack gap="md">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
+        code={`<VStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
+  <div className="bg-blue-100 p-3 rounded">Item 1</div>
+  <div className="bg-blue-100 p-3 rounded">Item 2</div>
+  <div className="bg-blue-100 p-3 rounded">Item 3</div>
 </VStack>`}
       >
         <VStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
@@ -1438,12 +1532,10 @@ function StackPage() {
 
       <Showcase
         title="HStack (Horizontal)"
-        code={`import { HStack } from 'core-ui';
-
-<HStack gap="md">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
+        code={`<HStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
+  <div className="bg-green-100 p-3 rounded">Item 1</div>
+  <div className="bg-green-100 p-3 rounded">Item 2</div>
+  <div className="bg-green-100 p-3 rounded">Item 3</div>
 </HStack>`}
       >
         <HStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
@@ -1456,12 +1548,17 @@ function StackPage() {
       <Showcase
         title="Gap Sizes"
         description="Semantic spacing: none, 2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl"
-        code={`<HStack gap="xs">...</HStack>   // 4px
-<HStack gap="sm">...</HStack>   // 8px
-<HStack gap="md">...</HStack>   // 12px
-<HStack gap="lg">...</HStack>   // 16px
-<HStack gap="xl">...</HStack>   // 24px
-<HStack gap="2xl">...</HStack>  // 32px`}
+        code={`<VStack gap="lg">
+  <div>
+    <Text size="sm" color="muted" className="mb-2">gap="xs"</Text>
+    <HStack gap="xs" className="p-2 border border-dashed border-gray-300 rounded">
+      <div className="bg-purple-100 px-3 py-2 rounded text-sm">A</div>
+      <div className="bg-purple-100 px-3 py-2 rounded text-sm">B</div>
+      <div className="bg-purple-100 px-3 py-2 rounded text-sm">C</div>
+    </HStack>
+  </div>
+  {/* ... more gap sizes: sm, md, lg, xl, 2xl */}
+</VStack>`}
       >
         <VStack gap="lg">
           {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((gap) => (
@@ -1479,9 +1576,17 @@ function StackPage() {
 
       <Showcase
         title="Alignment"
-        code={`<HStack align="start" gap="md">...</HStack>
-<HStack align="center" gap="md">...</HStack>
-<HStack align="end" gap="md">...</HStack>`}
+        code={`<VStack gap="lg">
+  <div>
+    <Text size="sm" color="muted" className="mb-2">align="start"</Text>
+    <HStack align="start" gap="md" className="p-4 h-24 border border-dashed border-gray-300 rounded">
+      <div className="bg-amber-100 p-3 rounded">Short</div>
+      <div className="bg-amber-100 p-3 rounded">Medium Item</div>
+      <div className="bg-amber-100 p-3 rounded">Tall<br />Item</div>
+    </HStack>
+  </div>
+  {/* ... align="center", align="end" */}
+</VStack>`}
       >
         <VStack gap="lg">
           {(['start', 'center', 'end'] as const).map((align) => (
@@ -1499,11 +1604,17 @@ function StackPage() {
 
       <Showcase
         title="Justify Content"
-        code={`<HStack justify="start">...</HStack>
-<HStack justify="center">...</HStack>
-<HStack justify="end">...</HStack>
-<HStack justify="between">...</HStack>
-<HStack justify="around">...</HStack>`}
+        code={`<VStack gap="lg">
+  <div>
+    <Text size="sm" color="muted" className="mb-2">justify="start"</Text>
+    <HStack justify="start" gap="md" className="p-4 border border-dashed border-gray-300 rounded">
+      <div className="bg-teal-100 p-3 rounded">A</div>
+      <div className="bg-teal-100 p-3 rounded">B</div>
+      <div className="bg-teal-100 p-3 rounded">C</div>
+    </HStack>
+  </div>
+  {/* ... justify="center", "end", "between", "around" */}
+</VStack>`}
       >
         <VStack gap="lg">
           {(['start', 'center', 'end', 'between', 'around'] as const).map((justify) => (
@@ -1538,13 +1649,13 @@ function DividerPage() {
 
       <Showcase
         title="Basic"
-        code={`import { Divider } from 'core-ui';
-
-<Text>Content above</Text>
-<Divider />
-<Text>Content below</Text>`}
+        code={`<VStack gap="lg">
+  <Text>Content above</Text>
+  <Divider />
+  <Text>Content below</Text>
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Text>Content above</Text>
           <Divider />
           <Text>Content below</Text>
@@ -1553,11 +1664,22 @@ function DividerPage() {
 
       <Showcase
         title="Variants"
-        code={`<Divider variant="solid" />
-<Divider variant="dashed" />
-<Divider variant="dotted" />`}
+        code={`<VStack gap="xl">
+  <div>
+    <Text size="sm" color="muted" className="mb-2">Solid</Text>
+    <Divider variant="solid" />
+  </div>
+  <div>
+    <Text size="sm" color="muted" className="mb-2">Dashed</Text>
+    <Divider variant="dashed" />
+  </div>
+  <div>
+    <Text size="sm" color="muted" className="mb-2">Dotted</Text>
+    <Divider variant="dotted" />
+  </div>
+</VStack>`}
       >
-        <VStack gap={6}>
+        <VStack gap="xl">
           <div>
             <Text size="sm" color="muted" className="mb-2">Solid</Text>
             <Divider variant="solid" />
@@ -1575,11 +1697,13 @@ function DividerPage() {
 
       <Showcase
         title="Colors"
-        code={`<Divider color="light" />
-<Divider color="default" />
-<Divider color="dark" />`}
+        code={`<VStack gap="lg">
+  <Divider color="light" />
+  <Divider color="default" />
+  <Divider color="dark" />
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Divider color="light" />
           <Divider color="default" />
           <Divider color="dark" />
@@ -1588,11 +1712,13 @@ function DividerPage() {
 
       <Showcase
         title="With Label"
-        code={`<Divider label="OR" labelPosition="center" />
-<Divider label="Section" labelPosition="left" />
-<Divider label="End" labelPosition="right" />`}
+        code={`<VStack gap="xl">
+  <Divider label="OR" labelPosition="center" />
+  <Divider label="Section" labelPosition="left" />
+  <Divider label="End" labelPosition="right" />
+</VStack>`}
       >
-        <VStack gap={6}>
+        <VStack gap="xl">
           <Divider label="OR" labelPosition="center" />
           <Divider label="Section" labelPosition="left" />
           <Divider label="End" labelPosition="right" />
@@ -1601,7 +1727,7 @@ function DividerPage() {
 
       <Showcase
         title="Vertical"
-        code={`<HStack gap={4} className="h-20">
+        code={`<HStack gap="lg" className="h-20">
   <Text>Left</Text>
   <Divider orientation="vertical" />
   <Text>Middle</Text>
@@ -1609,7 +1735,7 @@ function DividerPage() {
   <Text>Right</Text>
 </HStack>`}
       >
-        <HStack gap={4} className="h-20">
+        <HStack gap="lg" className="h-20">
           <Text>Left</Text>
           <Divider orientation="vertical" />
           <Text>Middle</Text>
@@ -1637,25 +1763,22 @@ function AlertPage() {
 
       <Showcase
         title="Status Types"
-        code={`import { Alert } from 'core-ui';
-
-<Alert status="info" title="Information">
-  This is an informational message.
-</Alert>
-
-<Alert status="success" title="Success">
-  Your changes have been saved successfully.
-</Alert>
-
-<Alert status="warning" title="Warning">
-  Please review this before continuing.
-</Alert>
-
-<Alert status="error" title="Error">
-  Something went wrong. Please try again.
-</Alert>`}
+        code={`<VStack gap="lg">
+  <Alert status="info" title="Information">
+    This is an informational message.
+  </Alert>
+  <Alert status="success" title="Success">
+    Your changes have been saved successfully.
+  </Alert>
+  <Alert status="warning" title="Warning">
+    Please review this before continuing.
+  </Alert>
+  <Alert status="error" title="Error">
+    Something went wrong. Please try again.
+  </Alert>
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Alert status="info" title="Information">
             This is an informational message.
           </Alert>
@@ -1673,23 +1796,22 @@ function AlertPage() {
 
       <Showcase
         title="Variants"
-        code={`<Alert status="info" variant="subtle" title="Subtle">
-  Light background variant.
-</Alert>
-
-<Alert status="info" variant="solid" title="Solid">
-  Solid background variant.
-</Alert>
-
-<Alert status="info" variant="left-accent" title="Left Accent">
-  With left border accent.
-</Alert>
-
-<Alert status="info" variant="top-accent" title="Top Accent">
-  With top border accent.
-</Alert>`}
+        code={`<VStack gap="lg">
+  <Alert status="info" variant="subtle" title="Subtle">
+    Light background variant.
+  </Alert>
+  <Alert status="info" variant="solid" title="Solid">
+    Solid background variant.
+  </Alert>
+  <Alert status="info" variant="left-accent" title="Left Accent">
+    With left border accent.
+  </Alert>
+  <Alert status="info" variant="top-accent" title="Top Accent">
+    With top border accent.
+  </Alert>
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Alert status="info" variant="subtle" title="Subtle">
             Light background variant.
           </Alert>
@@ -1716,7 +1838,7 @@ function AlertPage() {
   Click the X to close this alert.
 </Alert>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Alert
             status="success"
             title="Closable Alert"
@@ -1730,15 +1852,16 @@ function AlertPage() {
 
       <Showcase
         title="Without Title"
-        code={`<Alert status="info">
-  Just a simple informational message.
-</Alert>
-
-<Alert status="error" variant="solid">
-  An error occurred during the operation.
-</Alert>`}
+        code={`<VStack gap="lg">
+  <Alert status="info">
+    Just a simple informational message without a title.
+  </Alert>
+  <Alert status="error" variant="solid">
+    An error occurred during the operation.
+  </Alert>
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Alert status="info">
             Just a simple informational message without a title.
           </Alert>
@@ -1767,15 +1890,15 @@ function SpinnerPage() {
 
       <Showcase
         title="Sizes"
-        code={`import { Spinner } from 'core-ui';
-
-<Spinner size="xs" />
-<Spinner size="sm" />
-<Spinner size="md" />
-<Spinner size="lg" />
-<Spinner size="xl" />`}
+        code={`<HStack gap="xl" align="center">
+  <Spinner size="xs" />
+  <Spinner size="sm" />
+  <Spinner size="md" />
+  <Spinner size="lg" />
+  <Spinner size="xl" />
+</HStack>`}
       >
-        <HStack gap={6} align="center">
+        <HStack gap="xl" align="center">
           <Spinner size="xs" />
           <Spinner size="sm" />
           <Spinner size="md" />
@@ -1786,15 +1909,15 @@ function SpinnerPage() {
 
       <Showcase
         title="Colors"
-        code={`<Spinner color="primary" />
-<Spinner color="secondary" />
-
-// On dark background
-<div className="bg-gray-800 p-4">
-  <Spinner color="white" />
-</div>`}
+        code={`<HStack gap="xl">
+  <Spinner color="primary" />
+  <Spinner color="secondary" />
+  <div className="bg-gray-800 p-4 rounded">
+    <Spinner color="white" />
+  </div>
+</HStack>`}
       >
-        <HStack gap={6}>
+        <HStack gap="xl">
           <Spinner color="primary" />
           <Spinner color="secondary" />
           <div className="bg-gray-800 p-4 rounded">
@@ -1805,13 +1928,14 @@ function SpinnerPage() {
 
       <Showcase
         title="In Context"
-        code={`<Button loading>Loading...</Button>
-
-<Card className="w-32 h-32 flex items-center justify-center">
-  <Spinner size="lg" color="primary" />
-</Card>`}
+        code={`<HStack gap="2xl">
+  <Button loading>Loading...</Button>
+  <Card variant="outline" className="w-32 h-32 flex items-center justify-center">
+    <Spinner size="lg" color="primary" />
+  </Card>
+</HStack>`}
       >
-        <HStack gap={8}>
+        <HStack gap="2xl">
           <Button loading>Loading...</Button>
           <Card variant="outline" className="w-32 h-32 flex items-center justify-center">
             <Spinner size="lg" color="primary" />
@@ -1838,13 +1962,13 @@ function SkeletonPage() {
 
       <Showcase
         title="Basic"
-        code={`import { Skeleton } from 'core-ui';
-
-<Skeleton height={20} width="60%" />
-<Skeleton height={16} width="80%" />
-<Skeleton height={16} width="40%" />`}
+        code={`<VStack gap="lg">
+  <Skeleton height={20} width="60%" />
+  <Skeleton height={16} width="80%" />
+  <Skeleton height={16} width="40%" />
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           <Skeleton height={20} width="60%" />
           <Skeleton height={16} width="80%" />
           <Skeleton height={16} width="40%" />
@@ -1853,22 +1977,20 @@ function SkeletonPage() {
 
       <Showcase
         title="Text Lines"
-        code={`import { SkeletonText } from 'core-ui';
-
-<SkeletonText lines={4} />`}
+        code={`<SkeletonText lines={4} />`}
       >
         <SkeletonText lines={4} />
       </Showcase>
 
       <Showcase
         title="Circle"
-        code={`import { SkeletonCircle } from 'core-ui';
-
-<SkeletonCircle size={40} />
-<SkeletonCircle size={60} />
-<SkeletonCircle size={80} />`}
+        code={`<HStack gap="lg">
+  <SkeletonCircle size={40} />
+  <SkeletonCircle size={60} />
+  <SkeletonCircle size={80} />
+</HStack>`}
       >
-        <HStack gap={4}>
+        <HStack gap="lg">
           <SkeletonCircle size={40} />
           <SkeletonCircle size={60} />
           <SkeletonCircle size={80} />
@@ -1877,11 +1999,11 @@ function SkeletonPage() {
 
       <Showcase
         title="Card Loading State"
-        code={`<Card variant="outline">
+        code={`<Card variant="outline" className="max-w-sm">
   <CardBody>
-    <HStack gap={4} align="start">
+    <HStack gap="lg" align="start">
       <SkeletonCircle size={48} />
-      <VStack gap={2} className="flex-1">
+      <VStack gap="sm" className="flex-1">
         <Skeleton height={16} width="60%" />
         <Skeleton height={14} width="40%" />
       </VStack>
@@ -1894,9 +2016,9 @@ function SkeletonPage() {
       >
         <Card variant="outline" className="max-w-sm">
           <CardBody>
-            <HStack gap={4} align="start">
+            <HStack gap="lg" align="start">
               <SkeletonCircle size={48} />
-              <VStack gap={2} className="flex-1">
+              <VStack gap="sm" className="flex-1">
                 <Skeleton height={16} width="60%" />
                 <Skeleton height={14} width="40%" />
               </VStack>
@@ -1910,21 +2032,23 @@ function SkeletonPage() {
 
       <Showcase
         title="List Loading State"
-        code={`{[1, 2, 3].map((i) => (
-  <HStack key={i} gap={4}>
-    <SkeletonCircle size={40} />
-    <VStack gap={2} className="flex-1">
-      <Skeleton height={14} width="70%" />
-      <Skeleton height={12} width="50%" />
-    </VStack>
-  </HStack>
-))}`}
+        code={`<VStack gap="lg">
+  {[1, 2, 3].map((i) => (
+    <HStack key={i} gap="lg">
+      <SkeletonCircle size={40} />
+      <VStack gap="sm" className="flex-1">
+        <Skeleton height={14} width="70%" />
+        <Skeleton height={12} width="50%" />
+      </VStack>
+    </HStack>
+  ))}
+</VStack>`}
       >
-        <VStack gap={4}>
+        <VStack gap="lg">
           {[1, 2, 3].map((i) => (
-            <HStack key={i} gap={4}>
+            <HStack key={i} gap="lg">
               <SkeletonCircle size={40} />
-              <VStack gap={2} className="flex-1">
+              <VStack gap="sm" className="flex-1">
                 <Skeleton height={14} width="70%" />
                 <Skeleton height={12} width="50%" />
               </VStack>
