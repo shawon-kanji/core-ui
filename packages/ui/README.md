@@ -147,8 +147,8 @@ console.log(iconNames);
 All components export their prop types:
 
 ```tsx
-import { 
-  Button, 
+import {
+  Button,
   type ButtonProps,
   type ButtonColor,
   Box,
