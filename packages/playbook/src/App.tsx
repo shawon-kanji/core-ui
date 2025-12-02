@@ -15,6 +15,7 @@ import {
   Skeleton, SkeletonText, SkeletonCircle,
   Text, Heading, Label, Code,
   Divider,
+  Icon, iconNames,
   colors,
 } from 'core-ui';
 
@@ -28,6 +29,7 @@ const componentCategories = [
     items: [
       { name: 'Colors', id: 'colors' },
       { name: 'Typography', id: 'typography' },
+      { name: 'Icons', id: 'icon' },
     ],
   },
   {

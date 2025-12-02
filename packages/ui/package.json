@@ -1,6 +1,9 @@
 {
   "name": "core-ui",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "./dist/core-ui.umd.js",
   "module": "./dist/core-ui.mjs",
   "types": "./dist/index.d.ts",

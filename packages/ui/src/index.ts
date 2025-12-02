@@ -35,3 +35,6 @@ export * from './components/Avatar';
 export * from './components/Alert';
 export * from './components/Spinner';
 export * from './components/Skeleton';
+
+// Icons
+export * from './components/Icon';
