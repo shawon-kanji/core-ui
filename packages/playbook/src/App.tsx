@@ -9,7 +9,7 @@ import {
   Card, CardHeader, CardBody, CardFooter,
   Badge,
   Avatar, AvatarGroup,
-  Stack, HStack, VStack,
+  HStack, VStack,
   Alert,
   Spinner,
   Skeleton, SkeletonText, SkeletonCircle,
@@ -366,6 +366,278 @@ function TypographyPage() {
 }
 
 // =============================================
+// ICON PAGE
+// =============================================
+
+function IconPage() {
+  const [copiedIcon, setCopiedIcon] = useState<string | null>(null);
+
+  const copyToClipboard = (iconName: string) => {
+    navigator.clipboard.writeText(`<Icon name="${iconName}" />`);
+    setCopiedIcon(iconName);
+    setTimeout(() => setCopiedIcon(null), 1500);
+  };
+
+  // Group icons by category (matching the icon component's kebab-case naming)
+  const iconCategories = {
+    'Navigation': ['chevron-up', 'chevron-down', 'chevron-left', 'chevron-right', 'arrow-up', 'arrow-down', 'arrow-left', 'arrow-right', 'menu', 'more-horizontal', 'more-vertical'],
+    'Actions': ['plus', 'minus', 'x', 'check', 'edit', 'trash', 'copy', 'download', 'upload', 'refresh', 'search', 'filter', 'settings', 'external-link', 'link'],
+    'Status': ['info', 'warning', 'error', 'success', 'question', 'bell', 'bell-off'],
+    'Media': ['image', 'video', 'music', 'file', 'folder', 'folder-open'],
+    'Communication': ['mail', 'phone', 'message', 'send', 'chat'],
+    'User': ['user', 'users', 'user-plus', 'user-minus', 'user-check'],
+    'UI': ['eye', 'eye-off', 'lock', 'unlock', 'star', 'star-filled', 'heart', 'heart-filled', 'bookmark', 'bookmark-filled', 'pin', 'flag'],
+    'Misc': ['home', 'calendar', 'clock', 'location', 'globe', 'sun', 'moon', 'code', 'terminal', 'database', 'cloud', 'zap', 'loader'],
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <Heading as="h2">Icons</Heading>
+        <Text color="muted" className="mt-2">
+          A comprehensive set of {iconNames.length} SVG icons. Click any icon to copy its usage code.
+        </Text>
+      </div>
+
+      <Showcase
+        title="Basic Usage"
+        description="Import and use icons with the name prop."
+        code={`import { Icon } from 'core-ui';
+
+<Icon name="check" />
+<Icon name="home" />
+<Icon name="settings" />`}
+      >
+        <HStack gap="xl">
+          <Icon name="check" />
+          <Icon name="home" />
+          <Icon name="settings" />
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Sizes"
+        description="Icons come in 6 sizes: xs (12px), sm (16px), md (20px), lg (24px), xl (32px), 2xl (40px)"
+        code={`<HStack gap="xl" align="center">
+  <Icon name="star" size="xs" />
+  <Icon name="star" size="sm" />
+  <Icon name="star" size="md" />
+  <Icon name="star" size="lg" />
+  <Icon name="star" size="xl" />
+  <Icon name="star" size="2xl" />
+</HStack>`}
+      >
+        <HStack gap="xl" align="center">
+          <Icon name="star" size="xs" />
+          <Icon name="star" size="sm" />
+          <Icon name="star" size="md" />
+          <Icon name="star" size="lg" />
+          <Icon name="star" size="xl" />
+          <Icon name="star" size="2xl" />
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Colors"
+        description="Icons inherit text color by default. Use className for custom colors."
+        code={`<HStack gap="lg">
+  <Icon name="heart" />
+  <Icon name="heart" className="text-primary-500" />
+  <Icon name="heart" className="text-secondary-500" />
+  <Icon name="heart" className="text-success-500" />
+  <Icon name="heart" className="text-warning-500" />
+  <Icon name="heart" className="text-error-500" />
+  <Icon name="heart" className="text-info-500" />
+  <Icon name="heart" className="text-gray-400" />
+</HStack>`}
+      >
+        <HStack gap="lg">
+          <Icon name="heart" />
+          <Icon name="heart" className="text-primary-500" />
+          <Icon name="heart" className="text-secondary-500" />
+          <Icon name="heart" className="text-success-500" />
+          <Icon name="heart" className="text-warning-500" />
+          <Icon name="heart" className="text-error-500" />
+          <Icon name="heart" className="text-info-500" />
+          <Icon name="heart" className="text-gray-400" />
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Stroke Width"
+        description="Adjust the stroke thickness of icons."
+        code={`<HStack gap="xl" align="center">
+  <Icon name="clock" size="xl" strokeWidth={1} />
+  <Icon name="clock" size="xl" strokeWidth={1.5} />
+  <Icon name="clock" size="xl" strokeWidth={2} />
+  <Icon name="clock" size="xl" strokeWidth={2.5} />
+  <Icon name="clock" size="xl" strokeWidth={3} />
+</HStack>`}
+      >
+        <HStack gap="xl" align="center">
+          <Icon name="clock" size="xl" strokeWidth={1} />
+          <Icon name="clock" size="xl" strokeWidth={1.5} />
+          <Icon name="clock" size="xl" strokeWidth={2} />
+          <Icon name="clock" size="xl" strokeWidth={2.5} />
+          <Icon name="clock" size="xl" strokeWidth={3} />
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="With Buttons"
+        description="Icons work great inside buttons."
+        code={`<HStack gap="md">
+  <Button size="sm">
+    <Icon name="plus" size="sm" /> Add Item
+  </Button>
+  <Button variant="outline" size="sm">
+    <Icon name="download" size="sm" /> Download
+  </Button>
+  <Button variant="soft" color="error" size="sm">
+    <Icon name="trash" size="sm" /> Delete
+  </Button>
+</HStack>`}
+      >
+        <HStack gap="md">
+          <Button size="sm">
+            <Icon name="plus" size="sm" /> Add Item
+          </Button>
+          <Button variant="outline" size="sm">
+            <Icon name="download" size="sm" /> Download
+          </Button>
+          <Button variant="soft" color="error" size="sm">
+            <Icon name="trash" size="sm" /> Delete
+          </Button>
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Icon-only Buttons"
+        code={`<HStack gap="md">
+  <Button size="sm" className="px-2">
+    <Icon name="plus" size="sm" />
+  </Button>
+  <Button variant="outline" size="sm" className="px-2">
+    <Icon name="settings" size="sm" />
+  </Button>
+  <Button variant="ghost" size="sm" className="px-2">
+    <Icon name="more-vertical" size="sm" />
+  </Button>
+  <Button variant="soft" color="error" size="sm" className="px-2">
+    <Icon name="x" size="sm" />
+  </Button>
+</HStack>`}
+      >
+        <HStack gap="md">
+          <Button size="sm" className="px-2">
+            <Icon name="plus" size="sm" />
+          </Button>
+          <Button variant="outline" size="sm" className="px-2">
+            <Icon name="settings" size="sm" />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-2">
+            <Icon name="more-vertical" size="sm" />
+          </Button>
+          <Button variant="soft" color="error" size="sm" className="px-2">
+            <Icon name="x" size="sm" />
+          </Button>
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="With Inputs"
+        code={`<VStack gap="md" className="max-w-md">
+  <Input
+    leftElement={<Icon name="search" size="sm" className="text-gray-400" />}
+    placeholder="Search..."
+  />
+  <Input
+    leftElement={<Icon name="mail" size="sm" className="text-gray-400" />}
+    rightElement={<Icon name="check" size="sm" className="text-success-500" />}
+    placeholder="Email verified"
+  />
+  <Input
+    leftElement={<Icon name="lock" size="sm" className="text-gray-400" />}
+    rightElement={<Icon name="eye" size="sm" className="text-gray-400" />}
+    type="password"
+    placeholder="Password"
+  />
+</VStack>`}
+      >
+        <VStack gap="md" className="max-w-md">
+          <Input
+            leftElement={<Icon name="search" size="sm" className="text-gray-400" />}
+            placeholder="Search..."
+          />
+          <Input
+            leftElement={<Icon name="mail" size="sm" className="text-gray-400" />}
+            rightElement={<Icon name="check" size="sm" className="text-success-500" />}
+            placeholder="Email verified"
+          />
+          <Input
+            leftElement={<Icon name="lock" size="sm" className="text-gray-400" />}
+            rightElement={<Icon name="eye" size="sm" className="text-gray-400" />}
+            type="password"
+            placeholder="Password"
+          />
+        </VStack>
+      </Showcase>
+
+      {/* Icon Gallery by Category */}
+      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">All Icons ({iconNames.length})</h3>
+          <p className="text-sm text-gray-500 mb-4">Click any icon to copy its usage code.</p>
+
+          <VStack gap="2xl" align="stretch">
+            {Object.entries(iconCategories).map(([category, icons]) => (
+              <div key={category}>
+                <Text weight="semibold" color="muted" size="sm" className="mb-3 uppercase tracking-wide">
+                  {category}
+                </Text>
+                <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2">
+                  {icons.map((iconName) => (
+                    <button
+                      key={iconName}
+                      onClick={() => copyToClipboard(iconName)}
+                      className={`
+                        relative group flex flex-col items-center gap-1 p-3 rounded-lg
+                        border transition-all duration-150
+                        ${copiedIcon === iconName
+                          ? 'border-green-500 bg-green-50'
+                          : 'border-gray-200 hover:border-primary-300 hover:bg-primary-50'
+                        }
+                      `}
+                      title={iconName}
+                    >
+                      <Icon name={iconName as any} size="md" />
+                      <span className="text-[10px] text-gray-500 truncate w-full text-center">
+                        {copiedIcon === iconName ? '✓ Copied' : iconName}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </VStack>
+        </div>
+      </section>
+
+      <Showcase
+        title="All Icon Names"
+        description="Reference list of all available icon names."
+        code={`// Available icons:
+${iconNames.map(name => `"${name}"`).join(', ')}`}
+      >
+        <div className="flex flex-wrap gap-2">
+          {iconNames.map((name) => (
+            <Code key={name} className="text-xs">{name}</Code>
+          ))}
+        </div>
+      </Showcase>
+    </div>
+  );
+}// =============================================
 // BUTTON PAGE
 // =============================================
 
@@ -2073,6 +2345,7 @@ export default function App() {
     switch (activeComponent) {
       case 'colors': return <ColorsPage />;
       case 'typography': return <TypographyPage />;
+      case 'icon': return <IconPage />;
       case 'button': return <ButtonPage />;
       case 'input': return <InputPage />;
       case 'card': return <CardPage />;

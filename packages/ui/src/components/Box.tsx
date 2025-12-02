@@ -14,6 +14,9 @@ export type BoxSize =
 /** Spacing values */
 export type SpacingValue = 'none' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
+/** Margin values (includes auto for centering) */
+export type MarginValue = SpacingValue | 'auto';
+
 export interface BoxProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Element type to render */
   as?: 'div' | 'section' | 'article' | 'aside' | 'main' | 'header' | 'footer' | 'nav';
@@ -58,25 +61,25 @@ export interface BoxProps extends React.HTMLAttributes<HTMLDivElement> {
   paddingLeft?: SpacingValue;
 
   /** Margin (all sides) */
-  margin?: SpacingValue;
+  margin?: MarginValue;
 
   /** Margin horizontal */
-  marginX?: SpacingValue;
+  marginX?: MarginValue;
 
   /** Margin vertical */
-  marginY?: SpacingValue;
+  marginY?: MarginValue;
 
   /** Margin top */
-  marginTop?: SpacingValue;
+  marginTop?: MarginValue;
 
   /** Margin right */
-  marginRight?: SpacingValue;
+  marginRight?: MarginValue;
 
   /** Margin bottom */
-  marginBottom?: SpacingValue;
+  marginBottom?: MarginValue;
 
   /** Margin left */
-  marginLeft?: SpacingValue;
+  marginLeft?: MarginValue;
 
   /** Display type */
   display?: 'block' | 'inline' | 'inline-block' | 'flex' | 'inline-flex' | 'grid' | 'none' | 'hidden';
@@ -218,6 +221,20 @@ const spacingStyles: Record<SpacingValue, string> = {
   '4xl': '16',
 };
 
+const marginSpacingStyles: Record<MarginValue, string> = {
+  none: '0',
+  '2xs': '0.5',
+  xs: '1',
+  sm: '2',
+  md: '3',
+  lg: '4',
+  xl: '6',
+  '2xl': '8',
+  '3xl': '12',
+  '4xl': '16',
+  auto: 'auto',
+};
+
 const displayStyles: Record<string, string> = {
   block: 'block',
   inline: 'inline',
@@ -330,13 +347,13 @@ const Box = React.forwardRef<HTMLDivElement, BoxProps>(
 
     // Build margin classes
     const marginClasses = [
-      margin && `m-${spacingStyles[margin]}`,
-      marginX && `mx-${spacingStyles[marginX]}`,
-      marginY && `my-${spacingStyles[marginY]}`,
-      marginTop && `mt-${spacingStyles[marginTop]}`,
-      marginRight && `mr-${spacingStyles[marginRight]}`,
-      marginBottom && `mb-${spacingStyles[marginBottom]}`,
-      marginLeft && `ml-${spacingStyles[marginLeft]}`,
+      margin && `m-${marginSpacingStyles[margin]}`,
+      marginX && `mx-${marginSpacingStyles[marginX]}`,
+      marginY && `my-${marginSpacingStyles[marginY]}`,
+      marginTop && `mt-${marginSpacingStyles[marginTop]}`,
+      marginRight && `mr-${marginSpacingStyles[marginRight]}`,
+      marginBottom && `mb-${marginSpacingStyles[marginBottom]}`,
+      marginLeft && `ml-${marginSpacingStyles[marginLeft]}`,
     ].filter(Boolean);
 
     return (
