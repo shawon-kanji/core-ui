@@ -1,19 +1,14 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
+import { Box, type BoxProps } from './Box';
 
 // =============================================
 // CARD TYPES
 // =============================================
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends Omit<BoxProps, 'as'> {
   /** Visual variant */
   variant?: 'elevated' | 'outline' | 'filled' | 'ghost';
-
-  /** Padding size */
-  padding?: 'none' | 'sm' | 'md' | 'lg';
-
-  /** Border radius */
-  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
   /** Hoverable card */
   isHoverable?: boolean;
@@ -37,22 +32,6 @@ const variantStyles = {
   ghost: 'bg-transparent',
 };
 
-const paddingStyles = {
-  none: '',
-  sm: 'p-3',
-  md: 'p-4',
-  lg: 'p-6',
-};
-
-const radiusStyles = {
-  none: 'rounded-none',
-  sm: 'rounded-sm',
-  md: 'rounded-md',
-  lg: 'rounded-lg',
-  xl: 'rounded-xl',
-  '2xl': 'rounded-2xl',
-};
-
 // =============================================
 // CARD COMPONENT
 // =============================================
@@ -62,8 +41,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     {
       className,
       variant = 'elevated',
-      padding = 'none',
-      radius = 'lg',
+      rounded = 'lg',
       isHoverable = false,
       isPressable = false,
       children,
@@ -73,8 +51,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     return (
-      <div
+      <Box
         ref={ref}
+        as="article"
         role={isPressable ? 'button' : undefined}
         tabIndex={isPressable ? 0 : undefined}
         onClick={onClick}
@@ -84,18 +63,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             onClick?.(e as unknown as React.MouseEvent<HTMLDivElement>);
           }
         } : undefined}
+        rounded={rounded}
+        overflow="hidden"
         className={cn(
-          // Base
-          'overflow-hidden',
-
           // Variant
           variantStyles[variant],
-
-          // Padding
-          paddingStyles[padding],
-
-          // Radius
-          radiusStyles[radius],
 
           // Hoverable
           isHoverable && 'transition-shadow hover:shadow-lg',
@@ -108,7 +80,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
@@ -122,13 +94,15 @@ Card.displayName = 'Card';
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
-        className={cn('px-6 py-4 border-b border-gray-100', className)}
+        paddingX="xl"
+        paddingY="lg"
+        className={cn('border-b border-gray-100', className)}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
@@ -142,13 +116,15 @@ CardHeader.displayName = 'CardHeader';
 const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
-        className={cn('px-6 py-4', className)}
+        paddingX="xl"
+        paddingY="lg"
+        className={className}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
@@ -162,13 +138,15 @@ CardBody.displayName = 'CardBody';
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
-        className={cn('px-6 py-4 border-t border-gray-100', className)}
+        paddingX="xl"
+        paddingY="lg"
+        className={cn('border-t border-gray-100', className)}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
