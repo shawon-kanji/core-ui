@@ -15,6 +15,7 @@ export * from './lib/utils';
 // =============================================
 
 // Layout
+export * from './components/Box';
 export * from './components/Stack';
 export * from './components/Divider';
 

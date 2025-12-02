@@ -3,6 +3,7 @@ import 'core-ui/style.css';
 
 // Import all components
 import {
+  Box,
   Button,
   Input,
   Card, CardHeader, CardBody, CardFooter,
@@ -32,6 +33,7 @@ const componentCategories = [
   {
     name: 'Layout',
     items: [
+      { name: 'Box', id: 'box' },
       { name: 'Stack', id: 'stack' },
       { name: 'Divider', id: 'divider' },
     ],
@@ -1112,6 +1114,298 @@ function AvatarPage() {
 }
 
 // =============================================
+// BOX PAGE
+// =============================================
+
+function BoxPage() {
+  return (
+    <div className="space-y-8">
+      <div>
+        <Heading as="h2">Box</Heading>
+        <Text color="muted" className="mt-2">
+          A fundamental layout component with width, height, padding, margin, and styling controls.
+        </Text>
+      </div>
+
+      <Showcase
+        title="Width & Height"
+        description="Semantic sizes: xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl or fractions like 1/2, 1/3"
+        code={`import { Box } from 'core-ui';
+
+<Box width="md" height="sm" background="blue-100" rounded="md">
+  width="md" height="sm"
+</Box>
+
+<Box width="1/2" height="xs" background="purple-100" rounded="md">
+  width="1/2"
+</Box>
+
+// Size scale:
+// xs: 80px, sm: 160px, md: 256px, lg: 320px, xl: 384px`}
+      >
+        <VStack gap="md">
+          <HStack gap="md" wrap>
+            <Box width="xs" height="xs" background="blue-100" rounded="md" center>
+              <Text size="xs">xs</Text>
+            </Box>
+            <Box width="sm" height="xs" background="blue-200" rounded="md" center>
+              <Text size="xs">sm</Text>
+            </Box>
+            <Box width="md" height="xs" background="blue-300" rounded="md" center>
+              <Text size="xs">md</Text>
+            </Box>
+          </HStack>
+          <Box width="full" height="xs" background="purple-100" rounded="md" center>
+            <Text size="sm">width="full"</Text>
+          </Box>
+          <HStack gap="sm">
+            <Box width="1/3" height="xs" background="green-100" rounded="md" center>
+              <Text size="xs">1/3</Text>
+            </Box>
+            <Box width="2/3" height="xs" background="green-200" rounded="md" center>
+              <Text size="xs">2/3</Text>
+            </Box>
+          </HStack>
+        </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Padding"
+        description="Semantic spacing: none, 2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl"
+        code={`<Box padding="md" background="gray-100">
+  Padding all sides
+</Box>
+
+<Box paddingX="lg" paddingY="sm" background="gray-100">
+  Padding horizontal & vertical
+</Box>
+
+<Box paddingTop="xl" paddingRight="md" paddingBottom="sm" paddingLeft="xs" background="gray-100">
+  Individual padding
+</Box>`}
+      >
+        <VStack gap="md">
+          <Box padding="xs" background="amber-100" rounded="md" border borderColor="amber-300">
+            <Text size="sm">padding="xs" (4px)</Text>
+          </Box>
+          <Box padding="sm" background="amber-100" rounded="md" border borderColor="amber-300">
+            <Text size="sm">padding="sm" (8px)</Text>
+          </Box>
+          <Box padding="md" background="amber-100" rounded="md" border borderColor="amber-300">
+            <Text size="sm">padding="md" (12px)</Text>
+          </Box>
+          <Box padding="lg" background="amber-100" rounded="md" border borderColor="amber-300">
+            <Text size="sm">padding="lg" (16px)</Text>
+          </Box>
+          <Box padding="xl" background="amber-100" rounded="md" border borderColor="amber-300">
+            <Text size="sm">padding="xl" (24px)</Text>
+          </Box>
+        </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Margin"
+        description="Same semantic values as padding"
+        code={`<Box margin="md" background="gray-100">
+  Margin all sides
+</Box>
+
+<Box marginX="auto" maxWidth="md" background="gray-100">
+  Centered with marginX="auto"
+</Box>`}
+      >
+        <Box background="gray-100" padding="sm" rounded="md">
+          <Box marginLeft="lg" padding="md" background="teal-100" rounded="md">
+            <Text size="sm">marginLeft="lg"</Text>
+          </Box>
+        </Box>
+      </Showcase>
+
+      <Showcase
+        title="Center Content"
+        description="Shorthand for flex + items-center + justify-center"
+        code={`<Box width="full" height="sm" background="gray-100" center>
+  Perfectly centered!
+</Box>`}
+      >
+        <Box width="full" height="sm" background="indigo-50" rounded="lg" center border borderColor="indigo-200">
+          <VStack gap="xs">
+            <Text weight="medium" color="primary">Centered Content</Text>
+            <Text size="sm" color="muted">Using center prop</Text>
+          </VStack>
+        </Box>
+      </Showcase>
+
+      <Showcase
+        title="Border & Shadow"
+        code={`<Box padding="md" border borderColor="gray-200" rounded="lg">
+  With border
+</Box>
+
+<Box padding="md" shadow="md" rounded="lg" background="white">
+  With shadow
+</Box>
+
+<Box padding="md" border="left" borderColor="blue-500">
+  Left border only
+</Box>`}
+      >
+        <HStack gap="lg" wrap>
+          <Box padding="lg" border borderColor="gray-300" rounded="lg">
+            <Text size="sm">border</Text>
+          </Box>
+          <Box padding="lg" shadow="sm" rounded="lg" background="white">
+            <Text size="sm">shadow="sm"</Text>
+          </Box>
+          <Box padding="lg" shadow="md" rounded="lg" background="white">
+            <Text size="sm">shadow="md"</Text>
+          </Box>
+          <Box padding="lg" shadow="lg" rounded="lg" background="white">
+            <Text size="sm">shadow="lg"</Text>
+          </Box>
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Border Variants"
+        code={`<Box border="top" borderColor="red-500" padding="md">Top</Box>
+<Box border="left" borderColor="blue-500" padding="md">Left</Box>
+<Box border="x" borderColor="green-500" padding="md">X (left & right)</Box>
+<Box border="y" borderColor="purple-500" padding="md">Y (top & bottom)</Box>`}
+      >
+        <HStack gap="md" wrap>
+          <Box border="top" borderColor="red-400" padding="md" background="red-50">
+            <Text size="sm">top</Text>
+          </Box>
+          <Box border="bottom" borderColor="orange-400" padding="md" background="orange-50">
+            <Text size="sm">bottom</Text>
+          </Box>
+          <Box border="left" borderColor="blue-400" padding="md" background="blue-50">
+            <Text size="sm">left</Text>
+          </Box>
+          <Box border="right" borderColor="green-400" padding="md" background="green-50">
+            <Text size="sm">right</Text>
+          </Box>
+          <Box border="x" borderColor="purple-400" padding="md" background="purple-50">
+            <Text size="sm">x</Text>
+          </Box>
+          <Box border="y" borderColor="pink-400" padding="md" background="pink-50">
+            <Text size="sm">y</Text>
+          </Box>
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Border Radius"
+        code={`<Box rounded="none">Square</Box>
+<Box rounded="sm">Small</Box>
+<Box rounded="md">Medium</Box>
+<Box rounded="lg">Large</Box>
+<Box rounded="xl">XL</Box>
+<Box rounded="full">Full (circle)</Box>`}
+      >
+        <HStack gap="md" wrap>
+          {(['none', 'sm', 'md', 'lg', 'xl', '2xl', 'full'] as const).map((r) => (
+            <Box key={r} width="xs" height="xs" background="cyan-100" rounded={r} center>
+              <Text size="xs">{r}</Text>
+            </Box>
+          ))}
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Background Colors"
+        description="Use any Tailwind color class suffix"
+        code={`<Box background="blue-100" padding="md">Blue background</Box>
+<Box background="green-500" padding="md">Green background</Box>
+<Box background="gradient-to-r from-purple-500 to-pink-500" padding="md">
+  Gradient (via className)
+</Box>`}
+      >
+        <HStack gap="md" wrap>
+          <Box padding="md" background="red-100" rounded="md">
+            <Text size="sm">red-100</Text>
+          </Box>
+          <Box padding="md" background="green-100" rounded="md">
+            <Text size="sm">green-100</Text>
+          </Box>
+          <Box padding="md" background="blue-100" rounded="md">
+            <Text size="sm">blue-100</Text>
+          </Box>
+          <Box padding="md" background="purple-500" rounded="md">
+            <Text size="sm" className="text-white">purple-500</Text>
+          </Box>
+        </HStack>
+      </Showcase>
+
+      <Showcase
+        title="Semantic Element"
+        description="Render as different HTML elements"
+        code={`<Box as="section" padding="lg">
+  Renders as <section>
+</Box>
+
+<Box as="article" padding="lg">
+  Renders as <article>
+</Box>
+
+// Options: div, section, article, aside, main, header, footer, nav`}
+      >
+        <VStack gap="sm">
+          <Box as="section" padding="md" background="gray-50" rounded="md" border borderColor="gray-200">
+            <Text size="sm" color="muted">as="section"</Text>
+          </Box>
+          <Box as="article" padding="md" background="gray-50" rounded="md" border borderColor="gray-200">
+            <Text size="sm" color="muted">as="article"</Text>
+          </Box>
+          <Box as="aside" padding="md" background="gray-50" rounded="md" border borderColor="gray-200">
+            <Text size="sm" color="muted">as="aside"</Text>
+          </Box>
+        </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Display & Position"
+        code={`<Box display="flex">Flex container</Box>
+<Box display="grid">Grid container</Box>
+<Box display="none">Hidden</Box>
+
+<Box position="relative">
+  <Box position="absolute">Absolute child</Box>
+</Box>`}
+      >
+        <Box position="relative" height="sm" background="gray-100" rounded="lg" padding="md">
+          <Text size="sm" color="muted">position="relative"</Text>
+          <Box
+            position="absolute"
+            className="top-2 right-2"
+            padding="sm"
+            background="rose-500"
+            rounded="md"
+          >
+            <Text size="xs" className="text-white">absolute</Text>
+          </Box>
+        </Box>
+      </Showcase>
+
+      <Showcase
+        title="Max Width Container"
+        description="Common pattern for centered content containers"
+        code={`<Box maxWidth="xl" marginX="auto" padding="lg">
+  Centered container with max-width
+</Box>`}
+      >
+        <Box background="gray-100" padding="md" rounded="lg">
+          <Box maxWidth="md" marginX="auto" padding="lg" background="white" rounded="lg" shadow="sm" border borderColor="gray-200">
+            <Text size="sm">maxWidth="md" marginX="auto" - Centered container</Text>
+          </Box>
+        </Box>
+      </Showcase>
+    </div>
+  );
+}
+
+// =============================================
 // STACK PAGE
 // =============================================
 
@@ -1658,6 +1952,7 @@ export default function App() {
       case 'card': return <CardPage />;
       case 'badge': return <BadgePage />;
       case 'avatar': return <AvatarPage />;
+      case 'box': return <BoxPage />;
       case 'stack': return <StackPage />;
       case 'divider': return <DividerPage />;
       case 'alert': return <AlertPage />;
