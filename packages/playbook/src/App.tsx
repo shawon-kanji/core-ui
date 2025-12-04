@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import '@shawonkanji/core-ui/style.css';
 
 // Import all components
@@ -2346,525 +2346,470 @@ function SkeletonPage() {
 
 const defaultPlaygroundCode = `<Card variant="outline" className="max-w-md">
   <CardHeader>
-    <HStack justify="between" align="center">
-      <Heading as="h4" size="lg">Welcome!</Heading>
-      <Badge color="success">New</Badge>
-    </HStack>
+    <Heading as="h4" size="lg">Welcome!</Heading>
+    <Badge color="success">New</Badge>
   </CardHeader>
   <CardBody>
-    <VStack gap="md" align="start">
-      <Text>
-        Edit the code on the left to see live changes here.
-        All Core UI components are available!
-      </Text>
-      <Input
-        leftElement={<Icon name="search" size="sm" className="text-gray-400" />}
-        placeholder="Try editing this..."
-      />
-      <HStack gap="sm">
-        <Button size="sm">Primary</Button>
-        <Button size="sm" variant="outline">Outline</Button>
-        <Button size="sm" variant="soft" color="success">
-          <Icon name="check" size="sm" /> Done
-        </Button>
-      </HStack>
-    </VStack>
-  </CardBody>
-  <CardFooter>
-    <HStack gap="md">
-      <Avatar name="John Doe" size="sm" color="blue" />
-      <VStack gap="none" align="start">
-        <Text size="sm" weight="medium">John Doe</Text>
-        <Text size="xs" color="muted">Created just now</Text>
-      </VStack>
+    <Text>Edit the code and click Render to see changes.</Text>
+    <Input placeholder="Try editing this..." className="mt-4" />
+    <HStack gap="sm" className="mt-4">
+      <Button size="sm">Primary</Button>
+      <Button size="sm" variant="outline">Outline</Button>
     </HStack>
-  </CardFooter>
+  </CardBody>
 </Card>`;
 
 const playgroundExamples = [
   {
-    name: 'Card with Form',
+    name: 'Simple Card',
     code: `<Card variant="outline" className="max-w-md">
   <CardHeader>
-    <Heading as="h4">Sign In</Heading>
-    <Text color="muted" size="sm">Enter your credentials</Text>
+    <Heading as="h4">Hello World</Heading>
   </CardHeader>
   <CardBody>
-    <VStack gap="lg">
-      <div className="w-full">
-        <Label className="mb-1.5">Email</Label>
-        <Input
-          leftElement={<Icon name="mail" size="sm" className="text-gray-400" />}
-          placeholder="you@example.com"
-        />
-      </div>
-      <div className="w-full">
-        <Label className="mb-1.5">Password</Label>
-        <Input
-          type="password"
-          leftElement={<Icon name="lock" size="sm" className="text-gray-400" />}
-          placeholder="••••••••"
-        />
-      </div>
-    </VStack>
-  </CardBody>
-  <CardFooter>
-    <Button fullWidth>Sign In</Button>
-  </CardFooter>
-</Card>`,
-  },
-  {
-    name: 'User Profile',
-    code: `<Card variant="elevated" className="max-w-sm">
-  <CardBody>
-    <VStack gap="lg">
-      <Avatar
-        src="https://i.pravatar.cc/150?img=32"
-        name="Sarah Wilson"
-        size="2xl"
-      />
-      <VStack gap="xs">
-        <Heading as="h4">Sarah Wilson</Heading>
-        <Text color="muted">Senior Designer</Text>
-        <HStack gap="sm">
-          <Badge color="purple">Design</Badge>
-          <Badge color="blue">UI/UX</Badge>
-          <Badge color="pink">Figma</Badge>
-        </HStack>
-      </VStack>
-      <Divider />
-      <HStack gap="xl" justify="center">
-        <VStack gap="none">
-          <Text weight="bold" size="lg">128</Text>
-          <Text color="muted" size="sm">Projects</Text>
-        </VStack>
-        <VStack gap="none">
-          <Text weight="bold" size="lg">1.2k</Text>
-          <Text color="muted" size="sm">Followers</Text>
-        </VStack>
-        <VStack gap="none">
-          <Text weight="bold" size="lg">48</Text>
-          <Text color="muted" size="sm">Following</Text>
-        </VStack>
-      </HStack>
-      <Button fullWidth variant="outline">
-        <Icon name="user-plus" size="sm" /> Follow
-      </Button>
-    </VStack>
+    <Text>This is a simple card example.</Text>
   </CardBody>
 </Card>`,
   },
   {
-    name: 'Notification List',
-    code: `<VStack gap="sm" className="max-w-md">
-  <Alert status="success" title="Payment received">
-    Your payment of $49.99 was successful.
-  </Alert>
-  <Alert status="info" title="New feature available">
-    Check out our new dark mode settings!
-  </Alert>
-  <Alert status="warning" title="Storage almost full">
-    You've used 90% of your storage quota.
-  </Alert>
-  <Alert status="error" title="Connection lost" isClosable>
-    Unable to connect to server. Retrying...
-  </Alert>
-</VStack>`,
-  },
-  {
-    name: 'Button Gallery',
-    code: `<VStack gap="lg" align="start">
-  <HStack gap="md" wrap>
-    <Button color="primary">Primary</Button>
-    <Button color="secondary">Secondary</Button>
-    <Button color="success">Success</Button>
-    <Button color="warning">Warning</Button>
-    <Button color="error">Error</Button>
-  </HStack>
-  <HStack gap="md" wrap>
-    <Button variant="outline" color="primary">Outline</Button>
-    <Button variant="soft" color="purple">Soft</Button>
-    <Button variant="ghost" color="gray">Ghost</Button>
-    <Button variant="link" color="blue">Link</Button>
-  </HStack>
-  <HStack gap="md" align="center">
-    <Button size="xs">XS</Button>
-    <Button size="sm">SM</Button>
-    <Button size="md">MD</Button>
-    <Button size="lg">LG</Button>
-    <Button size="xl">XL</Button>
-  </HStack>
-  <HStack gap="md">
-    <Button loading>Loading</Button>
-    <Button disabled>Disabled</Button>
-    <Button rounded="full" color="pink">
-      <Icon name="heart" size="sm" /> Rounded
-    </Button>
-  </HStack>
-</VStack>`,
-  },
-  {
-    name: 'Stats Cards',
-    code: `<HStack gap="lg" wrap>
-  <Card variant="outline" className="w-48">
-    <CardBody>
-      <VStack gap="sm" align="start">
-        <HStack justify="between" className="w-full">
-          <Text color="muted" size="sm">Revenue</Text>
-          <Icon name="zap" size="sm" className="text-success-500" />
-        </HStack>
-        <Heading as="h3">$45,231</Heading>
-        <Badge color="success" size="sm">+20.1%</Badge>
-      </VStack>
-    </CardBody>
-  </Card>
-  <Card variant="outline" className="w-48">
-    <CardBody>
-      <VStack gap="sm" align="start">
-        <HStack justify="between" className="w-full">
-          <Text color="muted" size="sm">Users</Text>
-          <Icon name="users" size="sm" className="text-blue-500" />
-        </HStack>
-        <Heading as="h3">2,350</Heading>
-        <Badge color="info" size="sm">+180 new</Badge>
-      </VStack>
-    </CardBody>
-  </Card>
-  <Card variant="outline" className="w-48">
-    <CardBody>
-      <VStack gap="sm" align="start">
-        <HStack justify="between" className="w-full">
-          <Text color="muted" size="sm">Orders</Text>
-          <Icon name="file" size="sm" className="text-purple-500" />
-        </HStack>
-        <Heading as="h3">1,247</Heading>
-        <Badge color="warning" size="sm">-4.5%</Badge>
-      </VStack>
-    </CardBody>
-  </Card>
+    name: 'Buttons',
+    code: `<HStack gap="md">
+  <Button color="primary">Primary</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="soft" color="success">Soft</Button>
+  <Button variant="ghost">Ghost</Button>
 </HStack>`,
+  },
+  {
+    name: 'Alerts',
+    code: `<VStack gap="sm" className="max-w-md">
+  <Alert status="success" title="Success">Operation completed.</Alert>
+  <Alert status="info" title="Info">Here is some info.</Alert>
+  <Alert status="warning" title="Warning">Please be careful.</Alert>
+  <Alert status="error" title="Error">Something went wrong.</Alert>
+</VStack>`,
+  },
+  {
+    name: 'Badges',
+    code: `<HStack gap="sm" wrap>
+  <Badge color="gray">Gray</Badge>
+  <Badge color="primary">Primary</Badge>
+  <Badge color="success">Success</Badge>
+  <Badge color="warning">Warning</Badge>
+  <Badge color="error">Error</Badge>
+  <Badge color="purple">Purple</Badge>
+  <Badge color="pink">Pink</Badge>
+</HStack>`,
+  },
+  {
+    name: 'Form',
+    code: `<Card variant="outline" className="max-w-sm">
+  <CardHeader>
+    <Heading as="h4">Contact</Heading>
+  </CardHeader>
+  <CardBody>
+    <VStack gap="md">
+      <Input placeholder="Your name" />
+      <Input placeholder="Email address" />
+      <Button fullWidth>Submit</Button>
+    </VStack>
+  </CardBody>
+</Card>`,
+  },
+  {
+    name: 'Avatar Group',
+    code: `<VStack gap="lg" align="start">
+  <HStack gap="md">
+    <Avatar name="John Doe" color="blue" />
+    <Avatar name="Jane Smith" color="pink" />
+    <Avatar name="Bob Wilson" color="green" />
+  </HStack>
+  <AvatarGroup max={3}>
+    <Avatar name="Alice" color="purple" />
+    <Avatar name="Bob" color="blue" />
+    <Avatar name="Charlie" color="green" />
+    <Avatar name="Diana" color="pink" />
+    <Avatar name="Eve" color="orange" />
+  </AvatarGroup>
+</VStack>`,
   },
 ];
 
 function PlaygroundPage() {
   const [code, setCode] = useState(defaultPlaygroundCode);
-  const [error, setError] = useState<string | null>(null);
+  const [renderedCode, setRenderedCode] = useState(defaultPlaygroundCode);
+  const [showComponents, setShowComponents] = useState(false);
 
   // Available components for the playground scope
   const scope = {
+    React,
     Box, Button, Input, Card, CardHeader, CardBody, CardFooter,
     Badge, Avatar, AvatarGroup, HStack, VStack, Alert, Spinner,
     Skeleton, SkeletonText, SkeletonCircle, Text, Heading, Label,
     Code, Divider, Icon,
   };
 
-  const renderPreview = () => {
+  // Only compute preview when renderedCode changes (on Render button click)
+  const { preview, error } = useMemo(() => {
     try {
-      // Transform JSX to createElement calls
-      const transformedCode = transformJSX(code, scope);
-      setError(null);
-      return transformedCode;
+      const element = evaluateJSX(renderedCode, scope);
+      return { preview: element, error: null };
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid JSX');
-      return null;
+      return { preview: null, error: err instanceof Error ? err.message : 'Invalid JSX' };
     }
+  }, [renderedCode]);
+
+  const handleRender = () => {
+    setRenderedCode(code);
   };
 
+  const hasChanges = code !== renderedCode;
+
   return (
-    <div className="space-y-6">
-      <div>
-        <Heading as="h2">Playground</Heading>
-        <Text color="muted" className="mt-2">
-          Write code and see live results. All Core UI components are available.
-        </Text>
-      </div>
-
-      {/* Example Templates */}
-      <div className="flex flex-wrap gap-2">
-        <Text size="sm" color="muted" className="mr-2">Templates:</Text>
-        {playgroundExamples.map((example) => (
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Compact Header */}
+      <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Icon name="code" size="sm" className="text-primary-600" />
+            <span className="font-semibold text-gray-900">Playground</span>
+          </div>
+          <div className="h-4 w-px bg-gray-200" />
+          <div className="flex flex-wrap gap-1">
+            {playgroundExamples.map((example) => (
+              <button
+                key={example.name}
+                onClick={() => { setCode(example.code); setRenderedCode(example.code); }}
+                className="px-2 py-0.5 text-xs font-medium rounded bg-gray-100 hover:bg-primary-100 hover:text-primary-700 text-gray-600 transition-colors"
+              >
+                {example.name}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
           <button
-            key={example.name}
-            onClick={() => setCode(example.code)}
-            className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+            onClick={handleRender}
+            className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              hasChanges
+                ? 'bg-primary-600 hover:bg-primary-700 text-white'
+                : 'bg-gray-100 text-gray-400 cursor-default'
+            }`}
           >
-            {example.name}
+            <span className="flex items-center gap-1">
+              <Icon name="zap" size="xs" />
+              Render
+            </span>
           </button>
-        ))}
+          <button
+            onClick={() => setShowComponents(!showComponents)}
+            className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+              showComponents ? 'bg-primary-100 text-primary-700' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+            }`}
+          >
+            Components
+          </button>
+          <button
+            onClick={() => { setCode(defaultPlaygroundCode); setRenderedCode(defaultPlaygroundCode); }}
+            className="px-2 py-1 text-xs font-medium rounded bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 h-[calc(100vh-280px)] min-h-[500px]">
+      {/* Components Panel (collapsible) */}
+      {showComponents && (
+        <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+          <div className="flex flex-wrap gap-1.5">
+            {Object.keys(scope).filter(k => k !== 'React').map((name) => (
+              <code key={name} className="px-1.5 py-0.5 text-xs bg-white border border-gray-200 rounded text-gray-700">{name}</code>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Editor Area - Full Height Horizontal Split */}
+      <div className="flex-1 flex min-h-0 overflow-hidden">
         {/* Code Editor */}
-        <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
-            <span className="text-sm font-medium text-gray-300">Code</span>
-            <button
-              onClick={() => setCode(defaultPlaygroundCode)}
-              className="text-xs text-gray-400 hover:text-gray-200"
-            >
-              Reset
-            </button>
+        <div className="w-1/2 flex flex-col bg-gray-900 border-r border-gray-700 overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-1.5 bg-gray-800 border-b border-gray-700 flex-shrink-0">
+            <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Editor</span>
+            <div className="flex items-center gap-2">
+              {hasChanges && <span className="text-xs text-yellow-400">● Unsaved</span>}
+              <span className="text-xs text-gray-500">{code.split('\n').length} lines</span>
+            </div>
           </div>
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="flex-1 w-full p-4 bg-gray-900 text-gray-100 font-mono text-sm resize-none focus:outline-none"
+            className="flex-1 w-full p-4 bg-gray-900 text-gray-100 font-mono text-sm resize-none focus:outline-none leading-relaxed overflow-auto"
             spellCheck={false}
             placeholder="Write your JSX here..."
           />
         </div>
 
         {/* Preview */}
-        <div className="flex flex-col bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="flex items-center px-4 py-2 bg-gray-50 border-b border-gray-200">
-            <span className="text-sm font-medium text-gray-700">Preview</span>
+        <div className="w-1/2 flex flex-col bg-white">
+          <div className="flex items-center justify-between px-4 py-1.5 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Preview</span>
+            {error && <span className="text-xs text-red-500">Error</span>}
           </div>
-          <div className="flex-1 p-6 overflow-auto">
+          <div className="flex-1 p-6 overflow-auto bg-white">
             {error ? (
               <Alert status="error" title="Render Error">
                 <Code className="text-xs break-all">{error}</Code>
               </Alert>
             ) : (
-              <div className="flex items-start justify-center">
-                {renderPreview()}
+              <div className="flex items-start justify-center min-h-full">
+                {preview}
               </div>
             )}
           </div>
         </div>
       </div>
-
-      {/* Available Components Reference */}
-      <Card variant="outline">
-        <CardBody>
-          <Text weight="medium" className="mb-3">Available Components</Text>
-          <div className="flex flex-wrap gap-2">
-            {Object.keys(scope).map((name) => (
-              <Code key={name} className="text-xs">{name}</Code>
-            ))}
-          </div>
-        </CardBody>
-      </Card>
     </div>
   );
 }
 
-// Simple JSX transformer - converts JSX string to React elements
-function transformJSX(jsxString: string, scope: Record<string, any>): React.ReactNode {
-  // This is a simplified JSX parser for the playground
-  // It handles basic JSX syntax for demo purposes
-  
-  const parseJSX = (input: string): React.ReactNode => {
-    input = input.trim();
-    
-    if (!input) return null;
+// Parse JSX string directly to React elements
+function evaluateJSX(jsxString: string, scope: Record<string, any>): React.ReactNode {
+  const input = jsxString.trim();
+  if (!input) return null;
 
-    // Handle text content
-    if (!input.startsWith('<')) {
-      return input;
-    }
+  return parseElement(input, scope);
+}
 
-    // Handle fragments
-    if (input.startsWith('<>')) {
-      const content = input.slice(2, input.lastIndexOf('</>'));
-      return <>{parseChildren(content)}</>;
-    }
+function parseElement(input: string, scope: Record<string, any>): React.ReactNode {
+  input = input.trim();
+  if (!input) return null;
 
-    // Extract tag info
-    const tagMatch = input.match(/^<(\w+)/);
-    if (!tagMatch) return input;
+  // Text content (no tag)
+  if (!input.startsWith('<')) {
+    return input;
+  }
 
-    const tagName = tagMatch[1];
-    const Component = scope[tagName] || tagName.toLowerCase();
+  // Fragment <>...</>
+  if (input.startsWith('<>')) {
+    const endFragment = input.lastIndexOf('</>');
+    if (endFragment === -1) throw new Error('Missing closing fragment tag');
+    const content = input.slice(2, endFragment);
+    return React.createElement(React.Fragment, null, ...parseChildren(content, scope));
+  }
 
-    // Find where props end and children begin
-    const selfClosingMatch = input.match(/^<\w+[^>]*\/>/);
-    if (selfClosingMatch) {
-      const props = parseProps(selfClosingMatch[0].slice(tagName.length + 1, -2));
-      return React.createElement(Component, props);
-    }
+  // Parse tag name
+  const tagMatch = input.match(/^<(\w+)/);
+  if (!tagMatch) throw new Error('Invalid JSX element');
 
-    // Find the matching closing tag
-    const openTagEnd = input.indexOf('>');
-    const closeTagIndex = findMatchingCloseTag(input, tagName);
-    
-    if (closeTagIndex === -1) {
-      throw new Error(`Missing closing tag for ${tagName}`);
-    }
+  const tagName = tagMatch[1];
+  const Component = scope[tagName] || tagName.toLowerCase();
 
-    const propsString = input.slice(tagName.length + 1, openTagEnd);
-    const childrenString = input.slice(openTagEnd + 1, closeTagIndex);
-    
-    const props = parseProps(propsString);
-    const children = parseChildren(childrenString);
+  // Self-closing tag
+  const selfClosingMatch = input.match(new RegExp(`^<${tagName}([^>]*)/>`));
+  if (selfClosingMatch) {
+    const propsStr = selfClosingMatch[1];
+    const props = parseProps(propsStr, scope);
+    return React.createElement(Component, props);
+  }
 
-    return React.createElement(Component, props, ...children);
-  };
+  // Opening tag with children
+  const openTagEnd = input.indexOf('>');
+  if (openTagEnd === -1) throw new Error('Invalid JSX element');
 
-  const findMatchingCloseTag = (input: string, tagName: string): number => {
-    let depth = 0;
-    let i = 0;
-    const openTag = new RegExp(`<${tagName}(?:\\s|>|/)`);
-    const closeTag = `</${tagName}>`;
-    
-    while (i < input.length) {
-      const remaining = input.slice(i);
-      
-      if (remaining.startsWith(closeTag)) {
-        if (depth === 0) {
-          return i;
-        }
-        depth--;
-        i += closeTag.length;
-      } else if (openTag.test(remaining) && remaining.indexOf('<') === 0) {
-        // Check if it's a self-closing tag
-        const selfCloseCheck = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
-        if (!selfCloseCheck) {
+  const propsStr = input.slice(tagName.length + 1, openTagEnd);
+  const closeTagIndex = findClosingTag(input, tagName, openTagEnd + 1);
+
+  if (closeTagIndex === -1) throw new Error(`Missing closing tag for ${tagName}`);
+
+  const childrenStr = input.slice(openTagEnd + 1, closeTagIndex);
+  const props = parseProps(propsStr, scope);
+  const children = parseChildren(childrenStr, scope);
+
+  return React.createElement(Component, props, ...children);
+}function findClosingTag(input: string, tagName: string, startPos: number): number {
+  let depth = 1;
+  let pos = startPos;
+  const openPattern = new RegExp(`<${tagName}(?:\\s|>|/)`);
+  const closeTag = `</${tagName}>`;
+
+  while (pos < input.length && depth > 0) {
+    const remaining = input.slice(pos);
+
+    if (remaining.startsWith(closeTag)) {
+      depth--;
+      if (depth === 0) return pos;
+      pos += closeTag.length;
+    } else if (remaining.match(/^<\w/)) {
+      // Check if it's an opening tag of the same type
+      const match = remaining.match(openPattern);
+      if (match && remaining.indexOf(match[0]) === 0) {
+        // Check if self-closing
+        const selfClose = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
+        if (!selfClose) {
           depth++;
+        } else {
+          pos += selfClose[0].length;
+          continue;
         }
-        i++;
-      } else {
-        i++;
       }
+      pos++;
+    } else {
+      pos++;
     }
-    return -1;
-  };
+  }
 
-  const parseProps = (propsString: string): Record<string, any> => {
-    const props: Record<string, any> = {};
-    if (!propsString.trim()) return props;
+  return -1;
+}
 
-    // Match props like: prop="value", prop={value}, prop, prop={<Component />}
-    const propRegex = /(\w+)(?:=(?:"([^"]*)"|{([^}]*)}|\{(<[^>]+\/>)\}))?/g;
-    let match;
+function parseProps(propsStr: string, scope: Record<string, any>): Record<string, any> | null {
+  const props: Record<string, any> = {};
+  let remaining = propsStr.trim();
 
-    while ((match = propRegex.exec(propsString)) !== null) {
-      const [, name, stringValue, jsValue, jsxValue] = match;
-      
-      if (stringValue !== undefined) {
-        props[name] = stringValue;
-      } else if (jsValue !== undefined) {
-        // Try to evaluate the JS expression
-        try {
-          if (jsValue === 'true') props[name] = true;
-          else if (jsValue === 'false') props[name] = false;
-          else if (!isNaN(Number(jsValue))) props[name] = Number(jsValue);
-          else if (jsValue.startsWith('"') || jsValue.startsWith("'")) {
-            props[name] = jsValue.slice(1, -1);
-          } else if (jsValue.startsWith('<')) {
-            props[name] = parseJSX(jsValue);
-          } else if (jsValue.includes('=>')) {
-            // Handle arrow functions (simplified - just return a no-op or alert)
-            props[name] = () => {};
-          } else {
-            props[name] = jsValue;
-          }
-        } catch {
-          props[name] = jsValue;
-        }
-      } else if (jsxValue !== undefined) {
-        props[name] = parseJSX(jsxValue);
-      } else {
-        // Boolean prop
-        props[name] = true;
-      }
+  if (!remaining) return null;
+
+  while (remaining) {
+    remaining = remaining.trim();
+    if (!remaining) break;
+
+    // Match prop name
+    const nameMatch = remaining.match(/^(\w+)/);
+    if (!nameMatch) break;
+
+    const propName = nameMatch[1];
+    remaining = remaining.slice(propName.length).trim();
+
+    // Boolean prop (no value)
+    if (!remaining.startsWith('=')) {
+      props[propName] = true;
+      continue;
     }
 
-    return props;
-  };
+    remaining = remaining.slice(1).trim(); // Skip '='
 
-  const parseChildren = (childrenString: string): React.ReactNode[] => {
-    const children: React.ReactNode[] = [];
-    let remaining = childrenString.trim();
-    
-    while (remaining) {
-      remaining = remaining.trim();
-      if (!remaining) break;
+    // String value "..."
+    if (remaining.startsWith('"')) {
+      let endQuote = 1;
+      while (endQuote < remaining.length && remaining[endQuote] !== '"') {
+        if (remaining[endQuote] === '\\') endQuote++; // Skip escaped char
+        endQuote++;
+      }
+      props[propName] = remaining.slice(1, endQuote);
+      remaining = remaining.slice(endQuote + 1);
+      continue;
+    }
 
-      // Handle JSX expressions {expression}
-      if (remaining.startsWith('{')) {
-        const endBrace = findMatchingBrace(remaining);
-        const expr = remaining.slice(1, endBrace);
-        
-        // Handle map expressions
-        if (expr.includes('.map(')) {
-          // Simplified: just skip map for now and show placeholder
-          children.push(React.createElement('span', { key: Math.random() }, '[Array items]'));
+    // JSX expression {...}
+    if (remaining.startsWith('{')) {
+      let depth = 1;
+      let endBrace = 1;
+      while (endBrace < remaining.length && depth > 0) {
+        if (remaining[endBrace] === '{') depth++;
+        else if (remaining[endBrace] === '}') depth--;
+        endBrace++;
+      }
+
+      const expr = remaining.slice(1, endBrace - 1).trim();
+      remaining = remaining.slice(endBrace);
+
+      // Evaluate the expression
+      if (expr === 'true') props[propName] = true;
+      else if (expr === 'false') props[propName] = false;
+      else if (/^-?\d+(\.\d+)?$/.test(expr)) props[propName] = Number(expr);
+      else if (expr.startsWith('"') || expr.startsWith("'")) {
+        props[propName] = expr.slice(1, -1);
+      } else if (expr.startsWith('<')) {
+        // JSX element as prop value
+        props[propName] = parseElement(expr, scope);
+      } else if (expr.includes('=>')) {
+        // Arrow function - make it a no-op for playground
+        props[propName] = () => {};
+      } else {
+        // Just use string value
+        props[propName] = expr;
+      }
+      continue;
+    }
+
+    break;
+  }
+
+  return Object.keys(props).length > 0 ? props : null;
+}
+
+function parseChildren(childrenStr: string, scope: Record<string, any>): React.ReactNode[] {
+  const children: React.ReactNode[] = [];
+  let remaining = childrenStr;
+
+  while (remaining) {
+    remaining = remaining.trim();
+    if (!remaining) break;
+
+    // JSX expression {...}
+    if (remaining.startsWith('{')) {
+      let depth = 1;
+      let endBrace = 1;
+      while (endBrace < remaining.length && depth > 0) {
+        if (remaining[endBrace] === '{') depth++;
+        else if (remaining[endBrace] === '}') depth--;
+        endBrace++;
+      }
+      // Skip expressions for now (like map)
+      remaining = remaining.slice(endBrace);
+      continue;
+    }
+
+    // JSX element
+    if (remaining.startsWith('<')) {
+      const tagMatch = remaining.match(/^<(\w+)/);
+      if (!tagMatch) {
+        // Not a valid tag, treat as text
+        const nextAngle = remaining.indexOf('<', 1);
+        if (nextAngle === -1) {
+          children.push(remaining);
+          break;
         }
-        
-        remaining = remaining.slice(endBrace + 1);
+        children.push(remaining.slice(0, nextAngle));
+        remaining = remaining.slice(nextAngle);
         continue;
       }
 
-      // Handle JSX elements
-      if (remaining.startsWith('<')) {
-        // Find the end of this element
-        const tagMatch = remaining.match(/^<(\w+)/);
-        if (!tagMatch) {
-          // Text content
-          const nextTag = remaining.indexOf('<', 1);
-          if (nextTag === -1) {
-            children.push(remaining);
-            break;
-          }
-          children.push(remaining.slice(0, nextTag));
-          remaining = remaining.slice(nextTag);
-          continue;
-        }
+      const tagName = tagMatch[1];
 
-        const tagName = tagMatch[1];
-        
-        // Check for self-closing
-        const selfClosingMatch = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
-        if (selfClosingMatch) {
-          children.push(parseJSX(selfClosingMatch[0]));
-          remaining = remaining.slice(selfClosingMatch[0].length);
-          continue;
-        }
-
-        // Find matching close tag
-        const closeTagIndex = findMatchingCloseTag(remaining, tagName);
-        if (closeTagIndex === -1) {
-          throw new Error(`Missing closing tag for ${tagName}`);
-        }
-        
-        const closeTag = `</${tagName}>`;
-        const element = remaining.slice(0, closeTagIndex + closeTag.length);
-        children.push(parseJSX(element));
-        remaining = remaining.slice(closeTagIndex + closeTag.length);
+      // Self-closing tag
+      const selfClose = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
+      if (selfClose) {
+        children.push(parseElement(selfClose[0], scope));
+        remaining = remaining.slice(selfClose[0].length);
         continue;
       }
 
-      // Text content
-      const nextTag = remaining.indexOf('<');
-      const nextBrace = remaining.indexOf('{');
-      let nextBreak = remaining.length;
-      
-      if (nextTag !== -1) nextBreak = Math.min(nextBreak, nextTag);
-      if (nextBrace !== -1) nextBreak = Math.min(nextBreak, nextBrace);
-      
-      const text = remaining.slice(0, nextBreak).trim();
-      if (text) {
-        children.push(text);
-      }
-      remaining = remaining.slice(nextBreak);
+      // Tag with children - find closing tag
+      const openTagEnd = remaining.indexOf('>');
+      const closeTagIndex = findClosingTag(remaining, tagName, openTagEnd + 1);
+      if (closeTagIndex === -1) throw new Error(`Missing closing tag for ${tagName}`);
+
+      const closeTag = `</${tagName}>`;
+      const fullElement = remaining.slice(0, closeTagIndex + closeTag.length);
+      children.push(parseElement(fullElement, scope));
+      remaining = remaining.slice(closeTagIndex + closeTag.length);
+      continue;
     }
 
-    return children.filter(c => c !== null && c !== undefined && c !== '');
-  };
+    // Text content
+    const nextSpecial = Math.min(
+      remaining.indexOf('<') === -1 ? remaining.length : remaining.indexOf('<'),
+      remaining.indexOf('{') === -1 ? remaining.length : remaining.indexOf('{')
+    );
 
-  const findMatchingBrace = (input: string): number => {
-    let depth = 0;
-    for (let i = 0; i < input.length; i++) {
-      if (input[i] === '{') depth++;
-      else if (input[i] === '}') {
-        depth--;
-        if (depth === 0) return i;
-      }
+    const text = remaining.slice(0, nextSpecial).trim();
+    if (text) {
+      // Normalize whitespace
+      children.push(text.replace(/\s+/g, ' '));
     }
-    return input.length;
-  };
+    remaining = remaining.slice(nextSpecial);
+  }
 
-  return parseJSX(jsxString);
+  return children.filter(c => c !== null && c !== undefined && c !== '');
 }
 
 // =============================================
@@ -2931,8 +2876,8 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-8">
-        <div className="max-w-4xl mx-auto">
+      <main className={`flex-1 ${activeComponent === 'playground' ? 'overflow-hidden' : 'overflow-y-auto p-8'}`}>
+        <div className={activeComponent === 'playground' ? 'h-full' : 'max-w-4xl mx-auto'}>
           {renderPage()}
         </div>
       </main>
