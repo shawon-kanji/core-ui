@@ -24,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "core-ui": ["../ui/src/index.ts"]
+      "@shawonkanji/core-ui": ["../ui/src/index.ts"]
     }
   },
   "include": ["src"]

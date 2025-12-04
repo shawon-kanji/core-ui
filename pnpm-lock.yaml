@@ -10,7 +10,7 @@ importers:
 
   packages/playbook:
     dependencies:
-      core-ui:
+      '@shawonkanji/core-ui':
         specifier: workspace:*
         version: link:../ui
       react:

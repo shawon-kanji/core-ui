@@ -62,19 +62,19 @@ To use `core-ui` in another project (once published):
 
 1. Install the package:
    ```bash
-   npm install core-ui
+   npm install @shawonkanji/core-ui
    # or
-   yarn add core-ui
+   yarn add @shawonkanji/core-ui
    ```
 
 2. Import the CSS in your root file (e.g., `main.tsx` or `App.tsx`):
    ```tsx
-   import 'core-ui/dist/style.css';
+   import '@shawonkanji/core-ui/dist/style.css';
    ```
 
 3. Import and use components:
    ```tsx
-   import { Button } from 'core-ui';
+   import { Button } from '@shawonkanji/core-ui';
 
    function App() {
      return <Button variant="primary">Click Me</Button>;
@@ -90,7 +90,7 @@ If you need to customize the theme or scan `core-ui` classes in your consuming a
 module.exports = {
   content: [
     // ...
-    "./node_modules/core-ui/dist/**/*.{js,mjs}",
+    "./node_modules/@shawonkanji/core-ui/dist/**/*.{js,mjs}",
   ],
   // ...
 }

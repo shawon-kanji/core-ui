@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import 'core-ui/style.css';
+import React, { useState } from 'react';
+import '@shawonkanji/core-ui/style.css';
 
 // Import all components
 import {
@@ -17,7 +17,7 @@ import {
   Divider,
   Icon, iconNames,
   colors,
-} from 'core-ui';
+} from '@shawonkanji/core-ui';
 
 // =============================================
 // COMPONENT LIST
@@ -61,6 +61,12 @@ const componentCategories = [
       { name: 'Alert', id: 'alert' },
       { name: 'Spinner', id: 'spinner' },
       { name: 'Skeleton', id: 'skeleton' },
+    ],
+  },
+  {
+    name: 'Tools',
+    items: [
+      { name: 'Playground', id: 'playground' },
     ],
   },
 ];
@@ -2335,6 +2341,533 @@ function SkeletonPage() {
 }
 
 // =============================================
+// PLAYGROUND PAGE
+// =============================================
+
+const defaultPlaygroundCode = `<Card variant="outline" className="max-w-md">
+  <CardHeader>
+    <HStack justify="between" align="center">
+      <Heading as="h4" size="lg">Welcome!</Heading>
+      <Badge color="success">New</Badge>
+    </HStack>
+  </CardHeader>
+  <CardBody>
+    <VStack gap="md" align="start">
+      <Text>
+        Edit the code on the left to see live changes here.
+        All Core UI components are available!
+      </Text>
+      <Input
+        leftElement={<Icon name="search" size="sm" className="text-gray-400" />}
+        placeholder="Try editing this..."
+      />
+      <HStack gap="sm">
+        <Button size="sm">Primary</Button>
+        <Button size="sm" variant="outline">Outline</Button>
+        <Button size="sm" variant="soft" color="success">
+          <Icon name="check" size="sm" /> Done
+        </Button>
+      </HStack>
+    </VStack>
+  </CardBody>
+  <CardFooter>
+    <HStack gap="md">
+      <Avatar name="John Doe" size="sm" color="blue" />
+      <VStack gap="none" align="start">
+        <Text size="sm" weight="medium">John Doe</Text>
+        <Text size="xs" color="muted">Created just now</Text>
+      </VStack>
+    </HStack>
+  </CardFooter>
+</Card>`;
+
+const playgroundExamples = [
+  {
+    name: 'Card with Form',
+    code: `<Card variant="outline" className="max-w-md">
+  <CardHeader>
+    <Heading as="h4">Sign In</Heading>
+    <Text color="muted" size="sm">Enter your credentials</Text>
+  </CardHeader>
+  <CardBody>
+    <VStack gap="lg">
+      <div className="w-full">
+        <Label className="mb-1.5">Email</Label>
+        <Input
+          leftElement={<Icon name="mail" size="sm" className="text-gray-400" />}
+          placeholder="you@example.com"
+        />
+      </div>
+      <div className="w-full">
+        <Label className="mb-1.5">Password</Label>
+        <Input
+          type="password"
+          leftElement={<Icon name="lock" size="sm" className="text-gray-400" />}
+          placeholder="••••••••"
+        />
+      </div>
+    </VStack>
+  </CardBody>
+  <CardFooter>
+    <Button fullWidth>Sign In</Button>
+  </CardFooter>
+</Card>`,
+  },
+  {
+    name: 'User Profile',
+    code: `<Card variant="elevated" className="max-w-sm">
+  <CardBody>
+    <VStack gap="lg">
+      <Avatar
+        src="https://i.pravatar.cc/150?img=32"
+        name="Sarah Wilson"
+        size="2xl"
+      />
+      <VStack gap="xs">
+        <Heading as="h4">Sarah Wilson</Heading>
+        <Text color="muted">Senior Designer</Text>
+        <HStack gap="sm">
+          <Badge color="purple">Design</Badge>
+          <Badge color="blue">UI/UX</Badge>
+          <Badge color="pink">Figma</Badge>
+        </HStack>
+      </VStack>
+      <Divider />
+      <HStack gap="xl" justify="center">
+        <VStack gap="none">
+          <Text weight="bold" size="lg">128</Text>
+          <Text color="muted" size="sm">Projects</Text>
+        </VStack>
+        <VStack gap="none">
+          <Text weight="bold" size="lg">1.2k</Text>
+          <Text color="muted" size="sm">Followers</Text>
+        </VStack>
+        <VStack gap="none">
+          <Text weight="bold" size="lg">48</Text>
+          <Text color="muted" size="sm">Following</Text>
+        </VStack>
+      </HStack>
+      <Button fullWidth variant="outline">
+        <Icon name="user-plus" size="sm" /> Follow
+      </Button>
+    </VStack>
+  </CardBody>
+</Card>`,
+  },
+  {
+    name: 'Notification List',
+    code: `<VStack gap="sm" className="max-w-md">
+  <Alert status="success" title="Payment received">
+    Your payment of $49.99 was successful.
+  </Alert>
+  <Alert status="info" title="New feature available">
+    Check out our new dark mode settings!
+  </Alert>
+  <Alert status="warning" title="Storage almost full">
+    You've used 90% of your storage quota.
+  </Alert>
+  <Alert status="error" title="Connection lost" isClosable>
+    Unable to connect to server. Retrying...
+  </Alert>
+</VStack>`,
+  },
+  {
+    name: 'Button Gallery',
+    code: `<VStack gap="lg" align="start">
+  <HStack gap="md" wrap>
+    <Button color="primary">Primary</Button>
+    <Button color="secondary">Secondary</Button>
+    <Button color="success">Success</Button>
+    <Button color="warning">Warning</Button>
+    <Button color="error">Error</Button>
+  </HStack>
+  <HStack gap="md" wrap>
+    <Button variant="outline" color="primary">Outline</Button>
+    <Button variant="soft" color="purple">Soft</Button>
+    <Button variant="ghost" color="gray">Ghost</Button>
+    <Button variant="link" color="blue">Link</Button>
+  </HStack>
+  <HStack gap="md" align="center">
+    <Button size="xs">XS</Button>
+    <Button size="sm">SM</Button>
+    <Button size="md">MD</Button>
+    <Button size="lg">LG</Button>
+    <Button size="xl">XL</Button>
+  </HStack>
+  <HStack gap="md">
+    <Button loading>Loading</Button>
+    <Button disabled>Disabled</Button>
+    <Button rounded="full" color="pink">
+      <Icon name="heart" size="sm" /> Rounded
+    </Button>
+  </HStack>
+</VStack>`,
+  },
+  {
+    name: 'Stats Cards',
+    code: `<HStack gap="lg" wrap>
+  <Card variant="outline" className="w-48">
+    <CardBody>
+      <VStack gap="sm" align="start">
+        <HStack justify="between" className="w-full">
+          <Text color="muted" size="sm">Revenue</Text>
+          <Icon name="zap" size="sm" className="text-success-500" />
+        </HStack>
+        <Heading as="h3">$45,231</Heading>
+        <Badge color="success" size="sm">+20.1%</Badge>
+      </VStack>
+    </CardBody>
+  </Card>
+  <Card variant="outline" className="w-48">
+    <CardBody>
+      <VStack gap="sm" align="start">
+        <HStack justify="between" className="w-full">
+          <Text color="muted" size="sm">Users</Text>
+          <Icon name="users" size="sm" className="text-blue-500" />
+        </HStack>
+        <Heading as="h3">2,350</Heading>
+        <Badge color="info" size="sm">+180 new</Badge>
+      </VStack>
+    </CardBody>
+  </Card>
+  <Card variant="outline" className="w-48">
+    <CardBody>
+      <VStack gap="sm" align="start">
+        <HStack justify="between" className="w-full">
+          <Text color="muted" size="sm">Orders</Text>
+          <Icon name="file" size="sm" className="text-purple-500" />
+        </HStack>
+        <Heading as="h3">1,247</Heading>
+        <Badge color="warning" size="sm">-4.5%</Badge>
+      </VStack>
+    </CardBody>
+  </Card>
+</HStack>`,
+  },
+];
+
+function PlaygroundPage() {
+  const [code, setCode] = useState(defaultPlaygroundCode);
+  const [error, setError] = useState<string | null>(null);
+
+  // Available components for the playground scope
+  const scope = {
+    Box, Button, Input, Card, CardHeader, CardBody, CardFooter,
+    Badge, Avatar, AvatarGroup, HStack, VStack, Alert, Spinner,
+    Skeleton, SkeletonText, SkeletonCircle, Text, Heading, Label,
+    Code, Divider, Icon,
+  };
+
+  const renderPreview = () => {
+    try {
+      // Transform JSX to createElement calls
+      const transformedCode = transformJSX(code, scope);
+      setError(null);
+      return transformedCode;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Invalid JSX');
+      return null;
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <Heading as="h2">Playground</Heading>
+        <Text color="muted" className="mt-2">
+          Write code and see live results. All Core UI components are available.
+        </Text>
+      </div>
+
+      {/* Example Templates */}
+      <div className="flex flex-wrap gap-2">
+        <Text size="sm" color="muted" className="mr-2">Templates:</Text>
+        {playgroundExamples.map((example) => (
+          <button
+            key={example.name}
+            onClick={() => setCode(example.code)}
+            className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+          >
+            {example.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 h-[calc(100vh-280px)] min-h-[500px]">
+        {/* Code Editor */}
+        <div className="flex flex-col bg-gray-900 rounded-lg overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+            <span className="text-sm font-medium text-gray-300">Code</span>
+            <button
+              onClick={() => setCode(defaultPlaygroundCode)}
+              className="text-xs text-gray-400 hover:text-gray-200"
+            >
+              Reset
+            </button>
+          </div>
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="flex-1 w-full p-4 bg-gray-900 text-gray-100 font-mono text-sm resize-none focus:outline-none"
+            spellCheck={false}
+            placeholder="Write your JSX here..."
+          />
+        </div>
+
+        {/* Preview */}
+        <div className="flex flex-col bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="flex items-center px-4 py-2 bg-gray-50 border-b border-gray-200">
+            <span className="text-sm font-medium text-gray-700">Preview</span>
+          </div>
+          <div className="flex-1 p-6 overflow-auto">
+            {error ? (
+              <Alert status="error" title="Render Error">
+                <Code className="text-xs break-all">{error}</Code>
+              </Alert>
+            ) : (
+              <div className="flex items-start justify-center">
+                {renderPreview()}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Available Components Reference */}
+      <Card variant="outline">
+        <CardBody>
+          <Text weight="medium" className="mb-3">Available Components</Text>
+          <div className="flex flex-wrap gap-2">
+            {Object.keys(scope).map((name) => (
+              <Code key={name} className="text-xs">{name}</Code>
+            ))}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}
+
+// Simple JSX transformer - converts JSX string to React elements
+function transformJSX(jsxString: string, scope: Record<string, any>): React.ReactNode {
+  // This is a simplified JSX parser for the playground
+  // It handles basic JSX syntax for demo purposes
+  
+  const parseJSX = (input: string): React.ReactNode => {
+    input = input.trim();
+    
+    if (!input) return null;
+
+    // Handle text content
+    if (!input.startsWith('<')) {
+      return input;
+    }
+
+    // Handle fragments
+    if (input.startsWith('<>')) {
+      const content = input.slice(2, input.lastIndexOf('</>'));
+      return <>{parseChildren(content)}</>;
+    }
+
+    // Extract tag info
+    const tagMatch = input.match(/^<(\w+)/);
+    if (!tagMatch) return input;
+
+    const tagName = tagMatch[1];
+    const Component = scope[tagName] || tagName.toLowerCase();
+
+    // Find where props end and children begin
+    const selfClosingMatch = input.match(/^<\w+[^>]*\/>/);
+    if (selfClosingMatch) {
+      const props = parseProps(selfClosingMatch[0].slice(tagName.length + 1, -2));
+      return React.createElement(Component, props);
+    }
+
+    // Find the matching closing tag
+    const openTagEnd = input.indexOf('>');
+    const closeTagIndex = findMatchingCloseTag(input, tagName);
+    
+    if (closeTagIndex === -1) {
+      throw new Error(`Missing closing tag for ${tagName}`);
+    }
+
+    const propsString = input.slice(tagName.length + 1, openTagEnd);
+    const childrenString = input.slice(openTagEnd + 1, closeTagIndex);
+    
+    const props = parseProps(propsString);
+    const children = parseChildren(childrenString);
+
+    return React.createElement(Component, props, ...children);
+  };
+
+  const findMatchingCloseTag = (input: string, tagName: string): number => {
+    let depth = 0;
+    let i = 0;
+    const openTag = new RegExp(`<${tagName}(?:\\s|>|/)`);
+    const closeTag = `</${tagName}>`;
+    
+    while (i < input.length) {
+      const remaining = input.slice(i);
+      
+      if (remaining.startsWith(closeTag)) {
+        if (depth === 0) {
+          return i;
+        }
+        depth--;
+        i += closeTag.length;
+      } else if (openTag.test(remaining) && remaining.indexOf('<') === 0) {
+        // Check if it's a self-closing tag
+        const selfCloseCheck = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
+        if (!selfCloseCheck) {
+          depth++;
+        }
+        i++;
+      } else {
+        i++;
+      }
+    }
+    return -1;
+  };
+
+  const parseProps = (propsString: string): Record<string, any> => {
+    const props: Record<string, any> = {};
+    if (!propsString.trim()) return props;
+
+    // Match props like: prop="value", prop={value}, prop, prop={<Component />}
+    const propRegex = /(\w+)(?:=(?:"([^"]*)"|{([^}]*)}|\{(<[^>]+\/>)\}))?/g;
+    let match;
+
+    while ((match = propRegex.exec(propsString)) !== null) {
+      const [, name, stringValue, jsValue, jsxValue] = match;
+      
+      if (stringValue !== undefined) {
+        props[name] = stringValue;
+      } else if (jsValue !== undefined) {
+        // Try to evaluate the JS expression
+        try {
+          if (jsValue === 'true') props[name] = true;
+          else if (jsValue === 'false') props[name] = false;
+          else if (!isNaN(Number(jsValue))) props[name] = Number(jsValue);
+          else if (jsValue.startsWith('"') || jsValue.startsWith("'")) {
+            props[name] = jsValue.slice(1, -1);
+          } else if (jsValue.startsWith('<')) {
+            props[name] = parseJSX(jsValue);
+          } else if (jsValue.includes('=>')) {
+            // Handle arrow functions (simplified - just return a no-op or alert)
+            props[name] = () => {};
+          } else {
+            props[name] = jsValue;
+          }
+        } catch {
+          props[name] = jsValue;
+        }
+      } else if (jsxValue !== undefined) {
+        props[name] = parseJSX(jsxValue);
+      } else {
+        // Boolean prop
+        props[name] = true;
+      }
+    }
+
+    return props;
+  };
+
+  const parseChildren = (childrenString: string): React.ReactNode[] => {
+    const children: React.ReactNode[] = [];
+    let remaining = childrenString.trim();
+    
+    while (remaining) {
+      remaining = remaining.trim();
+      if (!remaining) break;
+
+      // Handle JSX expressions {expression}
+      if (remaining.startsWith('{')) {
+        const endBrace = findMatchingBrace(remaining);
+        const expr = remaining.slice(1, endBrace);
+        
+        // Handle map expressions
+        if (expr.includes('.map(')) {
+          // Simplified: just skip map for now and show placeholder
+          children.push(React.createElement('span', { key: Math.random() }, '[Array items]'));
+        }
+        
+        remaining = remaining.slice(endBrace + 1);
+        continue;
+      }
+
+      // Handle JSX elements
+      if (remaining.startsWith('<')) {
+        // Find the end of this element
+        const tagMatch = remaining.match(/^<(\w+)/);
+        if (!tagMatch) {
+          // Text content
+          const nextTag = remaining.indexOf('<', 1);
+          if (nextTag === -1) {
+            children.push(remaining);
+            break;
+          }
+          children.push(remaining.slice(0, nextTag));
+          remaining = remaining.slice(nextTag);
+          continue;
+        }
+
+        const tagName = tagMatch[1];
+        
+        // Check for self-closing
+        const selfClosingMatch = remaining.match(new RegExp(`^<${tagName}[^>]*/>`));
+        if (selfClosingMatch) {
+          children.push(parseJSX(selfClosingMatch[0]));
+          remaining = remaining.slice(selfClosingMatch[0].length);
+          continue;
+        }
+
+        // Find matching close tag
+        const closeTagIndex = findMatchingCloseTag(remaining, tagName);
+        if (closeTagIndex === -1) {
+          throw new Error(`Missing closing tag for ${tagName}`);
+        }
+        
+        const closeTag = `</${tagName}>`;
+        const element = remaining.slice(0, closeTagIndex + closeTag.length);
+        children.push(parseJSX(element));
+        remaining = remaining.slice(closeTagIndex + closeTag.length);
+        continue;
+      }
+
+      // Text content
+      const nextTag = remaining.indexOf('<');
+      const nextBrace = remaining.indexOf('{');
+      let nextBreak = remaining.length;
+      
+      if (nextTag !== -1) nextBreak = Math.min(nextBreak, nextTag);
+      if (nextBrace !== -1) nextBreak = Math.min(nextBreak, nextBrace);
+      
+      const text = remaining.slice(0, nextBreak).trim();
+      if (text) {
+        children.push(text);
+      }
+      remaining = remaining.slice(nextBreak);
+    }
+
+    return children.filter(c => c !== null && c !== undefined && c !== '');
+  };
+
+  const findMatchingBrace = (input: string): number => {
+    let depth = 0;
+    for (let i = 0; i < input.length; i++) {
+      if (input[i] === '{') depth++;
+      else if (input[i] === '}') {
+        depth--;
+        if (depth === 0) return i;
+      }
+    }
+    return input.length;
+  };
+
+  return parseJSX(jsxString);
+}
+
+// =============================================
 // MAIN APP
 // =============================================
 
@@ -2357,6 +2890,7 @@ export default function App() {
       case 'alert': return <AlertPage />;
       case 'spinner': return <SpinnerPage />;
       case 'skeleton': return <SkeletonPage />;
+      case 'playground': return <PlaygroundPage />;
       default: return <ColorsPage />;
     }
   };

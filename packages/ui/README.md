@@ -16,11 +16,11 @@ A comprehensive React component library built with Tailwind CSS. Features a rich
 ## Installation
 
 ```bash
-pnpm add core-ui
+pnpm add @shawonkanji/core-ui
 # or
-npm install core-ui
+npm install @shawonkanji/core-ui
 # or
-yarn add core-ui
+yarn add @shawonkanji/core-ui
 ```
 
 ## Quick Start
@@ -28,13 +28,13 @@ yarn add core-ui
 1. Import the CSS in your main entry file:
 
 ```tsx
-import 'core-ui/style.css';
+import '@shawonkanji/core-ui/style.css';
 ```
 
 2. Use components:
 
 ```tsx
-import { Button, Input, Card, CardBody, Icon } from 'core-ui';
+import { Button, Input, Card, CardBody, Icon } from '@shawonkanji/core-ui';
 
 function App() {
   return (
@@ -112,7 +112,7 @@ Add Core UI to your Tailwind content for class scanning:
 module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/core-ui/dist/**/*.{js,mjs}',
+    './node_modules/@shawonkanji/core-ui/dist/**/*.{js,mjs}',
   ],
 };
 ```
@@ -128,7 +128,7 @@ Available colors for component props:
 ## Icon Usage
 
 ```tsx
-import { Icon, iconNames } from 'core-ui';
+import { Icon, iconNames } from '@shawonkanji/core-ui';
 
 // Basic
 <Icon name="check" />
@@ -155,7 +155,7 @@ import {
   type BoxProps,
   Icon,
   type IconName,
-} from 'core-ui';
+} from '@shawonkanji/core-ui';
 ```
 
 ## License
