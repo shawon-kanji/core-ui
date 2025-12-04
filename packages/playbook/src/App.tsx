@@ -10,7 +10,7 @@ import {
   Badge,
   Avatar, AvatarGroup,
   HStack, VStack,
-  Alert,
+  Alert, AlertContainer, getAnimationForPosition,
   Spinner,
   Skeleton, SkeletonText, SkeletonCircle,
   Text, Heading, Label, Code,
@@ -18,6 +18,8 @@ import {
   Icon, iconNames,
   colors,
 } from '@shawonkanji/core-ui';
+
+import type { AlertPosition } from '@shawonkanji/core-ui';
 
 // =============================================
 // COMPONENT LIST
@@ -133,6 +135,74 @@ function Showcase({ title, description, code, children }: {
           <CodeBlock code={code} />
         </div>
       )}
+    </section>
+  );
+}
+
+// =============================================
+// PROPS TABLE COMPONENT
+// =============================================
+
+interface PropDefinition {
+  name: string;
+  type: string;
+  default?: string;
+  required?: boolean;
+  description: string;
+}
+
+function PropsTable({ props, title = 'Props' }: { props: PropDefinition[]; title?: string }) {
+  return (
+    <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+      <div className="p-4 border-b border-gray-200 bg-gray-50">
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="text-left p-3 font-medium text-gray-700">Prop</th>
+              <th className="text-left p-3 font-medium text-gray-700">Type</th>
+              <th className="text-left p-3 font-medium text-gray-700">Default</th>
+              <th className="text-left p-3 font-medium text-gray-700">Required</th>
+              <th className="text-left p-3 font-medium text-gray-700">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {props.map((prop) => (
+              <tr key={prop.name} className="hover:bg-gray-50">
+                <td className="p-3">
+                  <code className="text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded text-xs font-mono">
+                    {prop.name}
+                  </code>
+                </td>
+                <td className="p-3">
+                  <code className="text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono whitespace-pre-wrap">
+                    {prop.type}
+                  </code>
+                </td>
+                <td className="p-3 text-gray-500">
+                  {prop.default ? (
+                    <code className="text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">
+                      {prop.default}
+                    </code>
+                  ) : (
+                    <span className="text-gray-400">—</span>
+                  )}
+                </td>
+                <td className="p-3">
+                  {prop.required ? (
+                    <Badge color="error" size="sm">Required</Badge>
+                  ) : (
+                    <Badge color="gray" size="sm" variant="outline">Optional</Badge>
+                  )}
+                </td>
+                <td className="p-3 text-gray-600">{prop.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }
@@ -367,6 +437,46 @@ function TypographyPage() {
           <Code color="error">error</Code>
         </HStack>
       </Showcase>
+
+      <PropsTable
+        title="Text Props"
+        props={[
+          { name: 'as', type: "'p' | 'span' | 'div'", default: "'p'", description: 'HTML element to render' },
+          { name: 'size', type: "'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'", default: "'base'", description: 'Text size' },
+          { name: 'weight', type: "'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold'", default: "'normal'", description: 'Font weight' },
+          { name: 'color', type: "'default' | 'muted' | 'subtle' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'", default: "'default'", description: 'Text color' },
+          { name: 'truncate', type: 'boolean', default: 'false', description: 'Truncate with ellipsis' },
+          { name: 'lineClamp', type: '1 | 2 | 3 | 4 | 5 | 6', description: 'Max lines before truncating' },
+        ]}
+      />
+
+      <PropsTable
+        title="Heading Props"
+        props={[
+          { name: 'as', type: "'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'", default: "'h2'", description: 'Heading level' },
+          { name: 'size', type: "'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'", description: 'Override visual size (defaults based on heading level)' },
+          { name: 'weight', type: "'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold'", default: "'bold'", description: 'Font weight' },
+          { name: 'color', type: "'default' | 'muted' | 'subtle' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'", default: "'default'", description: 'Text color' },
+          { name: 'truncate', type: 'boolean', default: 'false', description: 'Truncate with ellipsis' },
+        ]}
+      />
+
+      <PropsTable
+        title="Label Props"
+        props={[
+          { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Label size' },
+          { name: 'isRequired', type: 'boolean', default: 'false', description: 'Show required indicator (*)' },
+          { name: 'isDisabled', type: 'boolean', default: 'false', description: 'Disabled styling' },
+          { name: 'htmlFor', type: 'string', description: 'Associate with form input' },
+        ]}
+      />
+
+      <PropsTable
+        title="Code Props"
+        props={[
+          { name: 'color', type: "'gray' | 'primary' | 'success' | 'warning' | 'error'", default: "'gray'", description: 'Color scheme' },
+        ]}
+      />
     </div>
   );
 }
@@ -641,6 +751,16 @@ ${iconNames.map(name => `"${name}"`).join(', ')}`}
           ))}
         </div>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'name', type: 'IconName', required: true, description: 'Icon name (see list above)' },
+          { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'", default: "'md'", description: 'Icon size (12px to 40px)' },
+          { name: 'color', type: 'string', description: 'Tailwind color class (inherits text color by default)' },
+          { name: 'strokeWidth', type: 'number', default: '2', description: 'SVG stroke width' },
+          { name: 'className', type: 'string', description: 'Additional CSS classes' },
+        ]}
+      />
     </div>
   );
 }// =============================================
@@ -868,6 +988,22 @@ function ButtonPage() {
           <Button fullWidth variant="outline">Full Width Outline</Button>
         </VStack>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'variant', type: "'solid' | 'outline' | 'ghost' | 'soft' | 'link'", default: "'solid'", description: 'Visual style variant' },
+          { name: 'color', type: "'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose'", default: "'primary'", description: 'Button color - semantic or palette' },
+          { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Button size' },
+          { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Make button full width' },
+          { name: 'loading', type: 'boolean', default: 'false', description: 'Show loading state with spinner' },
+          { name: 'loadingText', type: 'string', description: 'Text to show while loading' },
+          { name: 'leftIcon', type: 'ReactNode', description: 'Icon on the left side' },
+          { name: 'rightIcon', type: 'ReactNode', description: 'Icon on the right side' },
+          { name: 'isIconOnly', type: 'boolean', default: 'false', description: 'Make button circular (for icon-only buttons)' },
+          { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'", default: "'md'", description: 'Border radius style' },
+          { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button' },
+        ]}
+      />
     </div>
   );
 }
@@ -991,6 +1127,23 @@ function InputPage() {
           />
         </VStack>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Size of the input' },
+          { name: 'variant', type: "'outline' | 'filled' | 'flushed'", default: "'outline'", description: 'Visual variant' },
+          { name: 'focusColor', type: "'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'slate' | 'gray' | 'zinc' | 'neutral'", default: "'primary'", description: 'Focus ring color' },
+          { name: 'isInvalid', type: 'boolean', default: 'false', description: 'Error state styling' },
+          { name: 'isDisabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+          { name: 'isReadOnly', type: 'boolean', default: 'false', description: 'Read-only state' },
+          { name: 'isRequired', type: 'boolean', default: 'false', description: 'Required field' },
+          { name: 'leftElement', type: 'ReactNode', description: 'Element on the left inside input' },
+          { name: 'rightElement', type: 'ReactNode', description: 'Element on the right inside input' },
+          { name: 'leftAddon', type: 'ReactNode', description: 'Addon on the left outside input' },
+          { name: 'rightAddon', type: 'ReactNode', description: 'Addon on the right outside input' },
+          { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Full width input' },
+        ]}
+      />
     </div>
   );
 }
@@ -1147,6 +1300,24 @@ function CardPage() {
           </Card>
         </HStack>
       </Showcase>
+
+      <PropsTable
+        title="Card Props"
+        props={[
+          { name: 'variant', type: "'elevated' | 'outline' | 'filled' | 'ghost'", default: "'elevated'", description: 'Visual variant' },
+          { name: 'isHoverable', type: 'boolean', default: 'false', description: 'Show hover effect' },
+          { name: 'isPressable', type: 'boolean', default: 'false', description: 'Make card clickable' },
+          { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'", default: "'lg'", description: 'Border radius' },
+        ]}
+      />
+
+      <PropsTable
+        title="CardHeader, CardBody, CardFooter Props"
+        props={[
+          { name: 'className', type: 'string', description: 'Additional CSS classes' },
+          { name: 'children', type: 'ReactNode', description: 'Content inside the section' },
+        ]}
+      />
     </div>
   );
 }
@@ -1313,6 +1484,16 @@ function BadgePage() {
           <Badge radius="full">Pill</Badge>
         </HStack>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'variant', type: "'solid' | 'soft' | 'outline'", default: "'soft'", description: 'Visual variant' },
+          { name: 'color', type: "'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | ... (all palette colors)", default: "'primary'", description: 'Badge color' },
+          { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Badge size' },
+          { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: 'Border radius' },
+          { name: 'dot', type: 'boolean', default: 'false', description: 'Show as dot indicator' },
+        ]}
+      />
     </div>
   );
 }
@@ -1485,6 +1666,30 @@ function AvatarPage() {
           </AvatarGroup>
         </VStack>
       </Showcase>
+
+      <PropsTable
+        title="Avatar Props"
+        props={[
+          { name: 'src', type: 'string', description: 'Image source URL' },
+          { name: 'alt', type: 'string', description: 'Alt text for image' },
+          { name: 'name', type: 'string', description: 'Name for generating initials fallback' },
+          { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'", default: "'md'", description: 'Avatar size' },
+          { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'", default: "'full'", description: 'Border radius' },
+          { name: 'color', type: "'primary' | 'secondary' | ... (all palette colors)", default: "'gray'", description: 'Background color for fallback' },
+          { name: 'showStatus', type: 'boolean', default: 'false', description: 'Show status indicator' },
+          { name: 'status', type: "'online' | 'offline' | 'busy' | 'away'", default: "'offline'", description: 'Status value' },
+          { name: 'fallbackIcon', type: 'ReactNode', description: 'Custom fallback icon' },
+        ]}
+      />
+
+      <PropsTable
+        title="AvatarGroup Props"
+        props={[
+          { name: 'max', type: 'number', default: '5', description: 'Maximum avatars to show' },
+          { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'", default: "'md'", description: 'Size for all avatars' },
+          { name: 'spacing', type: "'tight' | 'normal' | 'loose'", default: "'normal'", description: 'Overlap spacing' },
+        ]}
+      />
     </div>
   );
 }
@@ -1777,6 +1982,31 @@ function BoxPage() {
           </Box>
         </Box>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'as', type: "'div' | 'section' | 'article' | 'aside' | 'main' | 'header' | 'footer' | 'nav'", default: "'div'", description: 'HTML element type' },
+          { name: 'width', type: "'auto' | 'full' | 'screen' | 'min' | 'max' | 'fit' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | ... | '1/2' | '1/3' | '2/3' | '1/4' | '3/4'", description: 'Width' },
+          { name: 'height', type: "same as width", description: 'Height' },
+          { name: 'minWidth', type: "'auto' | 'full' | 'min' | 'max' | 'fit' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'", description: 'Minimum width' },
+          { name: 'maxWidth', type: "'full' | 'min' | 'max' | 'fit' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl'", description: 'Maximum width' },
+          { name: 'padding', type: "'none' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'", description: 'Padding all sides' },
+          { name: 'paddingX / paddingY', type: "same as padding", description: 'Horizontal / Vertical padding' },
+          { name: 'paddingTop / Right / Bottom / Left', type: "same as padding", description: 'Individual side padding' },
+          { name: 'margin', type: "'none' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'auto'", description: 'Margin all sides' },
+          { name: 'marginX / marginY', type: "same as margin", description: 'Horizontal / Vertical margin' },
+          { name: 'marginTop / Right / Bottom / Left', type: "same as margin", description: 'Individual side margin' },
+          { name: 'display', type: "'block' | 'inline' | 'inline-block' | 'flex' | 'inline-flex' | 'grid' | 'none' | 'hidden'", description: 'Display type' },
+          { name: 'position', type: "'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'", description: 'Position type' },
+          { name: 'overflow', type: "'auto' | 'hidden' | 'visible' | 'scroll'", description: 'Overflow behavior' },
+          { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'", description: 'Border radius' },
+          { name: 'background', type: 'string', description: 'Tailwind color class suffix (e.g., "gray-100")' },
+          { name: 'border', type: "boolean | 'top' | 'bottom' | 'left' | 'right' | 'x' | 'y'", description: 'Border' },
+          { name: 'borderColor', type: 'string', description: 'Tailwind color class suffix' },
+          { name: 'shadow', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'", description: 'Shadow' },
+          { name: 'center', type: 'boolean', default: 'false', description: 'Center content (flex + items-center + justify-center)' },
+        ]}
+      />
     </div>
   );
 }
@@ -1909,6 +2139,19 @@ function StackPage() {
           ))}
         </VStack>
       </Showcase>
+
+      <PropsTable
+        title="Stack / HStack / VStack Props"
+        props={[
+          { name: 'direction', type: "'row' | 'column' | 'row-reverse' | 'column-reverse'", default: "'column' (VStack: 'column', HStack: 'row')", description: 'Flex direction' },
+          { name: 'gap', type: "'none' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'", default: "'md'", description: 'Gap between items' },
+          { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", default: "'stretch' (HStack: 'center')", description: 'Align items on cross axis' },
+          { name: 'justify', type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'", default: "'start'", description: 'Justify content on main axis' },
+          { name: 'wrap', type: "boolean | 'wrap' | 'nowrap' | 'wrap-reverse'", default: 'false', description: 'Wrap items' },
+          { name: 'divider', type: 'ReactNode', description: 'Divider element between items' },
+          { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Full width container' },
+        ]}
+      />
     </div>
   );
 }
@@ -2023,6 +2266,16 @@ function DividerPage() {
           <Text>Right</Text>
         </HStack>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Direction of the divider' },
+          { name: 'variant', type: "'solid' | 'dashed' | 'dotted'", default: "'solid'", description: 'Line style' },
+          { name: 'color', type: "'light' | 'default' | 'dark'", default: "'default'", description: 'Line color' },
+          { name: 'label', type: 'ReactNode', description: 'Text label to show on divider' },
+          { name: 'labelPosition', type: "'left' | 'center' | 'right'", default: "'center'", description: 'Position of the label' },
+        ]}
+      />
     </div>
   );
 }
@@ -2150,7 +2403,300 @@ function AlertPage() {
           </Alert>
         </VStack>
       </Showcase>
+
+      <Showcase
+        title="Animated Alerts"
+        code={`// Animated alert with slide-down animation
+<Alert
+  status="success"
+  title="Success!"
+  animate
+  animationType="slide-down"
+  isClosable
+>
+  Your changes have been saved.
+</Alert>
+
+// Available animation types:
+// 'fade' | 'slide-down' | 'slide-up' | 'slide-left' | 'slide-right' | 'scale'`}
+      >
+        <VStack gap="lg">
+          <Alert
+            status="success"
+            title="Slide Down Animation"
+            animate
+            animationType="slide-down"
+            isClosable
+          >
+            This alert slides down when it appears.
+          </Alert>
+          <Alert
+            status="info"
+            title="Scale Animation"
+            animate
+            animationType="scale"
+            isClosable
+          >
+            This alert scales in when it appears.
+          </Alert>
+          <Alert
+            status="warning"
+            title="Slide Right Animation"
+            animate
+            animationType="slide-right"
+            isClosable
+          >
+            This alert slides from the left.
+          </Alert>
+        </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Auto-Dismiss Alerts"
+        code={`// Auto-dismiss after 5 seconds
+<Alert
+  status="info"
+  title="Auto-dismiss"
+  animate
+  animationType="slide-down"
+  duration={5000}
+  isClosable
+>
+  This alert will disappear in 5 seconds.
+</Alert>`}
+      >
+        <AnimatedAlertDemo />
+      </Showcase>
+
+      <Showcase
+        title="Positioned Alerts (Toast Notifications)"
+        code={`// Use AlertContainer to position alerts on screen
+import { AlertContainer, getAnimationForPosition } from '@shawonkanji/core-ui';
+
+// Positions: 'top-left' | 'top-center' | 'top-right'
+//          | 'bottom-left' | 'bottom-center' | 'bottom-right'
+
+<AlertContainer position="top-right">
+  <Alert
+    status="success"
+    title="Saved!"
+    animate
+    animationType={getAnimationForPosition('top-right')}
+    isClosable
+  >
+    Your changes have been saved.
+  </Alert>
+</AlertContainer>`}
+      >
+        <PositionedAlertDemo />
+      </Showcase>
+
+      <PropsTable
+        title="Alert Props"
+        props={[
+          { name: 'status', type: "'info' | 'success' | 'warning' | 'error'", default: "'info'", description: 'Alert status/color' },
+          { name: 'variant', type: "'subtle' | 'solid' | 'left-accent' | 'top-accent'", default: "'subtle'", description: 'Visual variant' },
+          { name: 'title', type: 'string', description: 'Alert title' },
+          { name: 'isClosable', type: 'boolean', default: 'false', description: 'Show close button' },
+          { name: 'onClose', type: '() => void', description: 'Close handler' },
+          { name: 'icon', type: 'ReactNode', description: 'Custom icon' },
+          { name: 'hideIcon', type: 'boolean', default: 'false', description: 'Hide default icon' },
+          { name: 'animate', type: 'boolean', default: 'false', description: 'Enable enter/exit animations' },
+          { name: 'animationType', type: "'fade' | 'slide-down' | 'slide-up' | 'slide-left' | 'slide-right' | 'scale'", default: "'fade'", description: 'Animation type' },
+          { name: 'duration', type: 'number', default: '0', description: 'Auto-dismiss after ms (0 = no auto dismiss)' },
+        ]}
+      />
+
+      <PropsTable
+        title="AlertContainer Props"
+        props={[
+          { name: 'position', type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'", default: "'top-right'", description: 'Position on screen' },
+          { name: 'maxWidth', type: 'string', default: "'400px'", description: 'Max width of alerts' },
+        ]}
+      />
     </div>
+  );
+}
+
+// Demo component with button to trigger animated alerts
+function AnimatedAlertDemo() {
+  const [alerts, setAlerts] = React.useState<Array<{
+    id: number;
+    status: 'info' | 'success' | 'warning' | 'error';
+    title: string;
+    message: string;
+  }>>([]);
+
+  const addAlert = (status: 'info' | 'success' | 'warning' | 'error') => {
+    const messages = {
+      info: { title: 'Information', message: 'This is an info notification.' },
+      success: { title: 'Success!', message: 'Your action was completed successfully.' },
+      warning: { title: 'Warning', message: 'Please review before continuing.' },
+      error: { title: 'Error', message: 'Something went wrong. Please try again.' },
+    };
+
+    const newAlert = {
+      id: Date.now(),
+      status,
+      ...messages[status],
+    };
+
+    setAlerts(prev => [...prev, newAlert]);
+  };
+
+  const removeAlert = (id: number) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  };
+
+  return (
+    <VStack gap="lg" align="stretch">
+      <HStack gap="sm" wrap>
+        <Button size="sm" color="info" onClick={() => addAlert('info')}>
+          Show Info
+        </Button>
+        <Button size="sm" color="success" onClick={() => addAlert('success')}>
+          Show Success
+        </Button>
+        <Button size="sm" color="warning" onClick={() => addAlert('warning')}>
+          Show Warning
+        </Button>
+        <Button size="sm" color="error" onClick={() => addAlert('error')}>
+          Show Error
+        </Button>
+      </HStack>
+
+      <VStack gap="sm">
+        {alerts.map(alert => (
+          <Alert
+            key={alert.id}
+            status={alert.status}
+            title={alert.title}
+            animate
+            animationType="slide-down"
+            duration={5000}
+            isClosable
+            onClose={() => removeAlert(alert.id)}
+          >
+            {alert.message}
+          </Alert>
+        ))}
+      </VStack>
+
+      {alerts.length === 0 && (
+        <Text color="muted" size="sm">
+          Click a button above to trigger an animated alert. Alerts auto-dismiss after 5 seconds.
+        </Text>
+      )}
+    </VStack>
+  );
+}
+
+// Demo component for positioned/toast alerts
+function PositionedAlertDemo() {
+  const [alerts, setAlerts] = React.useState<Array<{
+    id: number;
+    status: 'info' | 'success' | 'warning' | 'error';
+    title: string;
+    message: string;
+    position: AlertPosition;
+  }>>([]);
+
+  const [selectedPosition, setSelectedPosition] = React.useState<AlertPosition>('top-right');
+
+  const positions: AlertPosition[] = [
+    'top-left', 'top-center', 'top-right',
+    'bottom-left', 'bottom-center', 'bottom-right'
+  ];
+
+  const addAlert = (status: 'info' | 'success' | 'warning' | 'error') => {
+    const messages = {
+      info: { title: 'Information', message: 'This is an info notification.' },
+      success: { title: 'Success!', message: 'Your action was completed successfully.' },
+      warning: { title: 'Warning', message: 'Please review before continuing.' },
+      error: { title: 'Error', message: 'Something went wrong. Please try again.' },
+    };
+
+    const newAlert = {
+      id: Date.now(),
+      status,
+      position: selectedPosition,
+      ...messages[status],
+    };
+
+    setAlerts(prev => [...prev, newAlert]);
+  };
+
+  const removeAlert = (id: number) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  };
+
+  // Group alerts by position
+  const alertsByPosition = positions.reduce((acc, pos) => {
+    acc[pos] = alerts.filter(a => a.position === pos);
+    return acc;
+  }, {} as Record<AlertPosition, typeof alerts>);
+
+  return (
+    <VStack gap="lg" align="stretch">
+      <div>
+        <Label className="mb-2 block">Position</Label>
+        <HStack gap="sm" wrap>
+          {positions.map(pos => (
+            <Button
+              key={pos}
+              size="sm"
+              variant={selectedPosition === pos ? 'solid' : 'outline'}
+              color="neutral"
+              onClick={() => setSelectedPosition(pos)}
+            >
+              {pos}
+            </Button>
+          ))}
+        </HStack>
+      </div>
+
+      <HStack gap="sm" wrap>
+        <Button size="sm" color="info" onClick={() => addAlert('info')}>
+          Show Info
+        </Button>
+        <Button size="sm" color="success" onClick={() => addAlert('success')}>
+          Show Success
+        </Button>
+        <Button size="sm" color="warning" onClick={() => addAlert('warning')}>
+          Show Warning
+        </Button>
+        <Button size="sm" color="error" onClick={() => addAlert('error')}>
+          Show Error
+        </Button>
+      </HStack>
+
+      <Text color="muted" size="sm">
+        Select a position and click a button to show a toast notification at that position.
+        Alerts auto-dismiss after 5 seconds.
+      </Text>
+
+      {/* Render AlertContainers for each position that has alerts */}
+      {positions.map(pos => (
+        alertsByPosition[pos].length > 0 && (
+          <AlertContainer key={pos} position={pos}>
+            {alertsByPosition[pos].map(alert => (
+              <Alert
+                key={alert.id}
+                status={alert.status}
+                title={alert.title}
+                animate
+                animationType={getAnimationForPosition(pos)}
+                duration={5000}
+                isClosable
+                onClose={() => removeAlert(alert.id)}
+              >
+                {alert.message}
+              </Alert>
+            ))}
+          </AlertContainer>
+        )
+      ))}
+    </VStack>
   );
 }
 
@@ -2222,6 +2768,14 @@ function SpinnerPage() {
           </Card>
         </HStack>
       </Showcase>
+
+      <PropsTable
+        props={[
+          { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Spinner size' },
+          { name: 'color', type: "'current' | 'primary' | 'secondary' | 'white'", default: "'current'", description: 'Spinner color' },
+          { name: 'label', type: 'string', default: "'Loading...'", description: 'Accessibility label' },
+        ]}
+      />
     </div>
   );
 }
@@ -2336,6 +2890,35 @@ function SkeletonPage() {
           ))}
         </VStack>
       </Showcase>
+
+      <PropsTable
+        title="Skeleton Props"
+        props={[
+          { name: 'width', type: 'string | number', description: 'Width (number = px, string = CSS value)' },
+          { name: 'height', type: 'string | number', description: 'Height (number = px, string = CSS value)' },
+          { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'", default: "'md'", description: 'Border radius' },
+          { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: 'Animation type' },
+          { name: 'isCircle', type: 'boolean', default: 'false', description: 'Show as circle' },
+          { name: 'isText', type: 'boolean', default: 'false', description: 'Show as text line' },
+        ]}
+      />
+
+      <PropsTable
+        title="SkeletonText Props"
+        props={[
+          { name: 'lines', type: 'number', default: '3', description: 'Number of text lines' },
+          { name: 'gap', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Gap between lines' },
+          { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: 'Animation type' },
+        ]}
+      />
+
+      <PropsTable
+        title="SkeletonCircle Props"
+        props={[
+          { name: 'size', type: 'string | number', default: '40', description: 'Size of circle (number = px)' },
+          { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: 'Animation type' },
+        ]}
+      />
     </div>
   );
 }

@@ -28,6 +28,15 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 
   /** Hide default icon */
   hideIcon?: boolean;
+
+  /** Show enter animation */
+  animate?: boolean;
+
+  /** Animation type */
+  animationType?: 'fade' | 'slide-down' | 'slide-up' | 'slide-left' | 'slide-right' | 'scale';
+
+  /** Auto dismiss after duration (ms) - 0 means no auto dismiss */
+  duration?: number;
 }
 
 // =============================================
@@ -111,6 +120,28 @@ const iconColorStyles: Record<AlertStatus, string> = {
 };
 
 // =============================================
+// ANIMATION STYLES
+// =============================================
+
+const animationEnterStyles = {
+  fade: 'animate-in fade-in duration-300',
+  'slide-down': 'animate-in fade-in slide-in-from-top-2 duration-300',
+  'slide-up': 'animate-in fade-in slide-in-from-bottom-2 duration-300',
+  'slide-left': 'animate-in fade-in slide-in-from-right-2 duration-300',
+  'slide-right': 'animate-in fade-in slide-in-from-left-2 duration-300',
+  scale: 'animate-in fade-in zoom-in-95 duration-300',
+};
+
+const animationExitStyles = {
+  fade: 'animate-out fade-out duration-200',
+  'slide-down': 'animate-out fade-out slide-out-to-top-2 duration-200',
+  'slide-up': 'animate-out fade-out slide-out-to-bottom-2 duration-200',
+  'slide-left': 'animate-out fade-out slide-out-to-right-2 duration-200',
+  'slide-right': 'animate-out fade-out slide-out-to-left-2 duration-200',
+  scale: 'animate-out fade-out zoom-out-95 duration-200',
+};
+
+// =============================================
 // ALERT COMPONENT
 // =============================================
 
@@ -125,11 +156,43 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       onClose,
       icon,
       hideIcon = false,
+      animate = false,
+      animationType = 'fade',
+      duration = 0,
       children,
       ...props
     },
     ref
   ) => {
+    const [isVisible, setIsVisible] = React.useState(true);
+    const [isExiting, setIsExiting] = React.useState(false);
+
+    // Auto dismiss
+    React.useEffect(() => {
+      if (duration > 0) {
+        const timer = setTimeout(() => {
+          handleClose();
+        }, duration);
+        return () => clearTimeout(timer);
+      }
+    }, [duration]);
+
+    const handleClose = () => {
+      if (animate) {
+        setIsExiting(true);
+        // Wait for exit animation to complete
+        setTimeout(() => {
+          setIsVisible(false);
+          onClose?.();
+        }, 200);
+      } else {
+        setIsVisible(false);
+        onClose?.();
+      }
+    };
+
+    if (!isVisible) return null;
+
     const getVariantStyles = () => {
       switch (variant) {
         case 'subtle':
@@ -145,6 +208,12 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       }
     };
 
+    const getAnimationStyles = () => {
+      if (!animate) return '';
+      if (isExiting) return animationExitStyles[animationType];
+      return animationEnterStyles[animationType];
+    };
+
     const iconElement = icon || statusIcons[status];
     const isSolid = variant === 'solid';
 
@@ -155,6 +224,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         className={cn(
           'relative rounded-lg p-4',
           getVariantStyles(),
+          getAnimationStyles(),
           className
         )}
         {...props}
@@ -185,10 +255,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           {isClosable && (
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className={cn(
                 'ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8',
-                'hover:bg-black/5 focus:ring-2 focus:ring-offset-2 focus:outline-none',
+                'hover:bg-black/5 focus:ring-2 focus:ring-offset-2 focus:outline-none transition-colors',
                 isSolid
                   ? 'text-white/80 hover:text-white hover:bg-white/10 focus:ring-white'
                   : `${iconColorStyles[status]} focus:ring-${status}-500`
@@ -206,4 +276,90 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
 Alert.displayName = 'Alert';
 
-export { Alert };
+// =============================================
+// ALERT CONTAINER TYPES
+// =============================================
+
+export type AlertPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
+export interface AlertContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Position on screen */
+  position?: AlertPosition;
+  /** Max width of alerts */
+  maxWidth?: string;
+}
+
+// =============================================
+// POSITION STYLES
+// =============================================
+
+const positionStyles: Record<AlertPosition, string> = {
+  'top-left': 'top-4 left-4 items-start',
+  'top-center': 'top-4 left-1/2 -translate-x-1/2 items-center',
+  'top-right': 'top-4 right-4 items-end',
+  'bottom-left': 'bottom-4 left-4 items-start',
+  'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2 items-center',
+  'bottom-right': 'bottom-4 right-4 items-end',
+};
+
+// Get optimal animation type based on position
+const getAnimationForPosition = (position: AlertPosition): 'slide-down' | 'slide-up' | 'slide-left' | 'slide-right' => {
+  switch (position) {
+    case 'top-left':
+    case 'top-center':
+    case 'top-right':
+      return 'slide-down';
+    case 'bottom-left':
+    case 'bottom-center':
+    case 'bottom-right':
+      return 'slide-up';
+    default:
+      return 'slide-down';
+  }
+};
+
+// =============================================
+// ALERT CONTAINER COMPONENT
+// =============================================
+
+const AlertContainer = React.forwardRef<HTMLDivElement, AlertContainerProps>(
+  (
+    {
+      className,
+      position = 'top-right',
+      maxWidth = '400px',
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'fixed z-50 flex flex-col gap-3 pointer-events-none',
+          positionStyles[position],
+          className
+        )}
+        style={{ maxWidth }}
+        {...props}
+      >
+        {React.Children.map(children, (child) => (
+          <div className="pointer-events-auto w-full">
+            {child}
+          </div>
+        ))}
+      </div>
+    );
+  }
+);
+
+AlertContainer.displayName = 'AlertContainer';
+
+export { Alert, AlertContainer, getAnimationForPosition };
