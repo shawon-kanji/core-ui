@@ -1,5 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import '@shawonkanji/core-ui/style.css';
+import { SelectPage } from './pages/SelectPage';
+import { CheckboxPage } from './pages/CheckboxPage';
+import { AutocompletePage } from './pages/AutocompletePage';
+import { DropdownPage } from './pages/DropdownPage';
+import { DatePickerPage } from './pages/DatePickerPage';
+import { Showcase, PropsTable } from './components';
 
 // Import all components
 import {
@@ -47,6 +53,10 @@ const componentCategories = [
     items: [
       { name: 'Button', id: 'button' },
       { name: 'Input', id: 'input' },
+      { name: 'Select', id: 'select' },
+      { name: 'Checkbox', id: 'checkbox' },
+      { name: 'Autocomplete', id: 'autocomplete' },
+      { name: 'DatePicker', id: 'datepicker' },
     ],
   },
   {
@@ -55,6 +65,7 @@ const componentCategories = [
       { name: 'Card', id: 'card' },
       { name: 'Badge', id: 'badge' },
       { name: 'Avatar', id: 'avatar' },
+      { name: 'Dropdown', id: 'dropdown' },
     ],
   },
   {
@@ -72,140 +83,6 @@ const componentCategories = [
     ],
   },
 ];
-
-// =============================================
-// CODE BLOCK COMPONENT
-// =============================================
-
-function CodeBlock({ code }: { code: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code.trim());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="relative">
-      <button
-        onClick={handleCopy}
-        className="absolute top-2 right-2 p-1.5 rounded bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs"
-      >
-        {copied ? '✓ Copied' : 'Copy'}
-      </button>
-      <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-        <code>{code.trim()}</code>
-      </pre>
-    </div>
-  );
-}
-
-// =============================================
-// SHOWCASE WRAPPER WITH CODE
-// =============================================
-
-function Showcase({ title, description, code, children }: {
-  title: string;
-  description?: string;
-  code?: string;
-  children: React.ReactNode;
-}) {
-  const [showCode, setShowCode] = useState(false);
-
-  return (
-    <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          {code && (
-            <button
-              onClick={() => setShowCode(!showCode)}
-              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
-            >
-              {showCode ? '◁ Hide Code' : '▷ Show Code'}
-            </button>
-          )}
-        </div>
-        {description && <p className="text-sm text-gray-500 mb-4">{description}</p>}
-        <div>{children}</div>
-      </div>
-      {code && showCode && (
-        <div className="border-t border-gray-200 p-4 bg-gray-50">
-          <CodeBlock code={code} />
-        </div>
-      )}
-    </section>
-  );
-}
-
-// =============================================
-// PROPS TABLE COMPONENT
-// =============================================
-
-interface PropDefinition {
-  name: string;
-  type: string;
-  default?: string;
-  required?: boolean;
-  description: string;
-}
-
-function PropsTable({ props, title = 'Props' }: { props: PropDefinition[]; title?: string }) {
-  return (
-    <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div className="p-4 border-b border-gray-200 bg-gray-50">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="text-left p-3 font-medium text-gray-700">Prop</th>
-              <th className="text-left p-3 font-medium text-gray-700">Type</th>
-              <th className="text-left p-3 font-medium text-gray-700">Default</th>
-              <th className="text-left p-3 font-medium text-gray-700">Required</th>
-              <th className="text-left p-3 font-medium text-gray-700">Description</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {props.map((prop) => (
-              <tr key={prop.name} className="hover:bg-gray-50">
-                <td className="p-3">
-                  <code className="text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded text-xs font-mono">
-                    {prop.name}
-                  </code>
-                </td>
-                <td className="p-3">
-                  <code className="text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono whitespace-pre-wrap">
-                    {prop.type}
-                  </code>
-                </td>
-                <td className="p-3 text-gray-500">
-                  {prop.default ? (
-                    <code className="text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">
-                      {prop.default}
-                    </code>
-                  ) : (
-                    <span className="text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="p-3">
-                  {prop.required ? (
-                    <Badge color="error" size="sm">Required</Badge>
-                  ) : (
-                    <Badge color="gray" size="sm" variant="outline">Optional</Badge>
-                  )}
-                </td>
-                <td className="p-3 text-gray-600">{prop.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
-}
 
 // =============================================
 // COLOR PALETTE PAGE
@@ -3409,9 +3286,14 @@ export default function App() {
       case 'icon': return <IconPage />;
       case 'button': return <ButtonPage />;
       case 'input': return <InputPage />;
+      case 'select': return <SelectPage />;
+      case 'checkbox': return <CheckboxPage />;
+      case 'autocomplete': return <AutocompletePage />;
+      case 'datepicker': return <DatePickerPage />;
       case 'card': return <CardPage />;
       case 'badge': return <BadgePage />;
       case 'avatar': return <AvatarPage />;
+      case 'dropdown': return <DropdownPage />;
       case 'box': return <BoxPage />;
       case 'stack': return <StackPage />;
       case 'divider': return <DividerPage />;
