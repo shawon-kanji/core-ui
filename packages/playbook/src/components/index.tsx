@@ -41,7 +41,7 @@ export function Showcase({ title, description, code, children }: {
   const [showCode, setShowCode] = useState(false);
 
   return (
-    <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+    <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
@@ -55,10 +55,10 @@ export function Showcase({ title, description, code, children }: {
           )}
         </div>
         {description && <p className="text-sm text-gray-500 mb-4">{description}</p>}
-        <div>{children}</div>
+        <div className="overflow-visible">{children}</div>
       </div>
       {code && showCode && (
-        <div className="border-t border-gray-200 p-4 bg-gray-50">
+        <div className="border-t border-gray-200 p-4 bg-gray-50 overflow-hidden rounded-b-lg">
           <CodeBlock code={code} />
         </div>
       )}

@@ -149,7 +149,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
       const newValue = e.target.value;
       setInputValue(newValue);
       onInputChange?.(newValue);
-      
+
       if (freeSolo) {
         onChange?.(newValue, null);
       }
@@ -218,18 +218,19 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
       const handleClickOutside = (event: MouseEvent) => {
         if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
           setIsOpen(false);
-          // Reset input to selected value on blur
+          // Reset input to selected value on blur (but keep freeSolo values)
           if (selectedOption) {
             setInputValue(selectedOption.label);
-          } else {
+          } else if (!freeSolo) {
             setInputValue('');
           }
+          // For freeSolo, keep the current inputValue as-is
         }
       };
 
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [selectedOption]);
+    }, [selectedOption, freeSolo]);
 
     return (
       <div ref={containerRef} className={cn('relative', fullWidth && 'w-full', className)}>
