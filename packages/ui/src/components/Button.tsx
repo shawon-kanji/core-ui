@@ -332,7 +332,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
           // Full width
           fullWidth && 'w-full',
-              'inline-flex items-center justify-center font-medium',
               'transform transition duration-150 shadow-sm hover:shadow-md',
               'active:scale-95 active:translate-y-[1px] active:brightness-95 active:shadow-lg',
           // Color styles based on variant
