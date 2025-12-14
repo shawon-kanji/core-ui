@@ -310,11 +310,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const isDisabled = disabled || loading;
+    const ariaLabel = (props as Record<string, unknown>)['aria-label'] as string | undefined;
+    const computedAriaLabel = ariaLabel || (isIconOnly && typeof children === 'string' ? children : undefined);
 
     return (
       <button
         ref={ref}
         disabled={isDisabled}
+        aria-label={computedAriaLabel}
         className={cn(
           // Base styles
           'inline-flex items-center justify-center font-medium transition-colors',

@@ -126,6 +126,8 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const listboxId = React.useId();
+    const optionIdPrefix = React.useId();
 
     // Get selected option from value
     const selectedOption = options.find(opt => opt.value === value);
@@ -178,10 +180,11 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
       inputRef.current?.focus();
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!isOpen) {
         if (e.key === 'ArrowDown' || e.key === 'Enter') {
           setIsOpen(true);
+          setHighlightedIndex(0);
           return;
         }
         return;
@@ -209,6 +212,9 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
         case 'Escape':
           setIsOpen(false);
           setHighlightedIndex(-1);
+          break;
+        case 'Tab':
+          setIsOpen(false);
           break;
       }
     };
@@ -259,6 +265,16 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
             placeholder={placeholder}
             disabled={isDisabled}
             readOnly={isReadOnly}
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={isOpen}
+            aria-controls={listboxId}
+            aria-activedescendant={
+              highlightedIndex >= 0 && isOpen
+                ? `${optionIdPrefix}-${highlightedIndex}`
+                : undefined
+            }
+            aria-disabled={isDisabled}
             className={cn(
               'flex-1 bg-transparent focus:outline-none min-w-0',
               'placeholder:text-gray-400',
@@ -294,7 +310,12 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          <div
+            id={listboxId}
+            role="listbox"
+            aria-label={placeholder}
+            className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+          >
             <div className="max-h-60 overflow-y-auto py-1">
               {isLoading ? (
                 <div className="px-3 py-2 text-sm text-gray-500 text-center">
@@ -315,6 +336,9 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
                       type="button"
                       onClick={() => handleSelect(option)}
                       onMouseEnter={() => setHighlightedIndex(index)}
+                      id={`${optionIdPrefix}-${index}`}
+                      role="option"
+                      aria-selected={isSelected}
                       className={cn(
                         'w-full text-left px-3 py-2 text-sm transition-colors',
                         'focus:outline-none',

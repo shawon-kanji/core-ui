@@ -15,7 +15,7 @@ export interface SelectOption {
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 export type SelectVariant = 'outline' | 'filled' | 'flushed';
-export type SelectColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'slate' | 'gray' | 'zinc' | 'neutral';
+          aria-disabled={isDisabled ? true : undefined}
 
 export interface SelectProps {
   options: SelectOption[];
@@ -127,7 +127,11 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     const [isOpen, setIsOpen] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState(defaultValue || '');
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [highlightedIndex, setHighlightedIndex] = React.useState<number>(-1);
+    const listboxId = React.useId();
+    const optionIdPrefix = React.useId();
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
     const selectedOption = options.find(opt => opt.value === currentValue);
@@ -137,6 +141,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           opt.label.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : options;
+
+    const flatOptions = React.useMemo(() => {
+      return [
+        ...filteredOptions.filter(opt => !opt.group),
+        ...filteredOptions.filter(opt => !!opt.group),
+      ];
+    }, [filteredOptions]);
 
     // Group options by group property
     const groupedOptions = React.useMemo(() => {
@@ -161,9 +172,10 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       if (value === undefined) {
         setInternalValue(option.value);
       }
-      onChange?.(option.value, option);
+            aria-disabled={isDisabled ? true : undefined}
       setIsOpen(false);
       setSearchQuery('');
+      setHighlightedIndex(-1);
     };
 
     const handleClear = (e: React.MouseEvent) => {
@@ -172,6 +184,52 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         setInternalValue('');
       }
       onChange?.('', { value: '', label: '' });
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (isDisabled || isReadOnly) return;
+
+      if (!isOpen && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        setIsOpen(true);
+        setHighlightedIndex(flatOptions.findIndex(opt => opt.value === currentValue) ?? 0);
+        return;
+      }
+
+      if (!isOpen) return;
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          setHighlightedIndex(prev => {
+            const next = prev + 1;
+            return next >= flatOptions.length ? 0 : next;
+          });
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          setHighlightedIndex(prev => {
+            const next = prev - 1;
+            return next < 0 ? flatOptions.length - 1 : next;
+          });
+          break;
+        case 'Enter':
+        case ' ': {
+          event.preventDefault();
+          const option = highlightedIndex >= 0 ? flatOptions[highlightedIndex] : undefined;
+          if (option) {
+            handleSelect(option);
+          }
+          break;
+        }
+        case 'Escape':
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          break;
+        case 'Tab':
+          setIsOpen(false);
+          break;
+      }
     };
 
     // Click outside to close
@@ -194,9 +252,20 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         )}
 
         <button
-          ref={ref as unknown as React.RefObject<HTMLButtonElement>}
+          ref={(ref as unknown as React.RefObject<HTMLButtonElement>) || triggerRef}
           type="button"
           onClick={() => !isDisabled && !isReadOnly && setIsOpen(!isOpen)}
+          onKeyDown={handleKeyDown}
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-controls={listboxId}
+          aria-activedescendant={
+            highlightedIndex >= 0 && isOpen
+              ? `${optionIdPrefix}-${flatOptions[highlightedIndex]?.value}`
+              : undefined
+          }
+          aria-disabled={isDisabled}
           className={cn(
             'flex items-center justify-between gap-2 rounded-lg transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-offset-0',
@@ -229,7 +298,12 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          <div
+            id={listboxId}
+            role="listbox"
+            aria-label={placeholder}
+            className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+          >
             {isSearchable && (
               <div className="p-2 border-b border-gray-100">
                 <input
@@ -243,7 +317,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               </div>
             )}
             <div className="max-h-60 overflow-y-auto py-1">
-              {groupedOptions.ungrouped.map((option) => (
+              {groupedOptions.ungrouped.map((option, index) => (
                 <button
                   key={option.value}
                   type="button"
@@ -255,6 +329,9 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                     option.value !== currentValue && 'text-gray-700 hover:bg-gray-100',
                     option.disabled && 'opacity-50 cursor-not-allowed'
                   )}
+                  role="option"
+                  aria-selected={option.value === currentValue}
+                  id={`${optionIdPrefix}-${option.value}`}
                   disabled={option.disabled}
                 >
                   {option.label}
@@ -280,6 +357,9 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                         option.value !== currentValue && 'text-gray-700 hover:bg-gray-100',
                         option.disabled && 'opacity-50 cursor-not-allowed'
                       )}
+                      role="option"
+                      aria-selected={option.value === currentValue}
+                      id={`${optionIdPrefix}-${option.value}`}
                       disabled={option.disabled}
                     >
                       {option.label}
@@ -332,6 +412,9 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
     const [isOpen, setIsOpen] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue || []);
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [highlightedIndex, setHighlightedIndex] = React.useState<number>(-1);
+    const listboxId = React.useId();
+    const optionIdPrefix = React.useId();
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
@@ -342,6 +425,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
           opt.label.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : options;
+
+    const flatOptions = filteredOptions;
 
     const handleToggle = (option: SelectOption) => {
       if (option.disabled) return;
@@ -384,6 +469,50 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       onChange?.([], []);
     };
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (isDisabled || isReadOnly) return;
+
+      if (!isOpen && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        setIsOpen(true);
+        setHighlightedIndex(0);
+        return;
+      }
+
+      if (!isOpen) return;
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          setHighlightedIndex(prev => {
+            const next = prev + 1;
+            return next >= flatOptions.length ? 0 : next;
+          });
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          setHighlightedIndex(prev => {
+            const next = prev - 1;
+            return next < 0 ? flatOptions.length - 1 : next;
+          });
+          break;
+        case 'Enter':
+        case ' ': {
+          event.preventDefault();
+          const option = highlightedIndex >= 0 ? flatOptions[highlightedIndex] : undefined;
+          if (option) handleToggle(option);
+          break;
+        }
+        case 'Escape':
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          break;
+        case 'Tab':
+          setIsOpen(false);
+          break;
+      }
+    };
+
     // Click outside to close
     React.useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -407,6 +536,16 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
           ref={ref as unknown as React.RefObject<HTMLButtonElement>}
           type="button"
           onClick={() => !isDisabled && !isReadOnly && setIsOpen(!isOpen)}
+          onKeyDown={handleKeyDown}
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-controls={listboxId}
+          aria-activedescendant={
+            highlightedIndex >= 0 && isOpen
+              ? `${optionIdPrefix}-${flatOptions[highlightedIndex]?.value}`
+              : undefined
+          }
           className={cn(
             'flex items-center justify-between gap-2 rounded-lg transition-colors min-h-[2.5rem]',
             'focus:outline-none focus:ring-2 focus:ring-offset-0',
@@ -464,7 +603,13 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          <div
+            id={listboxId}
+            role="listbox"
+            aria-multiselectable="true"
+            aria-label={placeholder}
+            className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+          >
             {isSearchable && (
               <div className="p-2 border-b border-gray-100">
                 <input
@@ -478,19 +623,23 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
               </div>
             )}
             <div className="max-h-60 overflow-y-auto py-1">
-              {filteredOptions.map((option) => {
+              {filteredOptions.map((option, index) => {
                 const isSelected = currentValue.includes(option.value);
                 return (
                   <button
                     key={option.value}
                     type="button"
                     onClick={() => handleToggle(option)}
+                    onMouseEnter={() => setHighlightedIndex(index)}
                     className={cn(
                       'w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2',
                       'focus:outline-none focus:bg-gray-100',
                       'text-gray-700 hover:bg-gray-100',
                       option.disabled && 'opacity-50 cursor-not-allowed'
                     )}
+                    role="option"
+                    aria-selected={isSelected}
+                    id={`${optionIdPrefix}-${option.value}`}
                     disabled={option.disabled}
                   >
                     <span className={cn(
