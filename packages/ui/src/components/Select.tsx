@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cn } from '../lib/utils';
+import { cn, mergeRefs } from '../lib/utils';
 
 // =============================================
 // TYPES
@@ -245,13 +245,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     }, []);
 
     return (
-      <div ref={containerRef} className={cn('relative', fullWidth && 'w-full', className)}>
+      <div ref={mergeRefs(ref, containerRef)} className={cn('relative', fullWidth && 'w-full', className)}>
         {name && currentValue && (
           <input type="hidden" name={name} value={currentValue} />
         )}
 
         <button
-          ref={(ref as unknown as React.RefObject<HTMLButtonElement>) || triggerRef}
+          ref={triggerRef}
           type="button"
           onClick={() => !isDisabled && !isReadOnly && setIsOpen(!isOpen)}
           onKeyDown={handleKeyDown}
@@ -526,13 +526,12 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
     }, []);
 
     return (
-      <div ref={containerRef} className={cn('relative', fullWidth && 'w-full', className)}>
+      <div ref={mergeRefs(ref, containerRef)} className={cn('relative', fullWidth && 'w-full', className)}>
         {name && currentValue.map(v => (
           <input key={v} type="hidden" name={name} value={v} />
         ))}
 
         <button
-          ref={ref as unknown as React.RefObject<HTMLButtonElement>}
           type="button"
           onClick={() => !isDisabled && !isReadOnly && setIsOpen(!isOpen)}
           onKeyDown={handleKeyDown}
