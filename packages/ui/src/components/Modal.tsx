@@ -52,7 +52,7 @@ export function Modal({
     if (!open || !dialogRef.current) return;
 
     // Store the previously focused element
-    const previouslyFocusedElement = document.activeElement as HTMLElement;
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null;
 
     // Get all focusable elements within the modal
     const getFocusableElements = () => {
@@ -63,13 +63,19 @@ export function Modal({
         'textarea:not([disabled])',
         'input:not([disabled])',
         'select:not([disabled])',
-        '[tabindex]:not([tabindex="-1"])',
+        '[tabindex="0"]',
       ].join(', ');
       return Array.from(
         dialogRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
       ).filter((el) => {
         // Filter out elements that are not visible
-        return el.offsetParent !== null;
+        const style = getComputedStyle(el);
+        return (
+          el.offsetWidth > 0 &&
+          el.offsetHeight > 0 &&
+          style.visibility !== 'hidden' &&
+          style.display !== 'none'
+        );
       });
     };
 
@@ -111,7 +117,9 @@ export function Modal({
     return () => {
       document.removeEventListener('keydown', handleTabKey);
       // Restore focus to the previously focused element
-      previouslyFocusedElement?.focus();
+      if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+        previouslyFocusedElement.focus();
+      }
     };
   }, [open]);
 
