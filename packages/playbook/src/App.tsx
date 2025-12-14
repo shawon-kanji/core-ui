@@ -5,7 +5,11 @@ import { CheckboxPage } from './pages/CheckboxPage';
 import { AutocompletePage } from './pages/AutocompletePage';
 import { DropdownPage } from './pages/DropdownPage';
 import { DatePickerPage } from './pages/DatePickerPage';
-import { PrimitivesPage } from './pages/PrimitivesPage';
+import { ModalPage } from './pages/ModalPage';
+import { TooltipPage } from './pages/TooltipPage';
+import { TabsPage } from './pages/TabsPage';
+import { AccordionPage } from './pages/AccordionPage';
+import { ProgressPage } from './pages/ProgressPage';
 import { Showcase, PropsTable } from './components';
 
 // Import all components
@@ -72,7 +76,11 @@ const componentCategories = [
   {
     name: 'Primitives',
     items: [
-      { name: 'Primitives', id: 'primitives' },
+      { name: 'Modal', id: 'modal' },
+      { name: 'Tooltip', id: 'tooltip' },
+      { name: 'Tabs', id: 'tabs' },
+      { name: 'Accordion', id: 'accordion' },
+      { name: 'Progress', id: 'progress' },
     ],
   },
   {
@@ -3368,7 +3376,11 @@ export default function App() {
       case 'badge': return <BadgePage />;
       case 'avatar': return <AvatarPage />;
       case 'dropdown': return <DropdownPage />;
-      case 'primitives': return <PrimitivesPage />;
+      case 'modal': return <ModalPage />;
+      case 'tooltip': return <TooltipPage />;
+      case 'tabs': return <TabsPage />;
+      case 'accordion': return <AccordionPage />;
+      case 'progress': return <ProgressPage />;
       case 'box': return <BoxPage />;
       case 'stack': return <StackPage />;
       case 'divider': return <DividerPage />;

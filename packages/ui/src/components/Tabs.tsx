@@ -52,11 +52,20 @@ export function Tabs({ defaultIndex = 0, onChange, children, className }: TabsPr
 export interface TabListProps {
   children: React.ReactNode;
   className?: string;
+  /** Enable horizontal scrolling when tabs overflow */
+  scrollable?: boolean;
 }
 
-export function TabList({ children, className }: TabListProps) {
+export function TabList({ children, className, scrollable = false }: TabListProps) {
   return (
-    <div role="tablist" className={cn('flex items-center gap-2 border-b border-gray-200', className)}>
+    <div
+      role="tablist"
+      className={cn(
+        'flex items-center gap-2 border-b border-gray-200',
+        scrollable && 'overflow-x-auto whitespace-nowrap',
+        className
+      )}
+    >
       {children}
     </div>
   );
