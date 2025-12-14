@@ -84,6 +84,8 @@ export function Tab({ children, index, disabled = false, className }: TabProps) 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const total = (ref.current?.parentElement?.children.length ?? 1) - 1;
     
+    // Find the next enabled tab in the specified direction, skipping disabled tabs.
+    // Returns startIndex if no enabled tabs are found (edge case: all tabs disabled).
     const findNextEnabledTab = (startIndex: number, direction: 1 | -1): number => {
       let nextIndex = startIndex;
       let attempts = 0;
@@ -102,9 +104,11 @@ export function Tab({ children, index, disabled = false, className }: TabProps) 
         }
       } while (attempts < maxAttempts);
       
+      // Fallback: stay on current tab if all others are disabled
       return startIndex;
     };
     
+    // Find the first enabled tab. Returns 0 as fallback if all tabs are disabled.
     const findFirstEnabledTab = (): number => {
       for (let i = 0; i <= total; i++) {
         if (!ctx.isTabDisabled(i)) {
@@ -114,6 +118,7 @@ export function Tab({ children, index, disabled = false, className }: TabProps) 
       return 0;
     };
     
+    // Find the last enabled tab. Returns total as fallback if all tabs are disabled.
     const findLastEnabledTab = (): number => {
       for (let i = total; i >= 0; i--) {
         if (!ctx.isTabDisabled(i)) {
