@@ -49,9 +49,70 @@ export function Modal({
   }, [open, onClose]);
 
   React.useEffect(() => {
-    if (open) {
-      dialogRef.current?.focus();
+    if (!open || !dialogRef.current) return;
+
+    // Store the previously focused element
+    const previouslyFocusedElement = document.activeElement as HTMLElement;
+
+    // Get all focusable elements within the modal
+    const getFocusableElements = () => {
+      if (!dialogRef.current) return [];
+      const focusableSelectors = [
+        'a[href]',
+        'button:not([disabled])',
+        'textarea:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(', ');
+      return Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
+      ).filter((el) => {
+        // Filter out elements that are not visible
+        return el.offsetParent !== null;
+      });
+    };
+
+    // Focus the first focusable element or the dialog itself
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    } else {
+      dialogRef.current.focus();
     }
+
+    // Handle Tab key to trap focus within the modal
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements();
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        // Shift + Tab: if focus is on first element, move to last
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab: if focus is on last element, move to first
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+
+    return () => {
+      document.removeEventListener('keydown', handleTabKey);
+      // Restore focus to the previously focused element
+      previouslyFocusedElement?.focus();
+    };
   }, [open]);
 
   const handleOverlayClick = (event: React.MouseEvent) => {
