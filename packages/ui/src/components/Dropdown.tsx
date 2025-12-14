@@ -73,10 +73,12 @@ function DropdownMenuItem({
   item,
   onSelect,
   closeOnSelect,
+  registerRef,
 }: {
   item: DropdownItem;
   onSelect: () => void;
   closeOnSelect: boolean;
+  registerRef?: (el: HTMLButtonElement | null) => void;
 }) {
   const [submenuOpen, setSubmenuOpen] = React.useState(false);
   const hasSubmenu = item.items && item.items.length > 0;
@@ -102,6 +104,7 @@ function DropdownMenuItem({
         onMouseEnter={() => hasSubmenu && setSubmenuOpen(true)}
         onMouseLeave={() => hasSubmenu && setSubmenuOpen(false)}
         disabled={item.disabled}
+        ref={registerRef}
         className={cn(
           'w-full text-left px-3 py-2 text-sm flex items-center gap-2 transition-colors',
           'focus:outline-none focus:bg-gray-100',
@@ -110,6 +113,10 @@ function DropdownMenuItem({
           !item.danger && 'text-gray-700',
           item.disabled && 'opacity-50 cursor-not-allowed hover:bg-transparent'
         )}
+        role="menuitem"
+        aria-haspopup={hasSubmenu || undefined}
+        aria-expanded={hasSubmenu ? submenuOpen : undefined}
+        tabIndex={-1}
       >
         {item.icon && <span className="w-4 h-4 flex-shrink-0">{item.icon}</span>}
         <span className="flex-1">{item.label}</span>
@@ -162,6 +169,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+    const menuRef = React.useRef<HTMLDivElement>(null);
+    const itemRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
+    const [focusedIndex, setFocusedIndex] = React.useState(0);
+    const triggerId = React.useId();
 
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
 
@@ -194,39 +205,89 @@ export const Dropdown: React.FC<DropdownProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Keyboard navigation
+  // Focus first item when menu opens
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-
     if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
+      itemRefs.current = [];
+      setFocusedIndex(0);
+      // Allow menu to mount before focusing
+      const id = requestAnimationFrame(() => {
+        itemRefs.current[0]?.focus();
+      });
+      return () => cancelAnimationFrame(id);
     }
   }, [isOpen]);
 
+  const focusItem = (index: number) => {
+    const total = items.length;
+    if (total === 0) return;
+    const next = (index + total) % total;
+    setFocusedIndex(next);
+    itemRefs.current[next]?.focus();
+  };
+
+  const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!isOpen) return;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        focusItem(focusedIndex + 1);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        focusItem(focusedIndex - 1);
+        break;
+      case 'Home':
+        event.preventDefault();
+        focusItem(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        focusItem(items.length - 1);
+        break;
+      case 'Enter':
+      case ' ': {
+        event.preventDefault();
+        const current = itemRefs.current[focusedIndex];
+        current?.click();
+        break;
+      }
+      case 'Escape':
+        event.preventDefault();
+        setIsOpen(false);
+        break;
+    }
+  };
+
   return (
     <div ref={containerRef} className={cn('relative inline-block', className)}>
-      <div onClick={handleToggle} className={cn(isDisabled && 'cursor-not-allowed opacity-50')}>
+      <div onClick={handleToggle} className={cn(isDisabled && 'cursor-not-allowed opacity-50')} id={triggerId}>
         {trigger}
       </div>
 
       {isOpen && (
         <div
+          ref={menuRef}
           className={cn(
             'absolute z-50 min-w-[160px] bg-white border border-gray-200 rounded-lg shadow-lg py-1',
             placementStyles[placement]
           )}
+          role="menu"
+          aria-labelledby={triggerId}
+          aria-orientation="vertical"
+          tabIndex={-1}
+          onKeyDown={handleMenuKeyDown}
         >
-          {items.map((item) => (
+          {items.map((item, index) => (
             <DropdownMenuItem
               key={item.id}
               item={item}
               onSelect={handleSelect}
               closeOnSelect={closeOnSelect}
+              registerRef={(el) => {
+                itemRefs.current[index] = el;
+              }}
             />
           ))}
         </div>

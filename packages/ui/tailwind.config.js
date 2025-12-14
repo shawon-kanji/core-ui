@@ -4,6 +4,20 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    {
+      // Dynamic color utility coverage used by components (bg, text, border)
+      pattern: /(bg|text|border)-(primary|secondary|success|warning|error|info|slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(50|100|200|300|400|500|600|700|800|900|950)/,
+    },
+    {
+      // Common spacing utilities assembled dynamically in Box/Stack
+      pattern: /(p|px|py|pt|pr|pb|pl|m|mx|my|mt|mr|mb|ml)-(0|0\.5|1|2|3|4|6|8|12|16)/,
+    },
+    {
+      // Rounded/shadow/border helpers occasionally composed with booleans
+      pattern: /(rounded|shadow)-(none|sm|md|lg|xl|2xl|3xl|full)/,
+    },
+  ],
   theme: {
     extend: {
       colors: {
