@@ -90,35 +90,41 @@ export function PrimitivesPage() {
 
       <Showcase
         title="Tabs"
-        description="Switch content without leaving the page; arrow keys navigate tabs."
+        description="Switch content without leaving the page; arrow keys navigate tabs and skip disabled ones."
         code={`<Tabs defaultIndex={0}>
   <TabList>
     <Tab index={0}>Profile</Tab>
-    <Tab index={1}>Billing</Tab>
+    <Tab index={1} disabled>Billing (disabled)</Tab>
     <Tab index={2}>Usage</Tab>
+    <Tab index={3}>Settings</Tab>
   </TabList>
   <TabPanels>
     <TabPanel index={0}>Profile content</TabPanel>
     <TabPanel index={1}>Billing content</TabPanel>
     <TabPanel index={2}>Usage content</TabPanel>
+    <TabPanel index={3}>Settings content</TabPanel>
   </TabPanels>
 </Tabs>`}
       >
         <Tabs defaultIndex={0}>
           <TabList>
             <Tab index={0}>Profile</Tab>
-            <Tab index={1}>Billing</Tab>
+            <Tab index={1} disabled>Billing (disabled)</Tab>
             <Tab index={2}>Usage</Tab>
+            <Tab index={3}>Settings</Tab>
           </TabList>
           <TabPanels>
             <TabPanel index={0}>
-              <Text size="sm" color="muted">Manage your personal info and preferences.</Text>
+              <Text size="sm" color="muted">Manage your personal info and preferences. Try pressing arrow keys to navigate - disabled tab will be skipped.</Text>
             </TabPanel>
             <TabPanel index={1}>
               <Text size="sm" color="muted">Update payment methods and invoices.</Text>
             </TabPanel>
             <TabPanel index={2}>
               <Text size="sm" color="muted">View API calls and consumption trends.</Text>
+            </TabPanel>
+            <TabPanel index={3}>
+              <Text size="sm" color="muted">Configure application settings and preferences.</Text>
             </TabPanel>
           </TabPanels>
         </Tabs>
