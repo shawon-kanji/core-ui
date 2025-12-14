@@ -12,23 +12,6 @@
 			"group": "build"
 		},
 		{
-			"label": "pnpm: build (root)",
-			"type": "shell",
-			"command": "pnpm",
-			"args": [
-				"build"
-			],
-			"isBackground": false,
-			"problemMatcher": [],
-			"group": "build"
-		},
-		{
-			"label": "pnpm build",
-			"type": "shell",
-			"command": "pnpm build",
-			"isBackground": false
-		},
-		{
 			"label": "pnpm build (login shell)",
 			"type": "shell",
 			"command": "bash",
