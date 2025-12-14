@@ -101,6 +101,38 @@ export function TabsPage() {
           </TabPanels>
         </Tabs>
       </Showcase>
+
+      <Showcase
+        title="Scrollable tab list"
+        description="Use scrollable on TabList when you have many tabs"
+        code={`<Tabs defaultIndex={0}>
+  <TabList scrollable>
+    {[...Array(12).keys()].map((i) => (
+      <Tab key={i} index={i}>Tab {i + 1}</Tab>
+    ))}
+  </TabList>
+  <TabPanels>
+    {[...Array(12).keys()].map((i) => (
+      <TabPanel key={i} index={i}>Content {i + 1}</TabPanel>
+    ))}
+  </TabPanels>
+</Tabs>`}
+      >
+        <Tabs defaultIndex={0}>
+          <TabList scrollable>
+            {[...Array(12).keys()].map((i) => (
+              <Tab key={i} index={i}>Tab {i + 1}</Tab>
+            ))}
+          </TabList>
+          <TabPanels>
+            {[...Array(12).keys()].map((i) => (
+              <TabPanel key={i} index={i}>
+                <Text size="sm">Content {i + 1}</Text>
+              </TabPanel>
+            ))}
+          </TabPanels>
+        </Tabs>
+      </Showcase>
     </div>
   );
 }
