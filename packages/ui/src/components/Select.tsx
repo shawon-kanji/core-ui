@@ -191,7 +191,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       if (!isOpen && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
         event.preventDefault();
         setIsOpen(true);
-        setHighlightedIndex(flatOptions.findIndex(opt => opt.value === currentValue) ?? 0);
+        setHighlightedIndex(flatOptions.findIndex(opt => opt.value === currentValue) || 0);
         return;
       }
 
