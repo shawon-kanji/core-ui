@@ -33,6 +33,14 @@ export function Tooltip({
 
   const child = React.Children.only(children) as React.ReactElement<any>;
 
+  React.useEffect(() => {
+    return () => {
+      if (timer.current) {
+        window.clearTimeout(timer.current);
+      }
+    };
+  }, []);
+
   const show = () => {
     if (timer.current) window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setOpen(true), openDelay);
