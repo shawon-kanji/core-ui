@@ -49,9 +49,95 @@ export function Modal({
   }, [open, onClose]);
 
   React.useEffect(() => {
-    if (open) {
-      dialogRef.current?.focus();
+    if (!open || !dialogRef.current) return;
+
+    // Store the previously focused element
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null;
+
+    // Get all focusable elements within the modal
+    const getFocusableElements = () => {
+      if (!dialogRef.current) return [];
+      const focusableSelectors = [
+        'a[href]',
+        'area[href]',
+        'button:not([disabled])',
+        'textarea:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'iframe',
+        'object',
+        'embed',
+        'audio[controls]',
+        'video[controls]',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(', ');
+      return Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
+      ).filter((el) => {
+        // Filter out elements that are not visible or have negative tabindex
+        const tabindex = el.getAttribute('tabindex');
+        if (tabindex && parseInt(tabindex, 10) < 0) return false;
+        
+        const style = getComputedStyle(el);
+        return (
+          el.offsetWidth > 0 &&
+          el.offsetHeight > 0 &&
+          style.visibility !== 'hidden' &&
+          style.display !== 'none'
+        );
+      }).sort((a, b) => {
+        // Sort by tabindex (elements with explicit tabindex come first)
+        const aIndex = parseInt(a.getAttribute('tabindex') || '0', 10);
+        const bIndex = parseInt(b.getAttribute('tabindex') || '0', 10);
+        if (aIndex > 0 && bIndex > 0) return aIndex - bIndex;
+        if (aIndex > 0) return -1;
+        if (bIndex > 0) return 1;
+        return 0;
+      });
+    };
+
+    // Focus the first focusable element or the dialog itself
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    } else {
+      dialogRef.current.focus();
     }
+
+    // Handle Tab key to trap focus within the modal
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !dialogRef.current?.contains(event.target as Node)) return;
+
+      const focusableElements = getFocusableElements();
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        // Shift + Tab: if focus is on first element, move to last
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab: if focus is on last element, move to first
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+
+    return () => {
+      document.removeEventListener('keydown', handleTabKey);
+      // Restore focus to the previously focused element
+      if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+        previouslyFocusedElement.focus();
+      }
+    };
   }, [open]);
 
   const handleOverlayClick = (event: React.MouseEvent) => {
