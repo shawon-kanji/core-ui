@@ -5,6 +5,7 @@ import { CheckboxPage } from './pages/CheckboxPage';
 import { AutocompletePage } from './pages/AutocompletePage';
 import { DropdownPage } from './pages/DropdownPage';
 import { DatePickerPage } from './pages/DatePickerPage';
+import { PrimitivesPage } from './pages/PrimitivesPage';
 import { Showcase, PropsTable } from './components';
 
 // Import all components
@@ -66,6 +67,12 @@ const componentCategories = [
       { name: 'Badge', id: 'badge' },
       { name: 'Avatar', id: 'avatar' },
       { name: 'Dropdown', id: 'dropdown' },
+    ],
+  },
+  {
+    name: 'Primitives',
+    items: [
+      { name: 'Primitives', id: 'primitives' },
     ],
   },
   {
@@ -1904,32 +1911,40 @@ function StackPage() {
 
       <Showcase
         title="VStack (Vertical)"
-        code={`<VStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-  <div className="bg-blue-100 p-3 rounded">Item 1</div>
-  <div className="bg-blue-100 p-3 rounded">Item 2</div>
-  <div className="bg-blue-100 p-3 rounded">Item 3</div>
-</VStack>`}
+        code={`<Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+  <VStack gap="md">
+    <Box background="blue-100" padding="md" rounded="md">Item 1</Box>
+    <Box background="blue-100" padding="md" rounded="md">Item 2</Box>
+    <Box background="blue-100" padding="md" rounded="md">Item 3</Box>
+  </VStack>
+</Box>`}
       >
-        <VStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-          <div className="bg-blue-100 p-3 rounded">Item 1</div>
-          <div className="bg-blue-100 p-3 rounded">Item 2</div>
-          <div className="bg-blue-100 p-3 rounded">Item 3</div>
-        </VStack>
+        <Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+          <VStack gap="md">
+            <Box background="blue-100" padding="md" rounded="md">Item 1</Box>
+            <Box background="blue-100" padding="md" rounded="md">Item 2</Box>
+            <Box background="blue-100" padding="md" rounded="md">Item 3</Box>
+          </VStack>
+        </Box>
       </Showcase>
 
       <Showcase
         title="HStack (Horizontal)"
-        code={`<HStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-  <div className="bg-green-100 p-3 rounded">Item 1</div>
-  <div className="bg-green-100 p-3 rounded">Item 2</div>
-  <div className="bg-green-100 p-3 rounded">Item 3</div>
-</HStack>`}
+        code={`<Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+  <HStack gap="md">
+    <Box background="green-100" padding="md" rounded="md">Item 1</Box>
+    <Box background="green-100" padding="md" rounded="md">Item 2</Box>
+    <Box background="green-100" padding="md" rounded="md">Item 3</Box>
+  </HStack>
+</Box>`}
       >
-        <HStack gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-          <div className="bg-green-100 p-3 rounded">Item 1</div>
-          <div className="bg-green-100 p-3 rounded">Item 2</div>
-          <div className="bg-green-100 p-3 rounded">Item 3</div>
-        </HStack>
+        <Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+          <HStack gap="md">
+            <Box background="green-100" padding="md" rounded="md">Item 1</Box>
+            <Box background="green-100" padding="md" rounded="md">Item 2</Box>
+            <Box background="green-100" padding="md" rounded="md">Item 3</Box>
+          </HStack>
+        </Box>
       </Showcase>
 
       <Showcase
@@ -1938,11 +1953,13 @@ function StackPage() {
         code={`<VStack gap="lg">
   <div>
     <Text size="sm" color="muted" className="mb-2">gap="xs"</Text>
-    <HStack gap="xs" className="p-2 border border-dashed border-gray-300 rounded">
-      <div className="bg-purple-100 px-3 py-2 rounded text-sm">A</div>
-      <div className="bg-purple-100 px-3 py-2 rounded text-sm">B</div>
-      <div className="bg-purple-100 px-3 py-2 rounded text-sm">C</div>
-    </HStack>
+    <Box padding="sm" border borderColor="gray-300" className="border-dashed" rounded="md">
+      <HStack gap="xs">
+        <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">A</Box>
+        <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">B</Box>
+        <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">C</Box>
+      </HStack>
+    </Box>
   </div>
   {/* ... more gap sizes: sm, md, lg, xl, 2xl */}
 </VStack>`}
@@ -1951,11 +1968,13 @@ function StackPage() {
           {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((gap) => (
             <div key={gap}>
               <Text size="sm" color="muted" className="mb-2">gap="{gap}"</Text>
-              <HStack gap={gap} className="p-2 border border-dashed border-gray-300 rounded">
-                <div className="bg-purple-100 px-3 py-2 rounded text-sm">A</div>
-                <div className="bg-purple-100 px-3 py-2 rounded text-sm">B</div>
-                <div className="bg-purple-100 px-3 py-2 rounded text-sm">C</div>
-              </HStack>
+              <Box padding="sm" border borderColor="gray-300" className="border-dashed" rounded="md">
+                <HStack gap={gap}>
+                  <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">A</Box>
+                  <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">B</Box>
+                  <Box background="purple-100" paddingX="md" paddingY="sm" rounded="md" className="text-sm">C</Box>
+                </HStack>
+              </Box>
             </div>
           ))}
         </VStack>
@@ -1966,11 +1985,13 @@ function StackPage() {
         code={`<VStack gap="lg">
   <div>
     <Text size="sm" color="muted" className="mb-2">align="start"</Text>
-    <HStack align="start" gap="md" className="p-4 h-24 border border-dashed border-gray-300 rounded">
-      <div className="bg-amber-100 p-3 rounded">Short</div>
-      <div className="bg-amber-100 p-3 rounded">Medium Item</div>
-      <div className="bg-amber-100 p-3 rounded">Tall<br />Item</div>
-    </HStack>
+    <Box padding="lg" border borderColor="gray-300" className="border-dashed h-24" rounded="md">
+      <HStack align="start" gap="md">
+        <Box background="amber-100" padding="md" rounded="md">Short</Box>
+        <Box background="amber-100" padding="md" rounded="md">Medium Item</Box>
+        <Box background="amber-100" padding="md" rounded="md">Tall<br />Item</Box>
+      </HStack>
+    </Box>
   </div>
   {/* ... align="center", align="end" */}
 </VStack>`}
@@ -1979,11 +2000,13 @@ function StackPage() {
           {(['start', 'center', 'end'] as const).map((align) => (
             <div key={align}>
               <Text size="sm" color="muted" className="mb-2">align="{align}"</Text>
-              <HStack align={align} gap="md" className="p-4 h-24 border border-dashed border-gray-300 rounded">
-                <div className="bg-amber-100 p-3 rounded">Short</div>
-                <div className="bg-amber-100 p-3 rounded">Medium Item</div>
-                <div className="bg-amber-100 p-3 rounded">Tall<br />Item</div>
-              </HStack>
+              <Box padding="lg" border borderColor="gray-300" className="border-dashed h-24" rounded="md">
+                <HStack align={align} gap="md">
+                  <Box background="amber-100" padding="md" rounded="md">Short</Box>
+                  <Box background="amber-100" padding="md" rounded="md">Medium Item</Box>
+                  <Box background="amber-100" padding="md" rounded="md">Tall<br />Item</Box>
+                </HStack>
+              </Box>
             </div>
           ))}
         </VStack>
@@ -1994,11 +2017,13 @@ function StackPage() {
         code={`<VStack gap="lg">
   <div>
     <Text size="sm" color="muted" className="mb-2">justify="start"</Text>
-    <HStack justify="start" gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-      <div className="bg-teal-100 p-3 rounded">A</div>
-      <div className="bg-teal-100 p-3 rounded">B</div>
-      <div className="bg-teal-100 p-3 rounded">C</div>
-    </HStack>
+    <Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+      <HStack justify="start" gap="md">
+        <Box background="teal-100" padding="md" rounded="md">A</Box>
+        <Box background="teal-100" padding="md" rounded="md">B</Box>
+        <Box background="teal-100" padding="md" rounded="md">C</Box>
+      </HStack>
+    </Box>
   </div>
   {/* ... justify="center", "end", "between", "around" */}
 </VStack>`}
@@ -2007,14 +2032,63 @@ function StackPage() {
           {(['start', 'center', 'end', 'between', 'around'] as const).map((justify) => (
             <div key={justify}>
               <Text size="sm" color="muted" className="mb-2">justify="{justify}"</Text>
-              <HStack justify={justify} gap="md" className="p-4 border border-dashed border-gray-300 rounded">
-                <div className="bg-teal-100 p-3 rounded">A</div>
-                <div className="bg-teal-100 p-3 rounded">B</div>
-                <div className="bg-teal-100 p-3 rounded">C</div>
-              </HStack>
+              <Box padding="lg" border borderColor="gray-300" className="border-dashed" rounded="md">
+                <HStack justify={justify} gap="md">
+                  <Box background="teal-100" padding="md" rounded="md">A</Box>
+                  <Box background="teal-100" padding="md" rounded="md">B</Box>
+                  <Box background="teal-100" padding="md" rounded="md">C</Box>
+                </HStack>
+              </Box>
             </div>
           ))}
         </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Fixed Fractions"
+        description="Control item widths per child using Box width fractions."
+        code={`<HStack gap="md">
+  <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+  <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+  <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+</HStack>
+
+<HStack gap="md">
+  <Box width="2/3" padding="md" background="green-50" rounded="md">2/3</Box>
+  <Box width="1/3" padding="md" background="green-50" rounded="md">1/3</Box>
+</HStack>`}
+      >
+        <VStack gap="md">
+          <HStack gap="md">
+            <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+            <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+            <Box width="1/3" padding="md" background="blue-50" rounded="md">1/3</Box>
+          </HStack>
+          <HStack gap="md">
+            <Box width="2/3" padding="md" background="green-50" rounded="md">2/3</Box>
+            <Box width="1/3" padding="md" background="green-50" rounded="md">1/3</Box>
+          </HStack>
+        </VStack>
+      </Showcase>
+
+      <Showcase
+        title="Wrapping Columns"
+        description="Use wrap + widths to make responsive rows."
+        code={`<HStack gap="md" wrap>
+  <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+  <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+  <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+  <Box width="1/2" padding="md" background="purple-50" rounded="md">1/2</Box>
+  <Box width="1/2" padding="md" background="purple-50" rounded="md">1/2</Box>
+</HStack>`}
+      >
+        <HStack gap="md" wrap>
+          <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+          <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+          <Box width="1/3" padding="md" background="purple-50" rounded="md">1/3</Box>
+          <Box width="1/2" padding="md" background="purple-50" rounded="md">1/2</Box>
+          <Box width="1/2" padding="md" background="purple-50" rounded="md">1/2</Box>
+        </HStack>
       </Showcase>
 
       <PropsTable
@@ -3294,6 +3368,7 @@ export default function App() {
       case 'badge': return <BadgePage />;
       case 'avatar': return <AvatarPage />;
       case 'dropdown': return <DropdownPage />;
+      case 'primitives': return <PrimitivesPage />;
       case 'box': return <BoxPage />;
       case 'stack': return <StackPage />;
       case 'divider': return <DividerPage />;

@@ -18,6 +18,11 @@ export * from './lib/utils';
 export * from './components/Box';
 export * from './components/Stack';
 export * from './components/Divider';
+export * from './components/Modal';
+export * from './components/Tooltip';
+export * from './components/Tabs';
+export * from './components/Accordion';
+export * from './components/Progress';
 
 // Typography
 export * from './components/Typography';

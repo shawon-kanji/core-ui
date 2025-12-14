@@ -15,7 +15,7 @@ export interface SelectOption {
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 export type SelectVariant = 'outline' | 'filled' | 'flushed';
-          aria-disabled={isDisabled ? true : undefined}
+export type SelectColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'slate' | 'gray' | 'zinc' | 'neutral';
 
 export interface SelectProps {
   options: SelectOption[];
@@ -172,7 +172,6 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       if (value === undefined) {
         setInternalValue(option.value);
       }
-            aria-disabled={isDisabled ? true : undefined}
       setIsOpen(false);
       setSearchQuery('');
       setHighlightedIndex(-1);
@@ -317,7 +316,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               </div>
             )}
             <div className="max-h-60 overflow-y-auto py-1">
-              {groupedOptions.ungrouped.map((option, index) => (
+              {groupedOptions.ungrouped.map((option) => (
                 <button
                   key={option.value}
                   type="button"

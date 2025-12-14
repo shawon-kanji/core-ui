@@ -1,0 +1,163 @@
+import * as React from 'react';
+import { cn } from '../lib/utils';
+
+interface TabsContextValue {
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
+  registerTab: (index: number, ref: HTMLButtonElement | null) => void;
+  focusTab: (index: number) => void;
+}
+
+const TabsContext = React.createContext<TabsContextValue | null>(null);
+
+export interface TabsProps {
+  defaultIndex?: number;
+  onChange?: (index: number) => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function Tabs({ defaultIndex = 0, onChange, children, className }: TabsProps) {
+  const [activeIndex, setActiveIndex] = React.useState(defaultIndex);
+  const tabRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
+
+  const handleSetActive = (index: number) => {
+    setActiveIndex(index);
+    onChange?.(index);
+  };
+
+  const registerTab = (index: number, ref: HTMLButtonElement | null) => {
+    tabRefs.current[index] = ref;
+  };
+
+  const focusTab = (index: number) => {
+    const target = tabRefs.current[index];
+    target?.focus();
+  };
+
+  return (
+    <TabsContext.Provider value={{ activeIndex, setActiveIndex: handleSetActive, registerTab, focusTab }}>
+      <div className={cn('w-full', className)}>{children}</div>
+    </TabsContext.Provider>
+  );
+}
+
+export interface TabListProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function TabList({ children, className }: TabListProps) {
+  return (
+    <div role="tablist" className={cn('flex items-center gap-2 border-b border-gray-200', className)}>
+      {children}
+    </div>
+  );
+}
+
+export interface TabProps {
+  children: React.ReactNode;
+  index: number;
+  disabled?: boolean;
+  className?: string;
+}
+
+export function Tab({ children, index, disabled = false, className }: TabProps) {
+  const ctx = React.useContext(TabsContext);
+  const ref = React.useRef<HTMLButtonElement>(null);
+
+  if (!ctx) throw new Error('Tab must be used within Tabs');
+
+  const isActive = ctx.activeIndex === index;
+
+  React.useEffect(() => {
+    ctx.registerTab(index, ref.current);
+  }, [ctx, index]);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    const total = (ref.current?.parentElement?.children.length ?? 1) - 1;
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      const next = (index + 1) % (total + 1);
+      ctx.setActiveIndex(next);
+      ctx.focusTab(next);
+    }
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      const next = index - 1 < 0 ? total : index - 1;
+      ctx.setActiveIndex(next);
+      ctx.focusTab(next);
+    }
+    if (event.key === 'Home') {
+      event.preventDefault();
+      ctx.setActiveIndex(0);
+      ctx.focusTab(0);
+    }
+    if (event.key === 'End') {
+      event.preventDefault();
+      ctx.setActiveIndex(total);
+      ctx.focusTab(total);
+    }
+  };
+
+  return (
+    <button
+      ref={ref}
+      role="tab"
+      type="button"
+      aria-selected={isActive}
+      aria-controls={`panel-${index}`}
+      id={`tab-${index}`}
+      onClick={() => ctx.setActiveIndex(index)}
+      onKeyDown={onKeyDown}
+      disabled={disabled}
+      tabIndex={isActive ? 0 : -1}
+      className={cn(
+        'relative px-3 py-2 text-sm font-medium transition-colors',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
+        isActive ? 'text-primary-700' : 'text-gray-600 hover:text-gray-800',
+        className
+      )}
+    >
+      {children}
+      <span
+        className={cn(
+          'absolute inset-x-0 -bottom-px h-0.5 transition-opacity',
+          isActive ? 'bg-primary-500 opacity-100' : 'opacity-0'
+        )}
+      />
+    </button>
+  );
+}
+
+export interface TabPanelsProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function TabPanels({ children, className }: TabPanelsProps) {
+  return <div className={className}>{children}</div>;
+}
+
+export interface TabPanelProps {
+  children: React.ReactNode;
+  index: number;
+  className?: string;
+}
+
+export function TabPanel({ children, index, className }: TabPanelProps) {
+  const ctx = React.useContext(TabsContext);
+  if (!ctx) throw new Error('TabPanel must be used within Tabs');
+
+  return (
+    <div
+      role="tabpanel"
+      id={`panel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      hidden={ctx.activeIndex !== index}
+      className={cn('pt-4', className)}
+    >
+      {ctx.activeIndex === index && children}
+    </div>
+  );
+}
