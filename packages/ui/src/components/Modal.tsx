@@ -59,16 +59,25 @@ export function Modal({
       if (!dialogRef.current) return [];
       const focusableSelectors = [
         'a[href]',
+        'area[href]',
         'button:not([disabled])',
         'textarea:not([disabled])',
         'input:not([disabled])',
         'select:not([disabled])',
-        '[tabindex="0"]',
+        'iframe',
+        'object',
+        'embed',
+        'audio[controls]',
+        'video[controls]',
+        '[tabindex]:not([tabindex="-1"])',
       ].join(', ');
       return Array.from(
         dialogRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
       ).filter((el) => {
-        // Filter out elements that are not visible
+        // Filter out elements that are not visible or have negative tabindex
+        const tabindex = el.getAttribute('tabindex');
+        if (tabindex && parseInt(tabindex, 10) < 0) return false;
+        
         const style = getComputedStyle(el);
         return (
           el.offsetWidth > 0 &&
@@ -76,6 +85,14 @@ export function Modal({
           style.visibility !== 'hidden' &&
           style.display !== 'none'
         );
+      }).sort((a, b) => {
+        // Sort by tabindex (elements with explicit tabindex come first)
+        const aIndex = parseInt(a.getAttribute('tabindex') || '0', 10);
+        const bIndex = parseInt(b.getAttribute('tabindex') || '0', 10);
+        if (aIndex > 0 && bIndex > 0) return aIndex - bIndex;
+        if (aIndex > 0) return -1;
+        if (bIndex > 0) return 1;
+        return 0;
       });
     };
 
@@ -89,7 +106,7 @@ export function Modal({
 
     // Handle Tab key to trap focus within the modal
     const handleTabKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return;
+      if (event.key !== 'Tab' || !dialogRef.current?.contains(event.target as Node)) return;
 
       const focusableElements = getFocusableElements();
       if (focusableElements.length === 0) return;
