@@ -4,8 +4,9 @@ import { cn } from '../lib/utils';
 interface TabsContextValue {
   activeIndex: number;
   setActiveIndex: (index: number) => void;
-  registerTab: (index: number, ref: HTMLButtonElement | null) => void;
+  registerTab: (index: number, ref: HTMLButtonElement | null, disabled: boolean) => void;
   focusTab: (index: number) => void;
+  isTabDisabled: (index: number) => boolean;
 }
 
 const TabsContext = React.createContext<TabsContextValue | null>(null);
@@ -20,14 +21,16 @@ export interface TabsProps {
 export function Tabs({ defaultIndex = 0, onChange, children, className }: TabsProps) {
   const [activeIndex, setActiveIndex] = React.useState(defaultIndex);
   const tabRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
+  const tabDisabledState = React.useRef<Map<number, boolean>>(new Map());
 
   const handleSetActive = (index: number) => {
     setActiveIndex(index);
     onChange?.(index);
   };
 
-  const registerTab = (index: number, ref: HTMLButtonElement | null) => {
+  const registerTab = (index: number, ref: HTMLButtonElement | null, disabled: boolean) => {
     tabRefs.current[index] = ref;
+    tabDisabledState.current.set(index, disabled);
   };
 
   const focusTab = (index: number) => {
@@ -35,8 +38,12 @@ export function Tabs({ defaultIndex = 0, onChange, children, className }: TabsPr
     target?.focus();
   };
 
+  const isTabDisabled = (index: number) => {
+    return tabDisabledState.current.get(index) ?? false;
+  };
+
   return (
-    <TabsContext.Provider value={{ activeIndex, setActiveIndex: handleSetActive, registerTab, focusTab }}>
+    <TabsContext.Provider value={{ activeIndex, setActiveIndex: handleSetActive, registerTab, focusTab, isTabDisabled }}>
       <div className={cn('w-full', className)}>{children}</div>
     </TabsContext.Provider>
   );
@@ -71,32 +78,74 @@ export function Tab({ children, index, disabled = false, className }: TabProps) 
   const isActive = ctx.activeIndex === index;
 
   React.useEffect(() => {
-    ctx.registerTab(index, ref.current);
-  }, [ctx, index]);
+    ctx.registerTab(index, ref.current, disabled);
+  }, [ctx, index, disabled]);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const total = (ref.current?.parentElement?.children.length ?? 1) - 1;
+    
+    const findNextEnabledTab = (startIndex: number, direction: 1 | -1): number => {
+      let nextIndex = startIndex;
+      let attempts = 0;
+      const maxAttempts = total + 1;
+      
+      do {
+        if (direction === 1) {
+          nextIndex = (nextIndex + 1) % (total + 1);
+        } else {
+          nextIndex = nextIndex - 1 < 0 ? total : nextIndex - 1;
+        }
+        attempts++;
+        
+        if (!ctx.isTabDisabled(nextIndex)) {
+          return nextIndex;
+        }
+      } while (attempts < maxAttempts);
+      
+      return startIndex;
+    };
+    
+    const findFirstEnabledTab = (): number => {
+      for (let i = 0; i <= total; i++) {
+        if (!ctx.isTabDisabled(i)) {
+          return i;
+        }
+      }
+      return 0;
+    };
+    
+    const findLastEnabledTab = (): number => {
+      for (let i = total; i >= 0; i--) {
+        if (!ctx.isTabDisabled(i)) {
+          return i;
+        }
+      }
+      return total;
+    };
+    
     if (event.key === 'ArrowRight') {
       event.preventDefault();
-      const next = (index + 1) % (total + 1);
+      const next = findNextEnabledTab(index, 1);
       ctx.setActiveIndex(next);
       ctx.focusTab(next);
     }
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
-      const next = index - 1 < 0 ? total : index - 1;
+      const next = findNextEnabledTab(index, -1);
       ctx.setActiveIndex(next);
       ctx.focusTab(next);
     }
     if (event.key === 'Home') {
       event.preventDefault();
-      ctx.setActiveIndex(0);
-      ctx.focusTab(0);
+      const first = findFirstEnabledTab();
+      ctx.setActiveIndex(first);
+      ctx.focusTab(first);
     }
     if (event.key === 'End') {
       event.preventDefault();
-      ctx.setActiveIndex(total);
-      ctx.focusTab(total);
+      const last = findLastEnabledTab();
+      ctx.setActiveIndex(last);
+      ctx.focusTab(last);
     }
   };
 
